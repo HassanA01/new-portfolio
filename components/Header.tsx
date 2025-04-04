@@ -1,103 +1,138 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const Header = () => {
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveSection(window.location.hash || "#home");
+    };
+
+    // Set the initial active section
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
   return (
     <header className="bg-background fixed top-0 z-50 w-full">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Name on the left */}
           <div className="flex flex-col items-start">
-            <span className="text-secondaryText text-lg leading-none font-bold">
+            <span className="font-sans text-lg leading-none font-bold">
               Aneeq
             </span>
-            <span className="text-secondaryText text-lg leading-none font-bold">
+            <span className="font-sans text-lg leading-none font-bold">
               Hassan
             </span>
           </div>
 
           {/* Centered Navbar */}
           <div className="hidden space-x-4 md:flex">
-            <Link
-              href="/"
-              className="text-secondaryText hover:text-accentLight"
+            <a
+              href="#home"
+              className={`text-gray-300 hover:text-teal-500 ${
+                activeSection === "#home"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
             >
               Home
-            </Link>
-            <Link
-              href="/about"
-              className="text-secondaryText hover:text-accentLight"
+            </a>
+            <a
+              href="#about"
+              className={`text-gray-300 hover:text-teal-500 ${
+                activeSection === "#about"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
             >
               About
-            </Link>
-            <Link
-              href="/experience"
-              className="text-secondaryText hover:text-accentLight"
+            </a>
+            <a
+              href="#experience"
+              className={`text-gray-300 hover:text-teal-500 ${
+                activeSection === "#experience"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
             >
               Experience
-            </Link>
-            <Link
-              href="/projects"
-              className="text-secondaryText hover:text-accentLight"
+            </a>
+            <a
+              href="#projects"
+              className={`text-gray-300 hover:text-teal-500 ${
+                activeSection === "#projects"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
             >
               Projects
-            </Link>
-            <Link
-              href="/skills"
-              className="text-secondaryText hover:text-accentLight"
+            </a>
+            <a
+              href="#skills"
+              className={`text-gray-300 hover:text-teal-500 ${
+                activeSection === "#skills"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
             >
               Skills
-            </Link>
+            </a>
           </div>
 
           {/* Icons for GitHub, LinkedIn, and Mail on the right */}
           <div className="flex space-x-4">
-            <Link
+            <a
               href="https://github.com/hassana01"
               target="_blank"
               aria-label="GitHub"
+              className="group"
             >
               <Image
                 src="/github.svg"
                 alt="GitHub"
                 width={24}
                 height={24}
-                style={{
-                  filter:
-                    "invert(88%) sepia(7%) saturate(374%) hue-rotate(37deg) brightness(96%) contrast(89%)",
-                }}
+                className="invert transition-all duration-200 group-hover:[filter:invert(49%)_sepia(61%)_saturate(901%)_hue-rotate(127deg)_brightness(96%)_contrast(101%)]"
               />
-            </Link>
-            <Link
+            </a>
+            <a
               href="https://linkedin.com/in/hassana01"
               target="_blank"
               aria-label="LinkedIn"
+              className="group"
             >
               <Image
                 src="/linkedin.svg"
                 alt="LinkedIn"
                 width={24}
                 height={24}
-                style={{
-                  filter:
-                    "invert(88%) sepia(7%) saturate(374%) hue-rotate(37deg) brightness(96%) contrast(89%)",
-                }}
+                className="invert transition-all duration-200 group-hover:[filter:invert(49%)_sepia(61%)_saturate(901%)_hue-rotate(127deg)_brightness(96%)_contrast(101%)]"
               />
-            </Link>
-            <Link href="mailto:hassan.aneeq01@gmail.com" aria-label="Mail">
+            </a>
+            <a
+              href="mailto:hassan.aneeq01@gmail.com"
+              aria-label="Mail"
+              className="group"
+            >
               <Image
                 src="/mail.svg"
                 alt="Mail"
                 width={24}
                 height={24}
-                style={{
-                  filter:
-                    "invert(88%) sepia(7%) saturate(374%) hue-rotate(37deg) brightness(96%) contrast(89%)",
-                }}
+                className="invert transition-all duration-200 group-hover:[filter:invert(49%)_sepia(61%)_saturate(901%)_hue-rotate(127deg)_brightness(96%)_contrast(101%)]"
               />
-            </Link>
+            </a>
           </div>
         </div>
       </nav>
