@@ -2,20 +2,77 @@ import ProfilePic from "../public/profile_pic.png";
 import Image from "next/image";
 import GrainBackground from "../public/grain.jpg";
 import Link from "next/link";
+import HeroOrbit from "./HeroOrbit";
 
 const Hero = () => {
   return (
-    <div className="relative z-0 h-screen overflow-x-clip">
-      <div
-        className="absolute inset-0 -z-50 opacity-5"
-        style={{
-          backgroundImage: `url(${GrainBackground.src})`,
-        }}
-      ></div>
-      <div className="hero-ring size-[620px]"></div>
-      <div className="hero-ring size-[820px]"></div>
-      <div className="hero-ring size-[1020px]"></div>
-      <div className="hero-ring size-[1220px]"></div>
+    <div className="relative z-0 h-screen overflow-clip">
+      <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_70%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_70%,transparent_100%)]">
+        <div
+          className="absolute inset-0 -z-50 opacity-5"
+          style={{
+            backgroundImage: `url(${GrainBackground.src})`,
+          }}
+        ></div>
+        <div className="hero-ring size-[620px]"></div>
+        <div className="hero-ring size-[820px]"></div>
+        <div className="hero-ring size-[1020px]"></div>
+        <div className="hero-ring size-[1220px]"></div>
+        <HeroOrbit size={800} rotation={-45} opacity={50}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-28 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+        <HeroOrbit size={540} rotation={35} opacity={40}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-10 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+        <HeroOrbit size={850} rotation={145} opacity={80}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-20 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+        <HeroOrbit size={400} rotation={105} opacity={30}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-8 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+        <HeroOrbit size={750} rotation={-105} opacity={20}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-12 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+        <HeroOrbit size={350} rotation={-115} opacity={20}>
+          <Image
+            src="/star.svg"
+            alt="Star"
+            width={24}
+            height={24}
+            className="size-12 [filter:invert(65%)_sepia(74%)_saturate(401%)_hue-rotate(122deg)_brightness(90%)_contrast(87%)]"
+          />
+        </HeroOrbit>
+      </div>
       <div className="mx-auto flex h-full max-w-[1000px] flex-col items-center pt-32 sm:justify-center sm:pt-0">
         <Image src={ProfilePic} alt="Me Coding" height={100} width={100} />
         <div className="my-2 inline-flex items-center gap-4 rounded-lg border border-gray-600 px-6 py-1.5">
