@@ -24,7 +24,7 @@ const Header = () => {
 
   return (
     <header className="bg-background fixed top-0 z-50 w-full">
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Name on the left */}
           <div className="flex flex-col items-start">
