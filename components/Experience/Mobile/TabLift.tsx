@@ -2,7 +2,7 @@
 "use client";
 import * as Tabs from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import clsx from "clsx";
 import experienceData from "@/data/experience.json";
 

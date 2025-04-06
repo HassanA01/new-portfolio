@@ -56,8 +56,19 @@ const Header = () => {
             >
               About
             </a>
+            {/* this experience section for mobile view and the one beneath is for web */}
             <a
               href="#experience"
+              className={`text-gray-300 hover:text-teal-500 sm:hidden ${
+                activeSection === "#experience"
+                  ? "underline decoration-teal-500 decoration-2 underline-offset-8"
+                  : "decoration-transparent"
+              }`}
+            >
+              Experience
+            </a>
+            <a
+              href="#experience-web"
               className={`text-gray-300 hover:text-teal-500 ${
                 activeSection === "#experience"
                   ? "underline decoration-teal-500 decoration-2 underline-offset-8"
