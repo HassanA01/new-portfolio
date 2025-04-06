@@ -1,5 +1,5 @@
 import About from "@/components/About";
-import Experience from "@/components/Experience";
+import ExperienceMobile from "@/components/Experience/Experience";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 
@@ -9,7 +9,9 @@ export default function Home() {
       <Header />
       <Hero />
       <About />
-      <Experience />
+      <div className="sm:hidden">
+        <ExperienceMobile />
+      </div>
     </div>
   );
 }

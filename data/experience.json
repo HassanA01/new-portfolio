@@ -1,0 +1,62 @@
+{
+  "experience": [
+    {
+      "title": "Software Developer",
+      "company": "Magnet Forensics",
+      "duration": "January 2025 – April 2025",
+      "techStack": ["C#", ".NET", "AzureDevops", "Jenkins"],
+      "highlights": [
+        "Developed Fastrak using C# (.NET stack) to offload data acquisition from GrayKey to standard PCs, reducing GrayKey usage per phone by 85%.",
+        "Enabled simultaneous extractions, significantly improving the efficiency of a $60k tool."
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Annaly",
+      "duration": "February 2024 – August 2024",
+      "techStack": [
+        "C#",
+        ".NET",
+        "VCron",
+        "SQL Server",
+        "Mailgun API",
+        "Azure"
+      ],
+      "highlights": [
+        "Designed and implemented an ETL Notifier System using C#, .NET, VCron, and SQL Server, reducing incident response time by 95%.",
+        "Migrated 24 margin calculation applications from Microsoft Interop to ClosedXML, cutting execution time by 50% and reducing server CPU usage by 40%.",
+        "Built an email logging system using Mailgun API and SQL Server, reducing audit lookup time by 75%."
+      ]
+    },
+    {
+      "title": "Data Analyst",
+      "company": "Enbridge",
+      "duration": "June 2023 – September 2023",
+      "techStack": ["SAP Hana", "Excel", "Microsoft Power Apps"],
+      "highlights": [
+        "Developed an internal tool using Microsoft Power Apps, resulting in a 75% increase in inter-departmental communication efficiency."
+      ]
+    },
+    {
+      "title": "Software Developer",
+      "company": "Koho Financial",
+      "duration": "May 2022 – May 2023",
+      "techStack": ["Angular", "Go", "Jenkins", "NgRx"],
+      "highlights": [
+        "Engineered integration tests using Go, integrating with Jenkins pipeline and reducing QA time by 45%.",
+        "Integrated Google Pay API into Koho’s mobile app, driving 40% adoption among Android users and processing $2M in transactions within the first quarter.",
+        "Implemented NgRx state management across mobile app, reducing API calls by 60% and cutting load times by 30%."
+      ]
+    },
+    {
+      "title": "Teaching Assistant",
+      "company": "University of Toronto",
+      "duration": "January 2022 – May 2025",
+      "techStack": ["Python"],
+      "highlights": [
+        "Instructed over 2,000 students across 6 semesters in data structures, algorithms, OOP, and complexity using Python in an active learning environment.",
+        "Led weekly labs for 5 sections, improving average grades by 47% by creating lesson outlines and aiding students."
+      ]
+    }
+  ]
+}
