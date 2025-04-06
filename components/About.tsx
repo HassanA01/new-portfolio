@@ -14,7 +14,7 @@ const About = () => {
       <div className="mx-auto flex h-full max-w-[1000px] flex-col px-4">
         <div className="w-full sm:mt-20">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8">
-            <h1 className="text-2xl font-bold text-teal-400">/about</h1>
+            <h1 className="text-2xl font-bold text-teal-400">/ about</h1>
 
             <div className="mt-10 space-y-6 text-gray-300">
               <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
