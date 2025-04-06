@@ -17,6 +17,10 @@
   --font-bokor: var(--font-bokor);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--text);
   background: var(--background);

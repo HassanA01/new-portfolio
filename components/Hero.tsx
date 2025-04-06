@@ -6,7 +6,7 @@ import HeroOrbit from "./HeroOrbit";
 
 const Hero = () => {
   return (
-    <div className="relative z-0 h-screen overflow-clip">
+    <div id="home" className="relative z-0 h-screen overflow-clip">
       <div className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_70%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_70%,transparent_100%)]">
         <div
           className="absolute inset-0 -z-50 opacity-5"

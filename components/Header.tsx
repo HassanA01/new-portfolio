@@ -26,7 +26,6 @@ const Header = () => {
     <header className="bg-background fixed top-0 z-50 w-full">
       <nav className="mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Name on the left */}
           <div className="flex flex-col items-start">
             <span className="font-sans text-lg leading-none font-bold">
               Aneeq
@@ -36,7 +35,6 @@ const Header = () => {
             </span>
           </div>
 
-          {/* Centered Navbar */}
           <div className="hidden space-x-4 md:flex">
             <a
               href="#home"
