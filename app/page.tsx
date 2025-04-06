@@ -13,7 +13,9 @@ export default function Home() {
       <div className="sm:hidden">
         <ExperienceMobile />
       </div>
-      <ExperienceWeb />
+      <div className="hidden sm:block">
+        <ExperienceWeb />
+      </div>
     </div>
   );
 }

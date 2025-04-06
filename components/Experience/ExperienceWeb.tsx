@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import experienceData from "@/data/experience.json";
 import clsx from "clsx";
+import { ChevronRight } from "lucide-react";
 
 const ExperienceWeb = () => {
   const sortedExperiences = useMemo(() => {
@@ -27,7 +28,7 @@ const ExperienceWeb = () => {
   return (
     <section id="experience-web" className="min-h-screen w-full py-30">
       <div className="mx-auto flex max-w-[1000px] flex-col px-4">
-        <h1 className="text-2xl font-bold text-teal-400">/experience</h1>
+        <h1 className="text-2xl font-bold text-teal-400">/ experience</h1>
 
         <div className="relative mt-16">
           <div className="absolute left-0 h-0.5 w-full bg-zinc-800">
@@ -101,10 +102,11 @@ const ExperienceWeb = () => {
               </p>
             </div>
 
-            <ul className="ml-4 list-disc space-y-2 text-sm text-zinc-300">
+            <ul className="space-y-2 text-sm text-zinc-300">
               {selectedExp.highlights.map((highlight, i) => (
-                <li key={i} className="leading-relaxed">
-                  {highlight}
+                <li key={i} className="flex items-start gap-2 leading-relaxed">
+                  <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-teal-400" />
+                  <span>{highlight}</span>
                 </li>
               ))}
             </ul>
