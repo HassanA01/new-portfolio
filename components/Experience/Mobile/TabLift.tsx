@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 import clsx from "clsx";
 import experienceData from "@/data/experience.json";
+import { ChevronRight } from "lucide-react";
 
 const tabs = experienceData.experience.map((exp) => exp.company);
 
@@ -106,10 +107,14 @@ const TabLift = () => {
                     </p>
                   </div>
 
-                  <ul className="ml-4 list-disc space-y-2 text-sm text-zinc-300">
+                  <ul className="space-y-2 text-sm text-zinc-300">
                     {experience.highlights.map((highlight, index) => (
-                      <li key={index} className="leading-relaxed">
-                        {highlight}
+                      <li
+                        key={index}
+                        className="flex items-start gap-2 leading-relaxed"
+                      >
+                        <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-teal-400" />
+                        <span>{highlight}</span>
                       </li>
                     ))}
                   </ul>

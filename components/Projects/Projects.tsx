@@ -80,12 +80,25 @@ const Projects = () => {
           background: rgb(45 212 191) !important;
           opacity: 1;
         }
+
+        /* Mobile teal outline glow effect */
+        @media (max-width: 639px) {
+          .project-card {
+            box-shadow: 0 0 8px 1px rgba(20, 184, 166, 0.4);
+            border-color: rgba(20, 184, 166, 0.3) !important;
+          }
+
+          .project-card:hover {
+            box-shadow: 0 0 15px 3px rgba(20, 184, 166, 0.5);
+            border-color: rgba(20, 184, 166, 0.6) !important;
+          }
+        }
       `}</style>
 
-      <section id="projects" className="min-h-screen w-full py-16">
-        <div className="mx-auto max-w-7xl px-4">
+      <section id="projects" className="min-h-screen w-full py-30">
+        <div className="mx-auto flex max-w-[1000px] flex-col px-4">
           <h1 className="text-2xl font-bold text-teal-400">/ projects</h1>
-          <p className="mt-4 text-zinc-400">
+          <p className="mt-2 text-zinc-400">
             Here are some of my highlighted projects over the past little while!
           </p>
 
@@ -124,7 +137,7 @@ const Projects = () => {
                     }
                   }}
                 >
-                  <div className="relative mx-auto h-[520px] w-[340px] [transform:perspective(1px)_translateZ(0)] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 transition-transform duration-300 will-change-transform [backface-visibility:hidden] hover:scale-[1.048] hover:border-teal-400/50 hover:shadow-[0_0_15px_2px_rgba(20,184,166,0.3)] sm:w-[400px]">
+                  <div className="project-card h-[520px] [transform-origin:center_center] [transform:perspective(1px)_translateZ(0)] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 [-webkit-font-smoothing:subpixel-antialiased] transition-all duration-300 hover:scale-[1.042] hover:border-teal-400/50 hover:shadow-[0_0_15px_2px_rgba(20,184,166,0.3)] sm:shadow-none">
                     {/* Project Image */}
                     <div className="relative h-48 w-full">
                       <Image
