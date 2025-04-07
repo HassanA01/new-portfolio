@@ -5,28 +5,52 @@ import Image from "next/image";
 
 const Header = () => {
   const [activeSection, setActiveSection] = useState("");
+  const [isNameVisible, setIsNameVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      setActiveSection(window.location.hash || "#home");
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640); // sm breakpoint
     };
 
-    // Set the initial active section
+    const handleScroll = () => {
+      if (isMobile) {
+        const shouldHideName =
+          window.scrollY > 100 || window.location.hash === "#about";
+        setIsNameVisible(!shouldHideName);
+      } else {
+        setIsNameVisible(true); // Always show on desktop
+      }
+    };
+
+    const handleHashChange = () => {
+      setActiveSection(window.location.hash || "#home");
+      handleScroll();
+    };
+
+    checkMobile();
     handleHashChange();
 
-    // Listen for hash changes
+    window.addEventListener("resize", checkMobile);
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("hashchange", handleHashChange);
 
     return () => {
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <header className="bg-background fixed top-0 z-50 w-full">
       <nav className="mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col items-start">
+          <div
+            className={`flex flex-col items-start transition-opacity duration-300 ${
+              isNameVisible ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <span className="font-sans text-lg leading-none font-bold">
               Aneeq
             </span>

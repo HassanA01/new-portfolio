@@ -37,7 +37,7 @@ const TabLift = () => {
   };
 
   return (
-    <div className="mx-auto mt-10 w-full max-w-3xl">
+    <div className="mx-auto mt-5 w-full max-w-3xl">
       <Tabs.Root
         defaultValue={tabs[0]}
         onValueChange={handleTabChange}
