@@ -1,6 +1,6 @@
-import ProfilePic from "../public/profile_pic.png";
+import ProfilePic from "../../public/profile_pic.png";
 import Image from "next/image";
-import GrainBackground from "../public/grain.jpg";
+import GrainBackground from "../../public/grain.jpg";
 import Link from "next/link";
 import HeroOrbit from "./HeroOrbit";
 
