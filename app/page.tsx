@@ -2,7 +2,8 @@ import About from "@/components/About";
 import ExperienceWeb from "@/components/Experience/ExperienceWeb";
 import ExperienceMobile from "@/components/Experience/Mobile/ExperienceMobile";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+import Hero from "@/components/Hero/Hero";
+import Projects from "@/components/Projects/Projects";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <div className="hidden sm:block">
         <ExperienceWeb />
       </div>
+      <Projects />
     </div>
   );
 }
