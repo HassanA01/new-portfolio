@@ -4,10 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import { Github, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { motion } from "framer-motion";
 import type { Swiper as SwiperType } from "swiper";
-import type { SwiperClass } from "swiper/react";
 import projectsData from "@/data/projects.json";
 
 import "swiper/css";
@@ -24,7 +23,6 @@ interface Project {
 }
 
 const Projects = () => {
-  const [isLoopEnabled, setIsLoopEnabled] = useState(false);
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
 
   const handlePrevClick = () => {
