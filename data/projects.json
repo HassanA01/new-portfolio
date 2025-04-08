@@ -1,7 +1,7 @@
 [
   {
     "title": "MailflowAI",
-    "description": "An AI-powered 24/7 customer service automation tool for e-commerce businesses which reduces monthly costs by $14K USD and reduces response times from hours to minutes.",
+    "description": "An <span class=\"font-semibold\">AI-powered</span> 24/7 customer service automation tool for e-commerce businesses which reduces monthly costs by $14K USD and reduces response times from hours to minutes.",
     "tech": [
       "Python",
       "GCP",
@@ -10,48 +10,65 @@
       "Shopify GraphQL Admin API",
       "Gmail API"
     ],
-    "image": "/mailflowai.jpg",
+    "image": "/mailflowai.png",
     "github": "https://github.com/HassanA01/mailflowai",
     "live": "https://mailflowai.dev"
   },
   {
+    "title": "B2W - UofT Hacks 12",
+    "description": "Developed a financial management platform with <span class=\"font-semibold\">ML-powered</span> spending predictions and <span class=\"font-semibold\">personalized recommendations</span>. Features include expense tracking, goal setting, and detailed analytics for informed financial decisions.",
+    "tech": [
+      "Next.js",
+      "Express.js",
+      "PostgreSQL",
+      "Flask",
+      "Databricks",
+      "AWS",
+      "Tailwind CSS",
+      "scikit-learn"
+    ],
+    "image": "/broke2woke.jpeg",
+    "github": "https://github.com/HassanA01/UofTHacks12",
+    "live": ""
+  },
+  {
     "title": "BizReach Marketplace",
-    "description": "Led a team of 5 in designing and developing a full-stack marketplace platform connecting mobile businesses with clients using the FERN stack, implementing AI-powered gig description generator with OpenAI API.",
-    "tech": ["React", "Express", "Node.js", "Socket.io", "Firebase", "OpenAI"],
-    "image": "/bizreach.jpg",
-    "github": "https://github.com/HassanA01/bizreach-marketplace",
+    "description": "Led a team of <span class=\"font-semibold\">5</span> in designing and developing a <span class=\"font-semibold\">full-stack</span> marketplace platform connecting mobile businesses with clients using the FERN stack, implementing AI-powered gig description generator with OpenAI API.",
+    "tech": [
+      "React",
+      "Express",
+      "OAuth",
+      "Node.js",
+      "Socket.io",
+      "Firebase",
+      "OpenAI"
+    ],
+    "image": "/bizreach.png",
+    "github": "https://github.com/HassanA01/final-project-s23-cd-users-baddies",
     "live": "https://bizreach.dev"
   },
   {
-    "title": "IoT Data Monitoring System",
-    "description": "An IoT data monitoring system using TimescaleDB and TypeScript, generating and managing datasets exceeding 1 million records with optimized data retrieval using continuous aggregates.",
-    "tech": ["TypeScript", "TimescaleDB", "Grafana"],
-    "image": "/iotdatamonitor.jpg",
-    "github": "https://github.com/HassanA01/iot-data-monitoring",
-    "live": "https://iotdata.dev"
-  },
-  {
     "title": "Proxy Server",
-    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using socket programming.",
+    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using <span class=\"font-semibold\">socket programming</span>.",
     "tech": ["Python"],
-    "image": "/proxyserver.jpg",
-    "github": "https://github.com/HassanA01/proxyserver",
+    "image": "/proxyserver.png",
+    "github": "https://github.com/HassanA01/ProxyServer",
     "live": "https://proxyserver.dev"
   },
   {
-    "title": "Network Simulation",
-    "description": "Developed a network application that retrieves and displays web content from URLs, enhancing understanding of socket programming and TCP/IP protocols.",
-    "tech": ["C++"],
-    "image": "/networksimulation.jpg",
-    "github": "https://github.com/HassanA01/networksimulation",
-    "live": "https://networksimulation.dev"
+    "title": "IoT Data Monitoring System",
+    "description": "An IoT data monitoring system using TimescaleDB and TypeScript, generating and managing datasets exceeding 1 million records with optimized data retrieval using <span class=\"font-semibold\">continuous aggregates</span>.",
+    "tech": ["TypeScript", "TimescaleDB", "Grafana"],
+    "image": "/iotprojectlogo.png",
+    "github": "https://github.com/HassanA01/IoT-Data-Monitoring-System",
+    "live": "https://iotdata.dev"
   },
   {
     "title": "Delivery Service App",
-    "description": "Developed a delivery tracking system with FastAPI and React, using Redis for caching and efficient data handling of delivery statuses and order updates.",
+    "description": "Built a delivery tracking system with FastAPI, React, and Redis, implementing an <span class=\"font-semibold\">event-driven architecture</span> to simulate order lifecycle events: creation, activation, collection, and completion.",
     "tech": ["React", "Bootstrap", "Python", "Redis", "FastAPI"],
-    "image": "/deliveryserviceapp.jpg",
-    "github": "https://github.com/HassanA01/deliveryserviceapp",
+    "image": "/deliveryserviceapp.png",
+    "github": "https://github.com/HassanA01/DeliveryService",
     "live": "https://deliveryservice.dev"
   }
 ]

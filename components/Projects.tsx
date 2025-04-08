@@ -138,7 +138,6 @@ const Projects = () => {
                   }}
                 >
                   <div className="project-card h-[520px] [transform-origin:center_center] [transform:perspective(1px)_translateZ(0)] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 [-webkit-font-smoothing:subpixel-antialiased] transition-all duration-300 hover:scale-[1.042] hover:border-teal-400/50 hover:shadow-[0_0_15px_2px_rgba(20,184,166,0.3)] sm:shadow-none">
-                    {/* Project Image */}
                     <div className="relative h-48 w-full">
                       <Image
                         src={project.image}
@@ -148,9 +147,7 @@ const Projects = () => {
                       />
                     </div>
 
-                    {/* Content Container */}
                     <div className="flex h-[calc(100%-192px)] flex-col p-5">
-                      {/* Header */}
                       <div>
                         <h3 className="text-lg font-semibold text-teal-400">
                           {project.title}
@@ -158,9 +155,12 @@ const Projects = () => {
                       </div>
 
                       <div className="scrollbar-thin scrollbar-track-zinc-800 scrollbar-thumb-zinc-700 mt-3 h-32 overflow-y-auto pr-2">
-                        <p className="text-sm leading-relaxed text-zinc-400">
-                          {project.description}
-                        </p>
+                        <p
+                          className="text-sm leading-relaxed text-zinc-400"
+                          dangerouslySetInnerHTML={{
+                            __html: project.description,
+                          }}
+                        />
                       </div>
 
                       <div className="mt-auto space-y-4">
@@ -168,7 +168,7 @@ const Projects = () => {
                           {project.tech.map((tech, i) => (
                             <span
                               key={i}
-                              className="rounded-full bg-zinc-800/50 px-3 py-1 text-xs text-zinc-300"
+                              className="rounded-full bg-zinc-800/50 px-3 py-1 text-xs text-zinc-300 transition-all duration-300 hover:border-teal-400/50 hover:bg-zinc-800 hover:text-teal-400 hover:shadow-[0_0_15px_2px_rgba(20,184,166,0.15)]"
                             >
                               {tech}
                             </span>

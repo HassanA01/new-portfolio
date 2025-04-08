@@ -3,7 +3,7 @@ import ExperienceWeb from "@/components/Experience/ExperienceWeb";
 import ExperienceMobile from "@/components/Experience/Mobile/ExperienceMobile";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero/Hero";
-import Projects from "@/components/Projects/Projects";
+import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 
 export default function Home() {
