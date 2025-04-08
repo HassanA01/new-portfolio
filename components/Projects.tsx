@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import { Github, Globe } from "lucide-react";
+import { Github } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useState, useEffect } from "react";
 import { motion } from "framer-motion";

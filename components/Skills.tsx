@@ -105,9 +105,9 @@ const Skills = () => {
         </motion.div>
 
         <motion.p variants={slideUp} className="mt-4 text-zinc-400">
-          A collection of technologies I've worked with across various projects
-          and roles. <br /> Each icon represents a tool that has shaped my
-          development journey.
+          A collection of technologies I&apos;ve worked with across various
+          projects and roles. <br /> Each icon represents a tool that has shaped
+          my development journey.
         </motion.p>
 
         <motion.div variants={slideUp}>
@@ -125,7 +125,7 @@ const Skills = () => {
                   transform: "translate(-50%, -50%)",
                 }}
               >
-                {skillsData.map((skill, index) => {
+                {skillsData.map((skill) => {
                   const IconComponent = skill.Icon;
                   return (
                     <div
