@@ -50,7 +50,7 @@
   {
     "title": "Portfolio Website",
     "description": "My personal website showcasing fun facts about me, my recent projects, past expereriences and my skillset.",
-    "tech": ["Next.js", "Tailwind CSS", "RadixUI", "Motion", "Swiperjs"],
+    "tech": ["Next.js", "Tailwind CSS", "RadixUI", "Motion", "Swiper.js"],
     "image": "/portfoliopic.png",
     "github": "https://github.com/HassanA01/new-portfolio",
     "live": "https://aneeqhassan.com"

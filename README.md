@@ -2,16 +2,6 @@
 
 A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features smooth animations powered by Framer Motion and an interactive interface to showcase projects and skills.
 
-## Features
-
-- Responsive design that works on all devices
-- Smooth page transitions and animations
-- Interactive skills orbit display
-- Project showcase with 3D coverflow effect
-- Experience timeline with dynamic content
-- Dark theme with teal accents
-- SEO optimized
-
 ## Tech Stack
 
 - Next.js 14
