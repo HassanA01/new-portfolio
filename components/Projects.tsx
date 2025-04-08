@@ -4,7 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import { Github, Globe } from "lucide-react";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import type { Swiper as SwiperType } from "swiper";
 import type { SwiperClass } from "swiper/react";
 import projectsData from "@/data/projects.json";
@@ -23,8 +24,45 @@ interface Project {
 }
 
 const Projects = () => {
+  const [isLoopEnabled, setIsLoopEnabled] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLoopEnabled(window.innerWidth < 640); // 640px is the sm breakpoint
+    };
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const swiperClickHandler = (swiper: SwiperType, index: number) => {
     swiper.slideTo(index);
+  };
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const slideUp = {
+    hidden: { opacity: 0, y: 10 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        duration: 0.8,
+        bounce: 0.3,
+      },
+    },
   };
 
   return (
@@ -96,18 +134,27 @@ const Projects = () => {
       `}</style>
 
       <section id="projects" className="min-h-screen w-full py-30">
-        <div className="mx-auto flex max-w-[1000px] flex-col px-4">
-          <h1 className="text-2xl font-bold text-teal-400">/ projects</h1>
-          <p className="mt-2 text-zinc-400">
-            Here are some of my highlighted projects over the past little while!
-          </p>
+        <motion.div
+          className="mx-auto flex max-w-[1000px] flex-col px-4"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={container}
+        >
+          <motion.div variants={slideUp} className="relative">
+            <h1 className="font-mono text-2xl font-bold text-teal-400">
+              / projects
+            </h1>
+            <div className="mt-2 h-px w-full bg-gradient-to-r from-teal-400/40 to-transparent"></div>
+          </motion.div>
 
-          <div className="mt-16">
+          <motion.div variants={slideUp} className="mt-16">
             <Swiper
               effect="coverflow"
               grabCursor={true}
               centeredSlides={true}
               slidesPerView="auto"
+              loop={isLoopEnabled}
               coverflowEffect={{
                 rotate: 50,
                 stretch: 0,
@@ -149,7 +196,7 @@ const Projects = () => {
 
                     <div className="flex h-[calc(100%-192px)] flex-col p-5">
                       <div>
-                        <h3 className="text-lg font-semibold text-teal-400">
+                        <h3 className="font-roboto-mono text-lg font-semibold text-teal-400">
                           {project.title}
                         </h3>
                       </div>
@@ -184,14 +231,14 @@ const Projects = () => {
                           >
                             <Github className="h-5 w-5" />
                           </a>
-                          <a
+                          {/* <a
                             href={project.live}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="rounded-full bg-zinc-800 p-2.5 text-zinc-400 transition-colors hover:text-teal-400"
                           >
                             <Globe className="h-5 w-5" />
-                          </a>
+                          </a> */}
                         </div>
                       </div>
                     </div>
@@ -199,8 +246,8 @@ const Projects = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
     </Fragment>
   );

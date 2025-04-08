@@ -25,12 +25,46 @@ const ExperienceWeb = () => {
     });
   };
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const slideUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        duration: 0.8,
+        bounce: 0.3,
+      },
+    },
+  };
+
   return (
     <section id="experience-web" className="min-h-screen w-full py-30">
-      <div className="mx-auto flex max-w-[1000px] flex-col px-4">
-        <h1 className="text-2xl font-bold text-teal-400">/ experience</h1>
+      <motion.div
+        className="mx-auto flex max-w-[1000px] flex-col px-4"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={container}
+      >
+        <motion.div variants={slideUp}>
+          <h1 className="font-mono text-2xl font-bold text-teal-400">
+            / experience
+          </h1>
+        </motion.div>
 
-        <div className="relative mt-16">
+        <motion.div variants={slideUp} className="relative mt-16">
           <div className="absolute left-0 h-0.5 w-full bg-zinc-800">
             <div
               className="absolute h-full bg-teal-400/50"
@@ -50,7 +84,7 @@ const ExperienceWeb = () => {
                 key={exp.company}
                 onClick={() => setSelectedExp(exp)}
                 className={clsx(
-                  "group flex flex-col items-center",
+                  "group font-roboto-mono flex flex-col items-center",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500",
                 )}
               >
@@ -82,9 +116,9 @@ const ExperienceWeb = () => {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="mt-16">
+        <motion.div variants={slideUp} className="mt-16">
           <motion.div
             key={selectedExp.company}
             initial={{ opacity: 0, y: 20 }}
@@ -94,10 +128,15 @@ const ExperienceWeb = () => {
           >
             <div>
               <h3 className="text-lg font-semibold">
-                <span className="text-zinc-400">{selectedExp.title}</span>{" "}
-                <span className="text-teal-400">@ {selectedExp.company}</span>
+                <span className="font-roboto-mono text-zinc-400">
+                  {selectedExp.title}
+                </span>{" "}
+                <span className="font-roboto-mono text-teal-400">
+                  {" @ "}
+                  {selectedExp.company}
+                </span>
               </h3>
-              <p className="text-sm font-normal text-zinc-400">
+              <p className="font-roboto-mono text-sm text-zinc-400">
                 {selectedExp.duration}
               </p>
             </div>
@@ -112,7 +151,9 @@ const ExperienceWeb = () => {
             </ul>
 
             <div className="space-y-2 pt-2">
-              <h4 className="text-sm font-medium text-zinc-200">Tech Stack</h4>
+              <h4 className="font-roboto-mono text-sm font-medium text-zinc-200">
+                Tech Stack
+              </h4>
               <div className="flex flex-wrap gap-2">
                 {selectedExp.techStack.map((tech, i) => (
                   <span
@@ -125,8 +166,8 @@ const ExperienceWeb = () => {
               </div>
             </div>
           </motion.div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

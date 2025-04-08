@@ -18,7 +18,9 @@ import {
 } from "react-icons/si";
 import { FaJira, FaAws, FaJava } from "react-icons/fa";
 import { TbBrandCSharp } from "react-icons/tb";
+import { ChevronRight } from "lucide-react";
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const skillsData = [
   { name: "Python", Icon: SiPython },
@@ -62,17 +64,53 @@ const Skills = () => {
     });
   }, []);
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const slideUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        duration: 0.8,
+        bounce: 0.3,
+      },
+    },
+  };
+
   return (
     <section id="skills" className="min-h-screen w-full py-30">
-      <div className="mx-auto flex max-w-[1000px] flex-col px-4">
-        <h1 className="text-2xl font-bold text-teal-400">/ skills</h1>
-        <p className="mt-2 text-zinc-400">
+      <motion.div
+        className="mx-auto flex max-w-[1000px] flex-col px-4"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={container}
+      >
+        <motion.div variants={slideUp} className="relative">
+          <h1 className="font-mono text-2xl font-bold text-teal-400">
+            / skills
+          </h1>
+          <div className="mt-2 h-px w-full bg-gradient-to-r from-teal-400/40 to-transparent"></div>
+        </motion.div>
+
+        <motion.p variants={slideUp} className="mt-4 text-zinc-400">
           A collection of technologies I've worked with across various projects
           and roles. <br /> Each icon represents a tool that has shaped my
           development journey.
-        </p>
+        </motion.p>
 
-        <div>
+        <motion.div variants={slideUp}>
           <div className="relative mx-auto h-[300px] w-full overflow-hidden sm:h-[300px]">
             {/* 3D space for skills orbit */}
             <div className="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2">
@@ -117,64 +155,82 @@ const Skills = () => {
               }}
             ></div>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Additional tools subsection */}
-      <div className="mx-auto mt-16 max-w-[1000px] px-4">
-        <h2 className="text-xl font-semibold text-teal-400">
-          Beyond The Core Stack
-        </h2>
-        <div className="mt-6 grid gap-6 text-zinc-400 sm:grid-cols-2">
-          <div>
-            <h3 className="mb-3 text-sm font-medium tracking-wider text-zinc-300 uppercase">
-              Frameworks & Libraries
-            </h3>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>FastAPI & Flask for rapid API development</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Data Science: Pandas, NumPy, Matplotlib</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Spring Boot for Java enterprise applications</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Real-time communications with Socket.io</span>
-              </li>
-            </ul>
-          </div>
+        <motion.div
+          variants={slideUp}
+          className="mx-auto mt-16 max-w-[1000px] px-4"
+        >
+          <h2 className="text-xl font-semibold text-teal-400">
+            Beyond The Core Stack
+          </h2>
+          <div className="mt-6 grid gap-6 text-zinc-400 sm:grid-cols-2">
+            <div>
+              <h3 className="mb-3 text-sm font-medium tracking-wider text-zinc-300 uppercase">
+                Frameworks & Libraries
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    FastAPI & Flask for rapid API development
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Data Science: Pandas, NumPy, Matplotlib
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Spring Boot for Java enterprise applications
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Real-time communications with Socket.io
+                  </span>
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <h3 className="mb-3 text-sm font-medium tracking-wider text-zinc-300 uppercase">
-              Design & Documentation
-            </h3>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>System design with Excalidraw</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Documentation with Notion & Confluence</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Wireframing with Figma</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-teal-400/60"></span>
-                <span>Technical writing for knowledge sharing</span>
-              </li>
-            </ul>
+            <div>
+              <h3 className="mb-3 text-sm font-medium tracking-wider text-zinc-300 uppercase">
+                Design & Documentation
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    System design with Excalidraw
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Documentation with Notion & Confluence
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Wireframing with Figma
+                  </span>
+                </li>
+                <li className="group flex items-center gap-2">
+                  <ChevronRight className="h-4 w-4 text-teal-400/60 transition-all duration-300 group-hover:text-teal-400 group-hover:shadow-[0_0_10px_rgba(20,184,166,0.3)]" />
+                  <span className="transition-colors duration-300 group-hover:text-zinc-200">
+                    Technical writing for knowledge sharing
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* keyframes animations */}
       <style jsx>{`

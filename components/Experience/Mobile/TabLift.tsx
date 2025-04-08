@@ -99,10 +99,10 @@ const TabLift = () => {
               >
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-teal-400">
+                    <h3 className="font-roboto-mono text-lg font-semibold text-teal-400">
                       {experience.title}
                     </h3>
-                    <p className="text-sm font-normal text-zinc-400">
+                    <p className="font-roboto-mono text-sm font-normal text-zinc-400">
                       {experience.duration}
                     </p>
                   </div>
@@ -120,7 +120,7 @@ const TabLift = () => {
                   </ul>
 
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-zinc-200">
+                    <h4 className="font-roboto-mono text-sm font-medium text-zinc-200">
                       Tech Stack
                     </h4>
                     <div className="flex flex-wrap gap-2">
