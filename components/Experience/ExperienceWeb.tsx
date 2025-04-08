@@ -62,6 +62,7 @@ const ExperienceWeb = () => {
           <h1 className="font-mono text-2xl font-bold text-teal-400">
             / experience
           </h1>
+          <div className="mt-2 h-px w-full bg-gradient-to-r from-teal-400/40 to-transparent"></div>
         </motion.div>
 
         <motion.div variants={slideUp} className="relative mt-16">

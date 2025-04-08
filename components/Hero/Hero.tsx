@@ -212,19 +212,25 @@ const Hero = () => {
           variants={buttonContainer}
           className="flex flex-col gap-4 py-8 sm:flex-row"
         >
-          <motion.button
-            variants={item}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-transparent px-8 py-4 text-lg font-semibold transition-colors hover:border-teal-500 hover:text-teal-500"
+          <Link
+            href="/AneeqHassan.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <Image
-              src="/resume.svg"
-              alt="Resume"
-              width={20}
-              height={20}
-              className="invert"
-            />
-            My Resume
-          </motion.button>
+            <motion.button
+              variants={item}
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-transparent px-8 py-4 text-lg font-semibold transition-colors hover:border-teal-500 hover:text-teal-500"
+            >
+              <Image
+                src="/resume.svg"
+                alt="Resume"
+                width={20}
+                height={20}
+                className="invert"
+              />
+              My Resume
+            </motion.button>
+          </Link>
 
           <motion.div variants={item}>
             <Link href="https://linkedin.com/in/hassana01" target="_blank">
