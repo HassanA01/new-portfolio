@@ -48,12 +48,12 @@
     "live": "https://bizreach.dev"
   },
   {
-    "title": "Proxy Server",
-    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using <span class=\"font-semibold\">socket programming</span>.",
-    "tech": ["Python"],
-    "image": "/proxyserver.png",
-    "github": "https://github.com/HassanA01/ProxyServer",
-    "live": "https://proxyserver.dev"
+    "title": "Portfolio Website",
+    "description": "My personal website showcasing fun facts about me, my recent projects, past expereriences and my skillset.",
+    "tech": ["Next.js", "Tailwind CSS", "RadixUI", "Motion", "Swiperjs"],
+    "image": "/portfoliopic.png",
+    "github": "https://github.com/HassanA01/new-portfolio",
+    "live": "https://aneeqhassan.com"
   },
   {
     "title": "IoT Data Monitoring System",
@@ -62,6 +62,14 @@
     "image": "/iotprojectlogo.png",
     "github": "https://github.com/HassanA01/IoT-Data-Monitoring-System",
     "live": "https://iotdata.dev"
+  },
+  {
+    "title": "Proxy Server",
+    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using <span class=\"font-semibold\">socket programming</span>.",
+    "tech": ["Python"],
+    "image": "/proxyserver.png",
+    "github": "https://github.com/HassanA01/ProxyServer",
+    "live": "https://proxyserver.dev"
   },
   {
     "title": "Delivery Service App",

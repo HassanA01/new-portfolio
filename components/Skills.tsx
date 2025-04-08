@@ -19,7 +19,7 @@ import {
 import { FaJira, FaAws, FaJava } from "react-icons/fa";
 import { TbBrandCSharp } from "react-icons/tb";
 import { ChevronRight } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const skillsData = [
@@ -46,6 +46,7 @@ const skillsData = [
 
 const Skills = () => {
   const orbitRef = useRef<HTMLDivElement>(null);
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
 
   useEffect(() => {
     const orbit = orbitRef.current;
@@ -130,7 +131,15 @@ const Skills = () => {
                   return (
                     <div
                       key={skill.name}
-                      className="group absolute top-1/2 left-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 transition-all duration-300 hover:border-teal-400/50 hover:shadow-[0_0_25px_5px_rgba(20,184,166,0.15)]"
+                      onClick={() => {
+                        // mobile click functionality
+                        if (window.innerWidth < 640) {
+                          setSelectedSkill(
+                            selectedSkill === skill.name ? null : skill.name,
+                          );
+                        }
+                      }}
+                      className="group absolute top-1/2 left-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 transition-all duration-300 hover:border-teal-400/50 hover:shadow-[0_0_25px_5px_rgba(20,184,166,0.15)] sm:cursor-default"
                       style={{
                         transformStyle: "preserve-3d",
                         backfaceVisibility: "hidden",
@@ -138,7 +147,13 @@ const Skills = () => {
                       }}
                     >
                       <IconComponent className="h-10 w-10 text-zinc-400 transition-colors duration-300 group-hover:text-teal-400" />
-                      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm opacity-0 transition-opacity group-hover:opacity-100">
+                      <span
+                        className={`absolute -bottom-8 left-1/2 -translate-x-1/2 text-sm transition-opacity sm:opacity-0 sm:group-hover:opacity-100 ${
+                          selectedSkill === skill.name
+                            ? "opacity-100"
+                            : "opacity-0"
+                        }`}
+                      >
                         {skill.name}
                       </span>
                     </div>
