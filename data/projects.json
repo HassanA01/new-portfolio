@@ -12,7 +12,7 @@
     ],
     "image": "/mailflowai.png",
     "github": "https://github.com/HassanA01/mailflowai",
-    "live": "https://mailflowai.dev"
+    "live": ""
   },
   {
     "title": "B2W - UofT Hacks 12",
@@ -45,7 +45,22 @@
     ],
     "image": "/bizreach.png",
     "github": "https://github.com/HassanA01/final-project-s23-cd-users-baddies",
-    "live": "https://bizreach.dev"
+    "live": ""
+  },
+  {
+    "title": "Myriad CRO Landing Page",
+    "description": "Built a <span class=\"font-semibold\">conversion-focused landing page</span> for a <span class=\"font-semibold\">CRO agency</span>, featuring a <span class=\"font-semibold\">step-by-step process section</span>, <span class=\"font-semibold\">expandable FAQ component</span>, and <span class=\"font-semibold\">responsive mobile layouts</span>.",
+    "tech": [
+      "Next.js",
+      "Shadcn",
+      "Tailwind CSS",
+      "Aceternity UI",
+      "RadixUI",
+      "Motion"
+    ],
+    "image": "/myriadcro.png",
+    "github": "https://github.com/HassanA01/myriad-cro-website",
+    "live": "https://myriadcro.com"
   },
   {
     "title": "Portfolio Website",
@@ -61,7 +76,7 @@
     "tech": ["TypeScript", "TimescaleDB", "Grafana"],
     "image": "/iotprojectlogo.png",
     "github": "https://github.com/HassanA01/IoT-Data-Monitoring-System",
-    "live": "https://iotdata.dev"
+    "live": ""
   },
   {
     "title": "Proxy Server",
@@ -69,7 +84,7 @@
     "tech": ["Python"],
     "image": "/proxyserver.png",
     "github": "https://github.com/HassanA01/ProxyServer",
-    "live": "https://proxyserver.dev"
+    "live": ""
   },
   {
     "title": "Delivery Service App",
@@ -77,6 +92,6 @@
     "tech": ["React", "Bootstrap", "Python", "Redis", "FastAPI"],
     "image": "/deliveryserviceapp.png",
     "github": "https://github.com/HassanA01/DeliveryService",
-    "live": "https://deliveryservice.dev"
+    "live": ""
   }
 ]

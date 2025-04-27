@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import { Github, ChevronLeft, ChevronRight } from "lucide-react";
+import { Github, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 import { motion } from "framer-motion";
@@ -233,14 +233,16 @@ const Projects = () => {
                             >
                               <Github className="h-5 w-5" />
                             </a>
-                            {/* <a
-                              href={project.live}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="rounded-full bg-zinc-800 p-2.5 text-zinc-400 transition-colors hover:text-teal-400"
-                            >
-                              <Globe className="h-5 w-5" />
-                            </a> */}
+                            {project.live !== "" && (
+                              <a
+                                href={project.live}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="rounded-full bg-zinc-800 p-2.5 text-zinc-400 transition-colors hover:text-teal-400"
+                              >
+                                <Globe className="h-5 w-5" />
+                              </a>
+                            )}
                           </div>
                         </div>
                       </div>
