@@ -1,6 +1,35 @@
 {
   "experience": [
     {
+      "title": "AI Software Engineer",
+      "company": "Dayforce",
+      "duration": "September 2025 – Present",
+      "techStack": [
+        "LangGraph",
+        "Python",
+        "ChromaDB",
+        "FastAPI",
+        "Playwright",
+        "MCP",
+        "SQL"
+      ],
+      "highlights": [
+        "Built QueryGPT, an internal chatbot, leveraging LangChain, RAG, and ChromaDB to support natural-language SQL generation across 50K+ tables.",
+        "Developed a Playwright MCP agent that translates natural-language instructions into automated browser workflows, allowing teams to validate client configuration logic without manual test scripting.",
+        "Implemented server-side request validation using Pydantic models in FastAPI, enforcing strict schema checks and preventing malformed or malicious payloads from reaching internal services."
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "Learning Mode AI",
+      "duration": "May 2025 – August 2025",
+      "techStack": ["Go", "JavaScript", "OpenAI Assistants API"],
+      "highlights": [
+        "Built a time-synced quiz overlay that dynamically tracks video position and updates questions in real-time, enhancing learning interactivity.",
+        "Integrated OpenAI Assistants API to generate questions based on video context, improving content adaptability."
+      ]
+    },
+    {
       "title": "Software Developer",
       "company": "Magnet Forensics",
       "duration": "January 2025 – April 2025",
