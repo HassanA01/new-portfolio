@@ -98,7 +98,7 @@ const About = () => {
 
               <motion.p variants={item} className="leading-relaxed">
                 Over the course of my journey, I&apos;ve been privileged to gain
-                over 2 years of industry experience. I focus on building{" "}
+                over 3 years of industry experience. I focus on building{" "}
                 <span className="font-medium text-gray-200">AI solutions</span>{" "}
                 and{" "}
                 <span className="font-medium text-gray-200">

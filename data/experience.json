@@ -14,7 +14,7 @@
         "SQL"
       ],
       "highlights": [
-        "Built QueryGPT, an internal chatbot, leveraging LangChain, RAG, and ChromaDB to support natural-language SQL generation across 50K+ tables.",
+        "Built QueryGPT, an internal agentic application, leveraging LangChain, RAG, and ChromaDB to support natural-language SQL generation across 50K+ tables.",
         "Developed a Playwright MCP agent that translates natural-language instructions into automated browser workflows, allowing teams to validate client configuration logic without manual test scripting.",
         "Implemented server-side request validation using Pydantic models in FastAPI, enforcing strict schema checks and preventing malformed or malicious payloads from reaching internal services."
       ]
@@ -23,8 +23,9 @@
       "title": "Software Engineer",
       "company": "Learning Mode AI",
       "duration": "May 2025 – August 2025",
-      "techStack": ["Go", "JavaScript", "OpenAI Assistants API"],
+      "techStack": ["Go", "Redis", "JavaScript", "OpenAI Assistants API"],
       "highlights": [
+        "Implemented a quiz service in a microservices-based architecture using Go and Redis, allowing for easy scalability and maintenance.",
         "Built a time-synced quiz overlay that dynamically tracks video position and updates questions in real-time, enhancing learning interactivity.",
         "Integrated OpenAI Assistants API to generate questions based on video context, improving content adaptability."
       ]
