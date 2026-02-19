@@ -20,6 +20,15 @@
       ]
     },
     {
+      "title": "Software Engineer — Code Review Go",
+      "company": "Mercor",
+      "duration": "August 2025 – September 2025",
+      "techStack": ["Go", "Airtable"],
+      "highlights": [
+        "Completed Code Reviews for Github CLI (Golang) and Airtable API (Go)"
+      ]
+    },
+    {
       "title": "Software Engineer",
       "company": "Learning Mode AI",
       "duration": "May 2025 – August 2025",
