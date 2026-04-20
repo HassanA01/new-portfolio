@@ -6,11 +6,28 @@ import experienceData from "@/data/experience.json";
 import clsx from "clsx";
 import { ChevronRight } from "lucide-react";
 
+const MONTHS: Record<string, number> = {
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+};
+
+const MONTH_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+const parseMonthYear = (input: string): Date => {
+  const [monthRaw, yearRaw] = input.trim().split(/\s+/);
+  const month = MONTHS[monthRaw?.toLowerCase()] ?? 0;
+  const year = parseInt(yearRaw, 10);
+  return new Date(year, month, 1);
+};
+
 const ExperienceWeb = () => {
   const sortedExperiences = useMemo(() => {
     return experienceData.experience.sort((a, b) => {
-      const dateA = new Date(a.duration.split("–")[0]);
-      const dateB = new Date(b.duration.split("–")[0]);
+      const dateA = parseMonthYear(a.duration.split("–")[0]);
+      const dateB = parseMonthYear(b.duration.split("–")[0]);
       return dateB.getTime() - dateA.getTime();
     });
   }, []);
@@ -18,11 +35,8 @@ const ExperienceWeb = () => {
   const [selectedExp, setSelectedExp] = useState(sortedExperiences[0]);
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
+    const date = parseMonthYear(dateString);
+    return `${MONTH_SHORT[date.getMonth()]} ${date.getFullYear()}`;
   };
 
   const container = {
