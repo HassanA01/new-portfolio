@@ -32,6 +32,9 @@ function validateProject(raw: unknown, index: number): Project {
   if (!p.image?.startsWith("/")) fail(`project "${p.title}"`, "image must be a /public path");
   if (!Array.isArray(p.tech) || p.tech.length === 0) fail(`project "${p.title}"`, "tech must be non-empty");
   if (typeof p.featured !== "boolean") fail(`project "${p.title}"`, "featured flag missing");
+  // Empty string is a valid "no URL" sentinel; only fail if not a string
+  if (typeof p.github !== "string") fail(`project "${p.title}"`, "github must be a string");
+  if (typeof p.live !== "string") fail(`project "${p.title}"`, "live must be a string");
   return p as Project;
 }
 
@@ -41,7 +44,8 @@ function validateExperience(raw: unknown, index: number): Experience {
   if (!e.impact) fail(`experience "${e.company}"`, "missing impact one-liner");
   if (!Array.isArray(e.highlights) || e.highlights.length === 0)
     fail(`experience "${e.company}"`, "highlights must be non-empty");
-  if (!Array.isArray(e.techStack)) fail(`experience "${e.company}"`, "techStack must be an array");
+  if (!Array.isArray(e.techStack) || e.techStack.length === 0)
+    fail(`experience "${e.company}"`, "techStack must be non-empty");
   if (!e.duration) fail(`experience "${e.company}"`, "missing duration");
   return e as Experience;
 }

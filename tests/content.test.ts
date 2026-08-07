@@ -16,13 +16,13 @@ describe("content layer", () => {
 
   it("returns exactly the featured projects", () => {
     const titles = getFeaturedProjects().map((p) => p.title);
-    expect(titles).toContain("MailflowAI");
-    expect(titles).toHaveLength(4);
+    expect(titles.sort()).toEqual(["B2W - UofT Hacks 12", "BizReach Marketplace", "MailflowAI", "Myriad CRO Landing Page"].sort());
   });
 
   it("returns experience with impact lines", () => {
     const exp = getExperience();
     expect(exp[0].company).toBe("Dayforce");
+    expect(exp[0].impact).toBe("Built QueryGPT — agentic natural-language SQL over 50K+ tables.");
     for (const e of exp) {
       expect(e.impact).toBeTruthy();
       expect(e.highlights.length).toBeGreaterThan(0);
