@@ -13,14 +13,21 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label={`Switch to ${next} theme`}
+      aria-label={theme === null ? "Toggle theme" : `Switch to ${next} theme`}
       className="rounded-full p-2 text-ink-muted transition-colors hover:text-ink"
       onClick={() => {
+        if (theme === null) return;
         applyTheme(next);
         setTheme(next);
       }}
     >
-      {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
+      {theme === null ? (
+        <span className="block h-4 w-4" aria-hidden="true" />
+      ) : theme === "light" ? (
+        <Moon size={16} />
+      ) : (
+        <Sun size={16} />
+      )}
     </button>
   );
 }

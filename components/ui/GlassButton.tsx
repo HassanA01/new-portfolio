@@ -12,7 +12,7 @@ type Props = {
 };
 
 const base =
-  "inline-flex items-center gap-2 rounded-full text-sm font-medium transition-colors duration-150 focus-visible:outline-2";
+  "inline-flex items-center gap-2 rounded-full text-sm font-medium transition-colors duration-150";
 
 // Note: The brief's `[data-theme=dark]_&:shadow-[...]` is not valid Tailwind 4 arbitrary-variant
 // syntax. Instead we use a single inner highlight `shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]`

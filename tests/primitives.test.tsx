@@ -16,6 +16,18 @@ describe("GlassButton", () => {
     expect(btn).toHaveAttribute("aria-disabled", "true");
     expect(btn).toHaveAttribute("title", "Coming soon");
   });
+
+  it("renders a button (not a link) when both href and disabled are set", () => {
+    render(
+      <GlassButton href="/work" disabled disabledHint="Coming soon">
+        X
+      </GlassButton>
+    );
+    const btn = screen.getByRole("button", { name: "X" });
+    expect(btn).toHaveAttribute("aria-disabled", "true");
+    expect(btn).toHaveAttribute("title", "Coming soon");
+    expect(screen.queryByRole("link")).toBeNull();
+  });
 });
 
 describe("ThemeToggle", () => {
