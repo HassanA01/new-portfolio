@@ -1,33 +1,32 @@
-# Personal Portfolio
+# aneeqhassan.com
 
-A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features smooth animations powered by Framer Motion and an interactive interface to showcase projects and skills.
+Personal portfolio — and, progressively, a live demo of my AI engineering.
+Phase 1: Obsidian/Prism design system. Phase 2: Postgres content. Phase 3:
+an agent you can talk to (RAG + tools). Phase 4: writing + analytics.
 
-## Tech Stack
+## Stack
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS 4.0
-- Framer Motion
-- Swiper.js
-- Lucide Icons
+Next.js 15 (App Router) · React 19 · Tailwind 4 · TypeScript · Framer Motion ·
+cmdk · Vitest · Docker · GitHub Actions · Vercel
 
-## Setup
+## Run
 
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
+docker compose up          # dev with hot reload → http://localhost:3000
+docker compose exec web npm test        # unit tests
+docker compose exec web npm run lint    # lint
+docker compose exec web npm run typecheck  # type check
+docker compose exec web npm run build   # build for production
 ```
 
-## Structure
+## Architecture
 
-- `/components` - React components
-- `/public` - Static assets
-- `/app` - Next.js app router pages
-- `/data` - JSON data for projects and experience
-- `/styles` - Global CSS and Tailwind config
+```mermaid
+graph LR
+  J[data/*.json] --> C[lib/content.ts<br/>typed + validated]
+  C --> S[components/sections]
+  U[components/ui<br/>tokens + primitives] --> S
+  S --> P["app/ routes<br/>/ · /work · /about · /writing"]
+```
+
+Design decisions live in `STYLE_GUIDE.md` and `docs/superpowers/specs/`.
