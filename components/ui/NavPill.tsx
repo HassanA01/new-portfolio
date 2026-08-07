@@ -42,7 +42,7 @@ export function NavPill() {
   const inner = (pill: boolean) => (
     <>
       <Link href="/" className="font-semibold tracking-tight text-ink">
-        {pill ? "AH" : "Aneeq Hassan"}
+        {pill ? "AH" : (<><span className="hidden sm:inline">Aneeq Hassan</span><span className="sm:hidden">AH</span></>)}
       </Link>
       <div className="flex items-center gap-1">
         {LINKS.map((l) => (
