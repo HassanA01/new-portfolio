@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { CommandPalette } from "./CommandPalette";
@@ -15,6 +15,10 @@ const LINKS = [
 
 export function NavPill() {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  // Records the timestamp when Radix last dismissed the palette via its own
+  // dismissable-layer (e.g. outside click). A chip click that races this event
+  // would re-open the palette immediately; the 250 ms guard swallows it instead.
+  const dismissedAt = useRef(0);
   const [mode, setMode] = useState<"bar" | "pill-visible" | "pill-hidden">("bar");
   const { scrollY } = useScroll();
 
@@ -53,7 +57,10 @@ export function NavPill() {
         <button
           type="button"
           aria-label="Open command menu"
-          onClick={() => setPaletteOpen((o) => !o)}
+          onClick={() => {
+            if (Date.now() - dismissedAt.current < 250) return;
+            setPaletteOpen((o) => !o);
+          }}
           className="mx-1 rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-muted transition-colors hover:border-ink/25 hover:text-ink"
         >
           ⌘K
@@ -93,7 +100,13 @@ export function NavPill() {
         )}
       </AnimatePresence>
 
-      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={(open) => {
+          if (!open) dismissedAt.current = Date.now();
+          setPaletteOpen(open);
+        }}
+      />
     </>
   );
 }
