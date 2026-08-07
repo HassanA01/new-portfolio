@@ -53,7 +53,7 @@ export function NavPill() {
         <button
           type="button"
           aria-label="Open command menu"
-          onClick={() => setPaletteOpen(true)}
+          onClick={() => setPaletteOpen((o) => !o)}
           className="mx-1 rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-muted transition-colors hover:border-ink/25 hover:text-ink"
         >
           ⌘K
