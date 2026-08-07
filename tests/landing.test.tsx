@@ -21,4 +21,15 @@ describe("SelectedWork", () => {
     expect(screen.getAllByRole("listitem")).toHaveLength(4);
     expect(screen.getByRole("link", { name: /all work/i })).toHaveAttribute("href", "/work");
   });
+
+  it("ul contains only li children (valid list semantics)", () => {
+    render(<SelectedWork />);
+    const list = screen.getByRole("list");
+    expect(Array.from(list.children).every((c) => c.tagName === "LI")).toBe(true);
+  });
+
+  it("external links have distinct accessible names", () => {
+    render(<SelectedWork />);
+    expect(screen.getByRole("link", { name: "GitHub — MailflowAI" })).toBeInTheDocument();
+  });
 });

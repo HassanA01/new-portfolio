@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Reveal } from "@/components/ui/Reveal";
 
 describe("GlassButton", () => {
   it("renders an anchor when href is given", () => {
@@ -27,6 +28,18 @@ describe("GlassButton", () => {
     expect(btn).toHaveAttribute("aria-disabled", "true");
     expect(btn).toHaveAttribute("title", "Coming soon");
     expect(screen.queryByRole("link")).toBeNull();
+  });
+});
+
+describe("Reveal", () => {
+  it("renders a div by default (reduced motion)", () => {
+    const { container } = render(<Reveal>content</Reveal>);
+    expect(container.firstChild?.nodeName).toBe("DIV");
+  });
+
+  it("renders an li when as='li' (reduced motion)", () => {
+    const { container } = render(<Reveal as="li">content</Reveal>);
+    expect(container.firstChild?.nodeName).toBe("LI");
   });
 });
 

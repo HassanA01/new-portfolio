@@ -11,8 +11,8 @@ export function SelectedWork() {
     <Section id="work" index="01" title="Selected work">
       <ul className="grid gap-4 sm:grid-cols-2">
         {projects.map((p, i) => (
-          <Reveal key={p.title} delay={i * 0.06}>
-            <Surface as="li" interactive className="flex h-full flex-col">
+          <Reveal key={p.title} as="li" delay={i * 0.06}>
+            <Surface interactive className="flex h-full flex-col">
               <h3 className="text-base font-medium text-ink">{p.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">{p.description}</p>
               <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1">
@@ -21,11 +21,23 @@ export function SelectedWork() {
                 ))}
               </div>
               <div className="mt-4 flex gap-4 text-sm">
-                <a href={p.github} className="text-ink-muted transition-colors hover:text-ink" target="_blank" rel="noreferrer">
+                <a
+                  href={p.github}
+                  aria-label={`GitHub — ${p.title}`}
+                  className="text-ink-muted transition-colors hover:text-ink"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   GitHub →
                 </a>
                 {p.live && (
-                  <a href={p.live} className="text-ink-muted transition-colors hover:text-ink" target="_blank" rel="noreferrer">
+                  <a
+                    href={p.live}
+                    aria-label={`Live site — ${p.title}`}
+                    className="text-ink-muted transition-colors hover:text-ink"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Live →
                   </a>
                 )}
