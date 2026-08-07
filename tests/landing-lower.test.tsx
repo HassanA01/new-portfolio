@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
 import { ContactStrip } from "@/components/sections/ContactStrip";
+import { AboutStrip } from "@/components/sections/AboutStrip";
 
 describe("ExperienceTimeline", () => {
   it("compact mode lists every role with its impact line, no bullets", () => {
@@ -14,6 +15,16 @@ describe("ExperienceTimeline", () => {
   it("full mode renders highlight bullets", () => {
     render(<ExperienceTimeline />);
     expect(screen.getAllByRole("list", { name: /highlights/i }).length).toBeGreaterThan(0);
+  });
+});
+
+describe("AboutStrip", () => {
+  it("renders three punch values and link to /about", () => {
+    render(<AboutStrip />);
+    expect(screen.getByText("8")).toBeInTheDocument();
+    expect(screen.getByText("2,000+")).toBeInTheDocument();
+    expect(screen.getByText("$2M")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /more about me/i })).toHaveAttribute("href", "/about");
   });
 });
 

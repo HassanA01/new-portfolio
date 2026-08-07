@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/Section";
 import { MonoDetail } from "@/components/ui/MonoDetail";
 import { Reveal } from "@/components/ui/Reveal";
+import { Year } from "@/components/ui/Year";
 
 const LINKS = [
   { href: "https://github.com/HassanA01", label: "GitHub" },
@@ -24,7 +25,7 @@ export function ContactStrip() {
         </a>
       </Reveal>
       <footer className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-        <MonoDetail>© {new Date().getFullYear()} Aneeq Hassan</MonoDetail>
+        <MonoDetail>© <Year /> Aneeq Hassan</MonoDetail>
         <div className="flex gap-5">
           {LINKS.map((l) => (
             <a

@@ -7,7 +7,7 @@ export function ExperienceTimeline({ compact = false }: { compact?: boolean }) {
   const experience = getExperience();
   return (
     <Section id="experience" index="02" title="Experience">
-      <ol className="relative space-y-0 border-l border-line">
+      <ol className="relative border-l border-line">
         {experience.map((e, i) => (
           <Reveal as="li" key={`${e.company}-${e.title}`} delay={i * 0.04} className="relative pb-10 pl-8 last:pb-0">
             <span aria-hidden className="absolute -left-[3px] top-2 h-1.5 w-1.5 rounded-full bg-ink-faint" />

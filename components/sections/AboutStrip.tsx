@@ -17,7 +17,7 @@ export function AboutStrip() {
           problems, and software that quietly does the work of ten people.
         </p>
       </Reveal>
-      <div className="mt-10 grid grid-cols-3 gap-6">
+      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {NUMBERS.map((n, i) => (
           <Reveal key={n.label} delay={i * 0.06}>
             <div>
