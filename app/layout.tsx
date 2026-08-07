@@ -5,8 +5,21 @@ import { NavPill } from "@/components/ui/NavPill";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://aneeqhassan.com"),
   title: "Aneeq Hassan — AI Engineer",
   description: "AI engineer in Toronto. I build systems that think.",
+  openGraph: {
+    title: "Aneeq Hassan — AI Engineer",
+    description: "AI engineer in Toronto. I build systems that think.",
+    url: "/",
+    siteName: "Aneeq Hassan",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Aneeq Hassan — AI Engineer",
+    description: "AI engineer in Toronto. I build systems that think.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

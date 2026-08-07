@@ -7,7 +7,21 @@ import { applyTheme, resolveTheme, type Theme } from "@/lib/theme";
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme | null>(null);
 
-  useEffect(() => setTheme(resolveTheme()), []);
+  useEffect(() => {
+    setTheme(resolveTheme());
+
+    const observer = new MutationObserver(() => {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light" || attr === "dark") {
+        setTheme(attr);
+      }
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => observer.disconnect();
+  }, []);
 
   const next: Theme = theme === "dark" ? "light" : "dark";
   return (

@@ -9,7 +9,7 @@ type Props = {
 
 export function Section({ id, index, title, children }: Props) {
   return (
-    <section id={id} className="mx-auto w-full max-w-5xl px-6 py-24">
+    <section id={id} className="mx-auto w-full max-w-5xl px-6 py-24 scroll-mt-24">
       <div className="mb-10 flex items-baseline gap-4">
         <MonoDetail>{index}</MonoDetail>
         <h2 className="text-xl font-medium tracking-tight text-ink">{title}</h2>
