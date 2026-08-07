@@ -4,6 +4,7 @@
       "title": "AI Software Engineer",
       "company": "Dayforce",
       "duration": "September 2025 – Present",
+      "impact": "Built QueryGPT — agentic natural-language SQL over 50K+ tables.",
       "techStack": [
         "LangGraph",
         "Python",
@@ -23,6 +24,7 @@
       "title": "Software Engineer — Code Review Go",
       "company": "Mercor",
       "duration": "August 2025 – September 2025",
+      "impact": "Code review for the GitHub CLI and Airtable API in Go.",
       "techStack": ["Go", "Airtable"],
       "highlights": [
         "Completed Code Reviews for Github CLI (Golang) and Airtable API (Go)"
@@ -32,6 +34,7 @@
       "title": "Software Engineer",
       "company": "Learning Mode AI",
       "duration": "May 2025 – August 2025",
+      "impact": "Shipped a real-time, AI-generated quiz service in Go.",
       "techStack": ["Go", "Redis", "JavaScript", "OpenAI Assistants API"],
       "highlights": [
         "Implemented a quiz service in a microservices-based architecture using Go and Redis, allowing for easy scalability and maintenance.",
@@ -43,6 +46,7 @@
       "title": "Software Developer",
       "company": "Magnet Forensics",
       "duration": "January 2025 – April 2025",
+      "impact": "Cut GrayKey usage per phone by 85% with Fastrak (.NET).",
       "techStack": ["C#", ".NET", "AzureDevops", "Jenkins"],
       "highlights": [
         "Developed Fastrak using C# (.NET stack) to offload data acquisition from GrayKey to standard PCs, reducing GrayKey usage per phone by 85%.",
@@ -53,6 +57,7 @@
       "title": "Software Engineer",
       "company": "Annaly",
       "duration": "February 2024 – August 2024",
+      "impact": "ETL notifier that cut incident response time by 95%.",
       "techStack": [
         "C#",
         ".NET",
@@ -71,6 +76,7 @@
       "title": "Data Analyst",
       "company": "Enbridge",
       "duration": "June 2023 – September 2023",
+      "impact": "Internal Power Apps tool; 75% faster cross-team communication.",
       "techStack": ["SAP Hana", "Excel", "Microsoft Power Apps"],
       "highlights": [
         "Developed an internal tool using Microsoft Power Apps, resulting in a 75% increase in inter-departmental communication efficiency."
@@ -80,6 +86,7 @@
       "title": "Software Developer",
       "company": "Koho Financial",
       "duration": "May 2022 – May 2023",
+      "impact": "Google Pay integration processing $2M in its first quarter.",
       "techStack": ["Angular", "Go", "Jenkins", "NgRx"],
       "highlights": [
         "Engineered integration tests using Go, integrating with Jenkins pipeline and reducing QA time by 45%.",
@@ -91,6 +98,7 @@
       "title": "Teaching Assistant",
       "company": "University of Toronto",
       "duration": "January 2022 – May 2025",
+      "impact": "Taught 2,000+ students data structures and algorithms.",
       "techStack": ["Python"],
       "highlights": [
         "Instructed over 2,000 students across 6 semesters in data structures, algorithms, OOP, and complexity using Python in an active learning environment.",

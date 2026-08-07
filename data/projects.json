@@ -1,7 +1,7 @@
 [
   {
     "title": "MailflowAI",
-    "description": "An <span class=\"font-semibold\">AI-powered</span> 24/7 customer service automation tool for e-commerce businesses which reduces monthly costs by $14K USD and reduces response times from hours to minutes.",
+    "description": "An AI-powered 24/7 customer service automation tool for e-commerce businesses which reduces monthly costs by $14K USD and reduces response times from hours to minutes.",
     "tech": [
       "Python",
       "GCP",
@@ -12,11 +12,12 @@
     ],
     "image": "/mailflowai.png",
     "github": "https://github.com/HassanA01/mailflowai",
-    "live": ""
+    "live": "",
+    "featured": true
   },
   {
     "title": "B2W - UofT Hacks 12",
-    "description": "Developed a financial management platform with <span class=\"font-semibold\">ML-powered</span> spending predictions and <span class=\"font-semibold\">personalized recommendations</span>. Features include expense tracking, goal setting, and detailed analytics for informed financial decisions.",
+    "description": "Developed a financial management platform with ML-powered spending predictions and personalized recommendations. Features include expense tracking, goal setting, and detailed analytics for informed financial decisions.",
     "tech": [
       "Next.js",
       "Express.js",
@@ -29,11 +30,12 @@
     ],
     "image": "/broke2woke.jpeg",
     "github": "https://github.com/HassanA01/UofTHacks12",
-    "live": ""
+    "live": "",
+    "featured": true
   },
   {
     "title": "BizReach Marketplace",
-    "description": "Led a team of <span class=\"font-semibold\">5</span> in designing and developing a <span class=\"font-semibold\">full-stack</span> marketplace platform connecting mobile businesses with clients using the FERN stack, implementing AI-powered gig description generator with OpenAI API.",
+    "description": "Led a team of 5 in designing and developing a full-stack marketplace platform connecting mobile businesses with clients using the FERN stack, implementing AI-powered gig description generator with OpenAI API.",
     "tech": [
       "React",
       "Express",
@@ -45,11 +47,12 @@
     ],
     "image": "/bizreach.png",
     "github": "https://github.com/HassanA01/final-project-s23-cd-users-baddies",
-    "live": ""
+    "live": "",
+    "featured": true
   },
   {
     "title": "Myriad CRO Landing Page",
-    "description": "Built a <span class=\"font-semibold\">conversion-focused landing page</span> for a <span class=\"font-semibold\">CRO agency</span>, featuring a <span class=\"font-semibold\">step-by-step process section</span>, <span class=\"font-semibold\">expandable FAQ component</span>, and <span class=\"font-semibold\">responsive mobile layouts</span>.",
+    "description": "Built a conversion-focused landing page for a CRO agency, featuring a step-by-step process section, expandable FAQ component, and responsive mobile layouts.",
     "tech": [
       "Next.js",
       "Shadcn",
@@ -60,7 +63,8 @@
     ],
     "image": "/myriadcro.png",
     "github": "https://github.com/HassanA01/myriad-cro-website",
-    "live": "https://myriadcro.com"
+    "live": "https://myriadcro.com",
+    "featured": true
   },
   {
     "title": "Portfolio Website",
@@ -68,30 +72,34 @@
     "tech": ["Next.js", "Tailwind CSS", "RadixUI", "Motion", "Swiper.js"],
     "image": "/portfoliopic.png",
     "github": "https://github.com/HassanA01/new-portfolio",
-    "live": "https://aneeqhassan.com"
+    "live": "https://aneeqhassan.com",
+    "featured": false
   },
   {
     "title": "IoT Data Monitoring System",
-    "description": "An IoT data monitoring system using TimescaleDB and TypeScript, generating and managing datasets exceeding 1 million records with optimized data retrieval using <span class=\"font-semibold\">continuous aggregates</span>.",
+    "description": "An IoT data monitoring system using TimescaleDB and TypeScript, generating and managing datasets exceeding 1 million records with optimized data retrieval using continuous aggregates.",
     "tech": ["TypeScript", "TimescaleDB", "Grafana"],
     "image": "/iotprojectlogo.png",
     "github": "https://github.com/HassanA01/IoT-Data-Monitoring-System",
-    "live": ""
+    "live": "",
+    "featured": false
   },
   {
     "title": "Proxy Server",
-    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using <span class=\"font-semibold\">socket programming</span>.",
+    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using socket programming.",
     "tech": ["Python"],
     "image": "/proxyserver.png",
     "github": "https://github.com/HassanA01/ProxyServer",
-    "live": ""
+    "live": "",
+    "featured": false
   },
   {
     "title": "Delivery Service App",
-    "description": "Built a delivery tracking system with FastAPI, React, and Redis, implementing an <span class=\"font-semibold\">event-driven architecture</span> to simulate order lifecycle events: creation, activation, collection, and completion.",
+    "description": "Built a delivery tracking system with FastAPI, React, and Redis, implementing an event-driven architecture to simulate order lifecycle events: creation, activation, collection, and completion.",
     "tech": ["React", "Bootstrap", "Python", "Redis", "FastAPI"],
     "image": "/deliveryserviceapp.png",
     "github": "https://github.com/HassanA01/DeliveryService",
-    "live": ""
+    "live": "",
+    "featured": false
   }
 ]
