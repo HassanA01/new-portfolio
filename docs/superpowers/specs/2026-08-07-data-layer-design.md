@@ -3,7 +3,8 @@
 **Date:** 2026-08-07
 **Status:** Approved pending user review
 **Scope:** Phase 2 of 4 — Postgres content, migrations, seed, admin editing
-**Depends on:** Phase 1 (PR #13) merged to main
+**Depends on:** Phase 1 (complete on this branch; PR #13 held unmerged — user
+directive: nothing merges to main until the whole revamp is done)
 
 ## Goal
 
@@ -125,9 +126,10 @@ vector columns (phases 4 and 3 respectively).
 
 ## Workflow
 
-- Branch `feat/phase-2-data-layer` off main after PR #13 merges; one PR at
-  the end. Conventional commits referencing new phase-2 issues (epic + ~4
-  issues) created under HassanA01's gh account.
+- Work continues on the current branch; PR #13 is the single long-running
+  revamp PR (accumulates phases; merged only when the user declares the
+  revamp done). Conventional commits referencing new phase-2 issues
+  (epic + ~4 issues) created under HassanA01's gh account.
 - README gains a Database section (migrate / seed / studio commands);
   project CLAUDE.md updated (content is DB-backed; JSON gone).
 
