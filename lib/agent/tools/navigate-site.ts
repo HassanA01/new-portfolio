@@ -8,7 +8,7 @@ export const navigateSite = tool({
     "Navigate the visitor to a page or section of this site. Use when showing beats telling — e.g. 'show me his work' or after recommending a project.",
   inputSchema: z.object({
     path: z
-      .enum(["/", "/work", "/about", "/#experience", "/#contact"])
+      .enum(["/", "/work", "/about", "/#experience", "/#about", "/#contact"])
       .describe("Destination"),
   }),
   // no execute — the client performs the navigation and reports back
