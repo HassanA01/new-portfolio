@@ -9,11 +9,18 @@ Personal portfolio (aneeqhassan.com), phase 1 of 4 — see
 - `docker compose up` — dev (hot reload)
 - `docker compose exec web npm test` / `npm run lint` / `npm run typecheck`
 - `docker compose exec web npm run build` — build for production
+- `npx dotenv -e .env.local -- npm run db:migrate` — apply migrations (host)
+- `npx dotenv -e .env.local -- npm run db:seed` — seed (insert-if-missing)
+- `npx dotenv -e .env.local -- npm run db:studio` — browse the DB
 
 ## Architecture
 
-- Content: `data/*.json` read ONLY via `lib/content.ts` (validates, throws at build).
-  Phase 2 swaps its internals for Postgres — never import JSON elsewhere.
+- Content: Postgres via Drizzle (`db/schema.ts`), read ONLY through `lib/content.ts`
+  (async, `unstable_cache` tags `content:projects` / `content:experience`).
+  Admin mutations revalidate those tags. Seed fixtures in `db/seed-data/` are
+  insert-if-missing only — the DB is the source of truth, never the fixtures.
+- Admin: `/admin` behind Auth.js GitHub OAuth allowlisted to HassanA01
+  (`auth.ts` signIn callback + middleware).
 - `components/ui` = primitives (tokens only, no raw hex); `components/sections` = page blocks.
 - Theme: `data-theme` attr set pre-paint by `THEME_INIT_SCRIPT` (lib/theme.ts); CSS vars in globals.css.
 - ⌘K palette (`CommandPalette`) is the future agent entry point — phase 3 mounts chat inside it.
