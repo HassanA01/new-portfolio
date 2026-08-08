@@ -1,6 +1,7 @@
 import { GlassButton } from "@/components/ui/GlassButton";
 import { MonoDetail } from "@/components/ui/MonoDetail";
 import { Reveal } from "@/components/ui/Reveal";
+import { AskAgentButton } from "@/components/agent/AskAgentButton";
 
 export function Hero() {
   return (
@@ -20,9 +21,7 @@ export function Hero() {
       </Reveal>
       <Reveal delay={0.2}>
         <div className="mt-10 flex items-center gap-6">
-          <GlassButton disabled disabledHint="Coming soon">
-            Ask my agent
-          </GlassButton>
+          <AskAgentButton />
           <GlassButton variant="ghost" href="/work">
             View work →
           </GlassButton>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { CommandPalette } from "./CommandPalette";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAgentPalette } from "@/components/agent/AgentChatProvider";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -14,30 +15,43 @@ const LINKS = [
 ] as const;
 
 export function NavPill() {
-  const [paletteOpen, setPaletteOpen] = useState(false);
+  const { open, mode, openNav, openChat, close, toggle, agentOnline } = useAgentPalette();
   // Records the timestamp when Radix last dismissed the palette via its own
   // dismissable-layer (e.g. outside click). A chip click that races this event
   // would re-open the palette immediately; the 250 ms guard swallows it instead.
   const dismissedAt = useRef(0);
-  const [mode, setMode] = useState<"bar" | "pill-visible" | "pill-hidden">("bar");
+  const [navMode, setNavMode] = useState<"bar" | "pill-visible" | "pill-hidden">("bar");
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
-    if (y < 80) setMode("bar");
-    else setMode(y < prev ? "pill-visible" : "pill-hidden");
+    if (y < 80) setNavMode("bar");
+    else setNavMode(y < prev ? "pill-visible" : "pill-hidden");
   });
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setPaletteOpen((o) => !o);
+        if (open) {
+          close();
+        } else {
+          openNav();
+        }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [open, openNav, close]);
+
+  const handleChipClick = () => {
+    if (Date.now() - dismissedAt.current < 250) return;
+    if (open) {
+      close();
+    } else {
+      openNav();
+    }
+  };
 
   const inner = (pill: boolean) => (
     <>
@@ -57,12 +71,12 @@ export function NavPill() {
         <button
           type="button"
           aria-label="Open command menu"
-          onClick={() => {
-            if (Date.now() - dismissedAt.current < 250) return;
-            setPaletteOpen((o) => !o);
-          }}
-          className="mx-1 rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-muted transition-colors hover:border-ink/25 hover:text-ink"
+          onClick={handleChipClick}
+          className="mx-1 flex items-center rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-ink-muted transition-colors hover:border-ink/25 hover:text-ink"
         >
+          {agentOnline && (
+            <span aria-hidden className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-accent" title="Agent online" />
+          )}
           ⌘K
         </button>
         <ThemeToggle />
@@ -76,7 +90,7 @@ export function NavPill() {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-40 transition-opacity duration-200",
-          mode === "bar" ? "opacity-100" : "pointer-events-none opacity-0",
+          navMode === "bar" ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
@@ -86,7 +100,7 @@ export function NavPill() {
 
       {/* Floating pill */}
       <AnimatePresence>
-        {mode === "pill-visible" && (
+        {navMode === "pill-visible" && (
           <motion.nav
             key="pill"
             initial={{ y: -80, opacity: 0 }}
@@ -101,11 +115,14 @@ export function NavPill() {
       </AnimatePresence>
 
       <CommandPalette
-        open={paletteOpen}
-        onOpenChange={(open) => {
-          if (!open) dismissedAt.current = Date.now();
-          setPaletteOpen(open);
+        open={open}
+        mode={mode}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) dismissedAt.current = Date.now();
+          if (!isOpen) close();
         }}
+        onOpenChat={openChat}
+        onNavMode={openNav}
       />
     </>
   );
