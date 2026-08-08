@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   variant?: "glass" | "ghost";
   href?: string;
+  type?: "button" | "submit";
   disabled?: boolean;
   disabledHint?: string;
   onClick?: () => void;
@@ -26,6 +27,7 @@ const variants = {
 export function GlassButton({
   variant = "glass",
   href,
+  type = "button",
   disabled,
   disabledHint,
   onClick,
@@ -42,7 +44,7 @@ export function GlassButton({
   }
   return (
     <button
-      type="button"
+      type={type}
       className={classes}
       aria-disabled={disabled || undefined}
       title={disabled ? disabledHint : undefined}
