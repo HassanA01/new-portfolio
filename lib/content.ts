@@ -1,5 +1,5 @@
-import projectsJson from "@/data/projects.json";
-import experienceJson from "@/data/experience.json";
+import projectsJson from "@/db/seed-data/projects.json";
+import experienceJson from "@/db/seed-data/experience.json";
 
 export type Project = {
   title: string;

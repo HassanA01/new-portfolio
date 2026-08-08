@@ -10,6 +10,8 @@ CMD ["npm", "run", "dev"]
 
 FROM deps AS builder
 COPY . .
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 RUN npm run build
 
 FROM node:24-alpine AS prod
