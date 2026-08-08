@@ -3,8 +3,8 @@ import { MonoDetail } from "@/components/ui/MonoDetail";
 import { Reveal } from "@/components/ui/Reveal";
 import { getExperience } from "@/lib/content";
 
-export function ExperienceTimeline({ compact = false }: { compact?: boolean }) {
-  const experience = getExperience();
+export async function ExperienceTimeline({ compact = false }: { compact?: boolean }) {
+  const experience = await getExperience();
   return (
     <Section id="experience" index="02" title="Experience">
       <ol className="relative border-l border-line">

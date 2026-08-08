@@ -6,8 +6,8 @@ import { getProjects } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Work — Aneeq Hassan" };
 
-export default function WorkPage() {
-  const projects = getProjects();
+export default async function WorkPage() {
+  const projects = await getProjects();
   return (
     <main className="mx-auto w-full max-w-5xl px-6 pb-24 pt-36">
       <h1 className="text-4xl font-medium tracking-[-0.035em] text-ink">

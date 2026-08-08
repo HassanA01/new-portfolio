@@ -5,8 +5,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { getFeaturedProjects } from "@/lib/content";
 
-export function SelectedWork() {
-  const projects = getFeaturedProjects();
+export async function SelectedWork() {
+  const projects = await getFeaturedProjects();
   return (
     <Section id="work" index="01" title="Selected work">
       <ul className="grid gap-4 sm:grid-cols-2">
