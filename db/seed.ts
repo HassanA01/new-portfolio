@@ -15,10 +15,12 @@ type ExperienceSeed = {
 async function main() {
   const db = getDb();
   const projectRows = (projectsJson as ProjectSeed[]).map((p, i) => ({ ...p, sortOrder: i }));
+  // conflict target: title (unique)
   await db.insert(projects).values(projectRows).onConflictDoNothing();
   const expRows = (experienceJson as { experience: ExperienceSeed[] }).experience.map(
     (e, i) => ({ ...e, sortOrder: i }),
   );
+  // conflict target: (company, title) via experience_company_title_idx
   await db.insert(experience).values(expRows).onConflictDoNothing();
   console.log(`seed: ${projectRows.length} projects, ${expRows.length} roles (existing rows untouched)`);
   process.exit(0);
