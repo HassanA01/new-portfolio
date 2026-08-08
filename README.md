@@ -38,7 +38,7 @@ npx dotenv -e .env.vercel.production.local -- npm run db:seed
 #    AUTH_SECRET          — random secret (openssl rand -base64 32)
 #    AUTH_GITHUB_ID       — GitHub OAuth App client ID
 #    AUTH_GITHUB_SECRET   — GitHub OAuth App client secret
-#    OWNER_GITHUB_LOGIN   — your GitHub username (gates /admin)
+#    (admin access is hardcoded to the GitHub user HassanA01 in auth.ts)
 #
 # GitHub OAuth App settings:
 #   Homepage URL:         https://aneeqhassan.com
