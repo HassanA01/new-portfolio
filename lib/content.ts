@@ -26,8 +26,15 @@ const loadProjects = unstable_cache(
   async (): Promise<Project[]> => {
     const rows = await getDb().select().from(projects).orderBy(asc(projects.sortOrder));
     if (rows.length === 0) throw new Error("content: projects table is empty — run db:seed");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return rows.map(({ id: _id, sortOrder: _s, ...p }) => p);
+    return rows.map((row) => ({
+      title: row.title,
+      description: row.description,
+      tech: row.tech,
+      image: row.image,
+      github: row.github,
+      live: row.live,
+      featured: row.featured,
+    }));
   },
   ["content-projects"],
   { tags: ["content:projects"] },
@@ -37,8 +44,14 @@ const loadExperience = unstable_cache(
   async (): Promise<Experience[]> => {
     const rows = await getDb().select().from(experience).orderBy(asc(experience.sortOrder));
     if (rows.length === 0) throw new Error("content: experience table is empty — run db:seed");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return rows.map(({ id: _id, sortOrder: _s, ...e }) => e);
+    return rows.map((row) => ({
+      title: row.title,
+      company: row.company,
+      duration: row.duration,
+      impact: row.impact,
+      techStack: row.techStack,
+      highlights: row.highlights,
+    }));
   },
   ["content-experience"],
   { tags: ["content:experience"] },
