@@ -1,3 +1,6 @@
+"use client";
+
+import { useActionState } from "react";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { MonoDetail } from "@/components/ui/MonoDetail";
 import { saveProject } from "@/app/admin/actions";
@@ -10,8 +13,9 @@ const field =
 
 export function ProjectForm({ row }: { row: Row | null }) {
   const action = saveProject.bind(null, row?.id ?? null);
+  const [state, formAction] = useActionState(action, null);
   return (
-    <form action={action} className="mt-10 grid max-w-xl gap-5">
+    <form action={formAction} className="mt-10 grid max-w-xl gap-5">
       <label className="block">
         <MonoDetail>Title</MonoDetail>
         <input name="title" defaultValue={row?.title ?? ""} className={field} required />
@@ -46,6 +50,9 @@ export function ProjectForm({ row }: { row: Row | null }) {
           <input type="number" name="sortOrder" defaultValue={row?.sortOrder ?? 0} className={`${field} mt-0 w-24`} required />
         </label>
       </div>
+      {state?.error && (
+        <p className="text-sm text-ink-muted">⚠ {state.error}</p>
+      )}
       <div>
         <GlassButton type="submit">Save</GlassButton>
       </div>

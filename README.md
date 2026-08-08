@@ -13,10 +13,36 @@ cmdk · Vitest · Docker · GitHub Actions · Vercel · Drizzle · Neon Postgres
 
 ```bash
 docker compose up                        # dev + postgres → http://localhost:3000
+                                         # (auto-migrates and seeds on every start)
 docker compose exec web npm run lint     # lint
 npx dotenv -e .env.local -- npm run db:migrate   # apply migrations (host)
 npx dotenv -e .env.local -- npm run db:seed      # seed (insert-if-missing)
 npx dotenv -e .env.local -- npm run db:studio    # browse the DB
+```
+
+## Deploy
+
+Vercel builds statically prerender from the database, so **a reachable, migrated, seeded `DATABASE_URL` is required at build time** (Neon provides all envs automatically). This is deliberate — the build fails rather than shipping an empty portfolio.
+
+One-time Vercel setup:
+
+```bash
+# 1. Add Neon integration (provisions DATABASE_URL automatically in Vercel env)
+vercel integration add neon
+
+# 2. Migrate + seed the production database
+npx dotenv -e .env.vercel.production.local -- npm run db:migrate
+npx dotenv -e .env.vercel.production.local -- npm run db:seed
+
+# 3. Set auth env vars in Vercel dashboard (or via CLI):
+#    AUTH_SECRET          — random secret (openssl rand -base64 32)
+#    AUTH_GITHUB_ID       — GitHub OAuth App client ID
+#    AUTH_GITHUB_SECRET   — GitHub OAuth App client secret
+#    OWNER_GITHUB_LOGIN   — your GitHub username (gates /admin)
+#
+# GitHub OAuth App settings:
+#   Homepage URL:         https://aneeqhassan.com
+#   Callback URL:         https://aneeqhassan.com/api/auth/callback/github
 ```
 
 ## Architecture

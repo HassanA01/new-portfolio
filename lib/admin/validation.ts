@@ -7,7 +7,7 @@ export const projectInput = z.object({
   title: z.string().trim().min(1, "title required"),
   description: z.string().trim().min(1, "description required"),
   tech: z.string().transform(lines).pipe(z.array(z.string()).min(1, "at least one tech")),
-  image: z.string().trim().refine((s) => s.startsWith("/") || s.startsWith("http"), "path or URL"),
+  image: z.string().trim().refine((s) => s.startsWith("/") || s.startsWith("http://") || s.startsWith("https://"), "path or URL"),
   github: z.string().trim().url("github must be a URL"),
   live: z.string().trim().default(""),
   featured: z.coerce.boolean(),
