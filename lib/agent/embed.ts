@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { embedMany } from "ai";
-import { and, asc, eq } from "drizzle-orm";
+import { asc, inArray } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import { experience, knowledgeChunks, projects } from "@/db/schema";
 
@@ -89,6 +89,7 @@ async function syncChunks(desired: ChunkInput[], opts?: { pruneScope?: { source:
   const db = getDb();
   const existing = await db
     .select({
+      id: knowledgeChunks.id,
       source: knowledgeChunks.source,
       sourceKey: knowledgeChunks.sourceKey,
       chunkIndex: knowledgeChunks.chunkIndex,
@@ -112,27 +113,18 @@ async function syncChunks(desired: ChunkInput[], opts?: { pruneScope?: { source:
     }
   }
 
-  // prune stale chunks (deleted rows / shrunk documents)
-  let deleted = 0;
+  // prune stale chunks (deleted rows / shrunk documents) — single bulk DELETE
   const scope = opts?.pruneScope;
   const inScope = (c: { source: string; sourceKey: string }) =>
     !scope || (c.source === scope.source && c.sourceKey === scope.sourceKey);
   const desiredIdentities = new Set(desired.map((c) => `${c.source}|${c.sourceKey}|${c.chunkIndex}`));
-  for (const c of existing) {
-    if (inScope(c) && !desiredIdentities.has(`${c.source}|${c.sourceKey}|${c.chunkIndex}`)) {
-      await db
-        .delete(knowledgeChunks)
-        .where(
-          and(
-            eq(knowledgeChunks.source, c.source),
-            eq(knowledgeChunks.sourceKey, c.sourceKey),
-            eq(knowledgeChunks.chunkIndex, c.chunkIndex),
-          ),
-        );
-      deleted++;
-    }
+  const staleIds = existing
+    .filter((c) => inScope(c) && !desiredIdentities.has(`${c.source}|${c.sourceKey}|${c.chunkIndex}`))
+    .map((c) => c.id);
+  if (staleIds.length > 0) {
+    await db.delete(knowledgeChunks).where(inArray(knowledgeChunks.id, staleIds));
   }
-  return { embedded: toEmbed.length, skipped: desired.length - toEmbed.length, deleted };
+  return { embedded: toEmbed.length, skipped: desired.length - toEmbed.length, deleted: staleIds.length };
 }
 
 export async function reembedAll() {
@@ -140,7 +132,5 @@ export async function reembedAll() {
 }
 
 export async function reembedSource(source: "project" | "experience", sourceKey: string): Promise<void> {
-  const all = await desiredChunks();
-  const scoped = all.filter((c) => c.source === source && c.sourceKey === sourceKey);
-  await syncChunks(scoped.length > 0 ? all : all, { pruneScope: { source, sourceKey } });
+  await syncChunks(await desiredChunks(), { pruneScope: { source, sourceKey } });
 }
