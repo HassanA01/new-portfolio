@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
 import { applyTheme, resolveTheme } from "@/lib/theme";
 import { ChatView } from "@/components/agent/ChatView";
-import { MonoDetail } from "@/components/ui/MonoDetail";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -57,9 +56,15 @@ export function CommandPalette({ open, mode, onOpenChange, onOpenChat, onNavMode
     >
       {mode === "chat" ? (
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b border-line px-4 py-2">
-            <MonoDetail>agent</MonoDetail>
-            <MonoDetail>esc → menu</MonoDetail>
+          <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+            <div className="flex items-center gap-2">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
+              <span className="text-sm font-medium text-ink">Agent</span>
+            </div>
+            <span className="flex items-center gap-1.5 text-xs text-ink-faint">
+              <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[10px]">esc</kbd>
+              menu
+            </span>
           </div>
           <div className="flex-1 overflow-hidden">
             <ChatView />

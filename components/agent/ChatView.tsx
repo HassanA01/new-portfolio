@@ -82,7 +82,7 @@ function AssistantParts({ message }: { message: UIMessage }) {
 }
 
 export function ChatView() {
-  const { messages, sendMessage, status, error } = useAgentChat();
+  const { messages, sendMessage, status, error, clearError } = useAgentChat();
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -90,9 +90,12 @@ export function ChatView() {
     endRef.current?.scrollIntoView({ block: "end" });
   }, [messages, status]);
 
+  const canSend = status === "ready" || status === "error";
+
   const submit = (text: string) => {
     const trimmed = text.trim().slice(0, 1000);
-    if (!trimmed || status !== "ready") return;
+    if (!trimmed || !canSend) return;
+    if (status === "error") clearError();
     sendMessage({ text: trimmed });
     setInput("");
   };
@@ -101,9 +104,16 @@ export function ChatView() {
     <div className="flex h-full flex-col">
       <div aria-live="polite" className="flex-1 space-y-5 overflow-y-auto px-4 py-4">
         {messages.length === 0 && (
-          <div className="flex h-full flex-col items-start justify-end gap-2 pb-2">
-            <MonoDetail>Ask about Aneeq — or leave him a message</MonoDetail>
-            <div className="flex flex-wrap gap-2">
+          <div className="flex h-full flex-col items-center justify-center gap-6 px-6 text-center">
+            <div>
+              <h2 className="text-3xl font-medium tracking-[-0.03em] text-ink sm:text-4xl">
+                Hello there.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                I&apos;m Aneeq&apos;s agent — ask about his work, or leave him a message.
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s}
@@ -147,33 +157,35 @@ export function ChatView() {
         <div ref={endRef} />
       </div>
       <form
-        className="flex items-center gap-2 border-t border-line px-4 py-3"
+        className="px-4 pb-4 pt-1"
         onSubmit={(e) => {
           e.preventDefault();
           submit(input);
         }}
       >
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          // Stop cmdk (the parent Command component) from swallowing Enter/arrow
-          // keys so the form submits and the caret moves normally in chat mode.
-          onKeyDown={(e) => e.stopPropagation()}
-          maxLength={1000}
-          placeholder="Ask about Aneeq…"
-          className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-faint"
-        />
-        <button
-          type="submit"
-          aria-label="Send"
-          disabled={!input.trim() || status !== "ready"}
-          className="shrink-0 rounded-full border border-line p-1.5 text-ink-muted transition-colors hover:border-ink/25 hover:text-ink disabled:opacity-40 disabled:hover:border-line disabled:hover:text-ink-muted"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M7 11l5-5 5 5" />
-            <path d="M12 6v13" />
-          </svg>
-        </button>
+        <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface-raised px-4 py-2.5 transition-colors focus-within:border-ink/25">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            // Stop cmdk (the parent Command component) from swallowing Enter/arrow
+            // keys so the form submits and the caret moves normally in chat mode.
+            onKeyDown={(e) => e.stopPropagation()}
+            maxLength={1000}
+            placeholder="Ask about Aneeq…"
+            className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-faint focus-visible:outline-none"
+          />
+          <button
+            type="submit"
+            aria-label="Send"
+            disabled={!input.trim() || !canSend}
+            className="shrink-0 rounded-full bg-ink p-1.5 text-surface transition-opacity hover:opacity-85 disabled:opacity-30"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M7 11l5-5 5 5" />
+              <path d="M12 6v13" />
+            </svg>
+          </button>
+        </div>
       </form>
     </div>
   );
