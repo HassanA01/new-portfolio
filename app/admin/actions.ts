@@ -6,8 +6,9 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { eq } from "drizzle-orm";
 import { auth } from "@/auth";
 import { getDb } from "@/db/client";
-import { experience, projects } from "@/db/schema";
+import { experience, messages, projects } from "@/db/schema";
 import { experienceInput, projectInput } from "@/lib/admin/validation";
+import { reembedSource } from "@/lib/agent/embed";
 
 async function requireOwner() {
   const session = await auth();
@@ -48,13 +49,17 @@ export async function saveProject(
     throw err;
   }
   revalidateTag("content:projects");
+  try { await reembedSource("project", result.data.title); } catch (err) { console.error("embed: project re-embed failed", err); }
   redirect("/admin");
 }
 
 export async function deleteProject(id: number) {
   await requireOwner();
-  await getDb().delete(projects).where(eq(projects.id, id));
+  const db = getDb();
+  const [row] = await db.select({ title: projects.title }).from(projects).where(eq(projects.id, id));
+  await db.delete(projects).where(eq(projects.id, id));
   revalidateTag("content:projects");
+  if (row) { try { await reembedSource("project", row.title); } catch (err) { console.error("embed: project re-embed failed", err); } }
   redirect("/admin");
 }
 
@@ -86,12 +91,22 @@ export async function saveExperience(
     throw err;
   }
   revalidateTag("content:experience");
+  try { await reembedSource("experience", `${result.data.company} — ${result.data.title}`); } catch (err) { console.error("embed: experience re-embed failed", err); }
   redirect("/admin");
 }
 
 export async function deleteExperience(id: number) {
   await requireOwner();
-  await getDb().delete(experience).where(eq(experience.id, id));
+  const db = getDb();
+  const [row] = await db.select({ company: experience.company, title: experience.title }).from(experience).where(eq(experience.id, id));
+  await db.delete(experience).where(eq(experience.id, id));
   revalidateTag("content:experience");
+  if (row) { try { await reembedSource("experience", `${row.company} — ${row.title}`); } catch (err) { console.error("embed: experience re-embed failed", err); } }
   redirect("/admin");
+}
+
+export async function markMessageRead(id: number) {
+  await requireOwner();
+  await getDb().update(messages).set({ read: true }).where(eq(messages.id, id));
+  redirect("/admin/messages");
 }

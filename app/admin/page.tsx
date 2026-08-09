@@ -19,14 +19,17 @@ export default async function AdminPage() {
         <h1 className="text-4xl font-medium tracking-[-0.035em] text-ink">
           Admin.<span className="text-ink-faint"> Content lives here.</span>
         </h1>
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/" });
-          }}
-        >
-          <GlassButton variant="ghost" type="submit">Sign out →</GlassButton>
-        </form>
+        <div className="flex items-center gap-4">
+          <GlassButton variant="ghost" href="/admin/messages">Messages →</GlassButton>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/" });
+            }}
+          >
+            <GlassButton variant="ghost" type="submit">Sign out →</GlassButton>
+          </form>
+        </div>
       </div>
 
       <section className="mt-14">
