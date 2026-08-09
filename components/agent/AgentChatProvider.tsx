@@ -14,6 +14,7 @@ type PaletteContextValue = {
   openChat: (seed?: string) => void;
   close: () => void;
   toggle: () => void;
+  toNavMode: () => void;
   agentOnline: boolean;
 };
 
@@ -38,6 +39,12 @@ export function AgentChatProvider({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState<PaletteMode>("nav");
   const [agentOnline, setAgentOnline] = useState(false);
   const closeRef = useRef<() => void>(() => {});
+  // Stable ref to sendMessage — updated every render so callbacks never go stale
+  // without adding chat to PaletteContext's useMemo deps (which would re-render
+  // NavPill and other consumers on every streamed token).
+  const sendMessageRef = useRef<ReturnType<typeof useChat>["sendMessage"]>(
+    () => Promise.resolve(),
+  );
 
   const chat = useChat({
     transport: new DefaultChatTransport({ api: "/api/agent/chat" }),
@@ -52,6 +59,9 @@ export function AgentChatProvider({ children }: { children: React.ReactNode }) {
     },
   });
 
+  // Keep the ref in sync with the latest sendMessage identity every render
+  sendMessageRef.current = chat.sendMessage;
+
   useEffect(() => {
     fetch("/api/agent/chat", { method: "GET" })
       .then((r) => setAgentOnline(r.ok))
@@ -61,11 +71,17 @@ export function AgentChatProvider({ children }: { children: React.ReactNode }) {
   const close = useCallback(() => setOpen(false), []);
   closeRef.current = close;
 
+  const toNavMode = useCallback(() => setMode("nav"), []);
+
+  // PaletteContext intentionally excludes `chat` from deps — ChatView consumes
+  // ChatContext directly and re-renders with every token; NavPill (and other
+  // PaletteContext consumers) should only re-render when palette state changes.
   const value = useMemo<PaletteContextValue>(
     () => ({
       open,
       mode,
       agentOnline,
+      toNavMode,
       openNav: () => {
         setMode("nav");
         setOpen(true);
@@ -73,12 +89,20 @@ export function AgentChatProvider({ children }: { children: React.ReactNode }) {
       openChat: (seed?: string) => {
         setMode("chat");
         setOpen(true);
-        if (seed && seed.trim()) chat.sendMessage({ text: seed.trim().slice(0, 1000) });
+        if (seed && seed.trim()) {
+          // Read through the ref so this closure is always current
+          sendMessageRef.current({ text: seed.trim().slice(0, 1000) });
+        }
       },
       close,
-      toggle: () => setOpen((o) => !o),
+      // Fresh opens always start in nav mode
+      toggle: () =>
+        setOpen((o) => {
+          if (!o) setMode("nav");
+          return !o;
+        }),
     }),
-    [open, mode, agentOnline, close, chat],
+    [open, mode, agentOnline, close, toNavMode],
   );
 
   return (

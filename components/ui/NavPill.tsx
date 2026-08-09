@@ -15,7 +15,7 @@ const LINKS = [
 ] as const;
 
 export function NavPill() {
-  const { open, mode, openNav, openChat, close, toggle, agentOnline } = useAgentPalette();
+  const { open, mode, openNav, openChat, close, toNavMode, agentOnline } = useAgentPalette();
   // Records the timestamp when Radix last dismissed the palette via its own
   // dismissable-layer (e.g. outside click). A chip click that races this event
   // would re-open the palette immediately; the 250 ms guard swallows it instead.
@@ -122,7 +122,7 @@ export function NavPill() {
           if (!isOpen) close();
         }}
         onOpenChat={openChat}
-        onNavMode={openNav}
+        onNavMode={toNavMode}
       />
     </>
   );

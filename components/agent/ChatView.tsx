@@ -12,11 +12,18 @@ const SUGGESTIONS = [
   "I'd like to get in touch",
 ];
 
+// Per-state label overrides for tools that need custom wording at output-available.
+// Key: `<toolName>:<state>` or `<toolName>` for the streaming/pending label.
 const TOOL_LABELS: Record<string, string> = {
-  search_background: "searching background",
-  send_message_to_aneeq: "sending message",
-  navigate_site: "navigating",
-  get_resume: "fetching resume",
+  "search_background": "searching background…",
+  "send_message_to_aneeq": "sending message…",
+  "navigate_site": "navigating…",
+  "get_resume": "fetching resume…",
+  // output-available overrides
+  "search_background:output-available": "searching background — done",
+  "send_message_to_aneeq:output-available": "message sent",
+  "navigate_site:output-available": "navigating — done",
+  "get_resume:output-available": "fetching resume — done",
 };
 
 export function ChatView() {
@@ -36,8 +43,8 @@ export function ChatView() {
   };
 
   return (
-    <div className="flex h-[60vh] flex-col">
-      <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+    <div className="flex h-full flex-col">
+      <div aria-live="polite" className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
         {messages.length === 0 && (
           <div className="flex h-full flex-col items-start justify-end gap-2 pb-2">
             <MonoDetail>Ask about Aneeq — or leave him a message</MonoDetail>
@@ -61,14 +68,20 @@ export function ChatView() {
             {m.parts.map((part, i) => {
               if (part.type === "text") return <span key={i} className="whitespace-pre-wrap">{part.text}</span>;
               if (isToolUIPart(part)) {
-                const label = TOOL_LABELS[getToolName(part)] ?? getToolName(part);
+                const toolName = getToolName(part);
+                const stateKey = `${toolName}:${part.state}`;
+                const label =
+                  TOOL_LABELS[stateKey] ??
+                  TOOL_LABELS[toolName] ??
+                  (part.state === "output-available" ? `${toolName} — done` : `${toolName}…`);
+                const isResumeDone =
+                  isToolUIPart(part) &&
+                  getToolName(part) === "get_resume" &&
+                  part.state === "output-available";
                 return (
                   <div key={i} className="my-1">
-                    <MonoDetail>
-                      {label}
-                      {part.state === "output-available" ? " — done" : "…"}
-                    </MonoDetail>
-                    {part.type === "tool-get_resume" && part.state === "output-available" && (
+                    <MonoDetail>{label}</MonoDetail>
+                    {isResumeDone && (
                       <a
                         href={(part.output as { url: string }).url}
                         target="_blank"
@@ -85,7 +98,11 @@ export function ChatView() {
             })}
           </div>
         ))}
-        {status === "submitted" && <MonoDetail>thinking…</MonoDetail>}
+        {status === "submitted" && (
+          <span role="status">
+            <MonoDetail>thinking…</MonoDetail>
+          </span>
+        )}
         {error && (
           <p className="text-sm text-ink-muted">
             The agent hit a snag — email{" "}

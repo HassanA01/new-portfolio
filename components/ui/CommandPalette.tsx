@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
 import { applyTheme, resolveTheme } from "@/lib/theme";
@@ -19,18 +19,30 @@ type Props = {
 export function CommandPalette({ open, mode, onOpenChange, onOpenChat, onNavMode }: Props) {
   const router = useRouter();
   const [currentInput, setCurrentInput] = useState("");
+  // Stable ref so the effect closure always sees the latest mode/onNavMode
+  const modeRef = useRef(mode);
+  const onNavModeRef = useRef(onNavMode);
+  modeRef.current = mode;
+  onNavModeRef.current = onNavMode;
+
+  // Intercept Escape in capture phase so Radix's dismissable-layer never fires
+  // when the palette is in chat mode — Esc should return to nav mode, not close.
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && modeRef.current === "chat") {
+        e.stopPropagation();
+        e.preventDefault();
+        onNavModeRef.current();
+      }
+    };
+    window.addEventListener("keydown", handler, true /* capture */);
+    return () => window.removeEventListener("keydown", handler, true);
+  }, [open]);
 
   const run = (fn: () => void) => {
     fn();
     onOpenChange(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (mode === "chat" && e.key === "Escape") {
-      e.preventDefault();
-      e.stopPropagation();
-      onNavMode();
-    }
   };
 
   return (
@@ -42,7 +54,6 @@ export function CommandPalette({ open, mode, onOpenChange, onOpenChat, onNavMode
         "fixed left-1/2 top-28 z-50 w-[min(560px,90vw)] -translate-x-1/2 overflow-hidden rounded-xl border border-line bg-surface-raised/90 shadow-2xl shadow-black/20 backdrop-blur-xl",
         mode === "chat" && "h-[70vh]",
       )}
-      onKeyDown={handleKeyDown}
     >
       {mode === "chat" ? (
         <div className="flex h-full flex-col">
