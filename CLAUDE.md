@@ -11,6 +11,7 @@ Personal portfolio (aneeqhassan.com), phase 1 of 4 — see
 - `docker compose exec web npm run build` — build for production
 - `npx dotenv -e .env.local -- npm run db:migrate` — apply migrations (host)
 - `npx dotenv -e .env.local -- npm run db:seed` — seed (insert-if-missing)
+- `npx dotenv -e .env.local -- npm run db:embed` — embed knowledge base into pgvector
 - `npx dotenv -e .env.local -- npm run db:studio` — browse the DB
 
 ## Architecture
@@ -23,7 +24,8 @@ Personal portfolio (aneeqhassan.com), phase 1 of 4 — see
   (`auth.ts` signIn callback + middleware).
 - `components/ui` = primitives (tokens only, no raw hex); `components/sections` = page blocks.
 - Theme: `data-theme` attr set pre-paint by `THEME_INIT_SCRIPT` (lib/theme.ts); CSS vars in globals.css.
-- ⌘K palette (`CommandPalette`) is the future agent entry point — phase 3 mounts chat inside it.
+- Agent: cmd-k palette chat → /api/agent/chat (AI SDK ToolLoopAgent, gateway model anthropic/claude-sonnet-4-6). Tools are one-file modules in lib/agent/tools/ registered in tools/index.ts — add a tool = add a file + one line. Knowledge: pgvector knowledge_chunks, re-embedded by admin hooks + npm run db:embed. Rate limits in Postgres (lib/agent/rate-limit.ts).
+- ⌘K palette (`CommandPalette`) — phase 3 shipped with nav + chat modes.
 
 ## Rules
 
