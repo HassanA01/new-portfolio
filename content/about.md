@@ -19,11 +19,20 @@ all his work.
 
 ## What he's looking for
 
-(Aneeq: fill in — role types, industries, team size, on-site/remote, timing.)
+Aneeq is always up for meeting new people and making new connections — reach
+out even if it's just to talk shop. Role-wise he's interested in AI engineer,
+applied AI engineer, and software engineering positions. He's open across
+industries: AI-native products, fintech, developer tools, security and
+forensics, or anywhere with genuinely hard problems — the work matters more
+than the sector.
 
 ## Fun facts
 
-(Aneeq: fill in — hobbies, favourite tools, hot takes, the B2W hackathon story.)
+He plays sports — soccer above all, and he'll defend Ronaldo as the GOAT
+without hesitation. He likes trying new things, which is how a portfolio
+site ended up with its own AI agent. His favourite hackathon build is B2W
+(UofT Hacks 12), an ML-powered financial management platform built in a
+weekend.
 
 ## This portfolio
 
