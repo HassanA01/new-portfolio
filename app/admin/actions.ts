@@ -35,6 +35,11 @@ export async function saveProject(
     return { error: `${String(issue.path[0] ?? "field")}: ${issue.message}` };
   }
   const db = getDb();
+  let oldProjectKey: string | null = null;
+  if (id !== null) {
+    const [existing] = await db.select({ title: projects.title }).from(projects).where(eq(projects.id, id));
+    if (existing) oldProjectKey = existing.title;
+  }
   try {
     if (id === null) {
       await db.insert(projects).values(result.data);
@@ -50,6 +55,9 @@ export async function saveProject(
   }
   revalidateTag("content:projects");
   try { await reembedSource("project", result.data.title); } catch (err) { console.error("embed: project re-embed failed", err); }
+  if (oldProjectKey !== null && oldProjectKey !== result.data.title) {
+    reembedSource("project", oldProjectKey).catch((err) => console.error("embed: project stale-key prune failed", err));
+  }
   redirect("/admin");
 }
 
@@ -77,6 +85,11 @@ export async function saveExperience(
     return { error: `${String(issue.path[0] ?? "field")}: ${issue.message}` };
   }
   const db = getDb();
+  let oldExperienceKey: string | null = null;
+  if (id !== null) {
+    const [existing] = await db.select({ company: experience.company, title: experience.title }).from(experience).where(eq(experience.id, id));
+    if (existing) oldExperienceKey = `${existing.company} — ${existing.title}`;
+  }
   try {
     if (id === null) {
       await db.insert(experience).values(result.data);
@@ -91,7 +104,11 @@ export async function saveExperience(
     throw err;
   }
   revalidateTag("content:experience");
-  try { await reembedSource("experience", `${result.data.company} — ${result.data.title}`); } catch (err) { console.error("embed: experience re-embed failed", err); }
+  const newExperienceKey = `${result.data.company} — ${result.data.title}`;
+  try { await reembedSource("experience", newExperienceKey); } catch (err) { console.error("embed: experience re-embed failed", err); }
+  if (oldExperienceKey !== null && oldExperienceKey !== newExperienceKey) {
+    reembedSource("experience", oldExperienceKey).catch((err) => console.error("embed: experience stale-key prune failed", err));
+  }
   redirect("/admin");
 }
 

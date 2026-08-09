@@ -52,23 +52,12 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  if (!configured()) {
-    return Response.json({ error: "agent_offline" }, { status: 503 });
-  }
   if (!sameOrigin(req)) {
     return Response.json({ error: "forbidden" }, { status: 403 });
   }
 
-  const ip = clientIp(req);
-  const [minuteOk, dayOk] = await Promise.all([
-    checkRateLimit("chat", ip, 10, 60),
-    checkRateLimit("chat-day", ip, 60, 86400),
-  ]);
-  if (!minuteOk || !dayOk) {
-    return Response.json(
-      { error: "rate_limited", message: RATE_LIMIT_MESSAGE },
-      { status: 429 },
-    );
+  if (!configured()) {
+    return Response.json({ error: "agent_offline" }, { status: 503 });
   }
 
   let body: unknown;
@@ -105,6 +94,18 @@ export async function POST(req: Request) {
 
   if (lastText.length > 1000) {
     return Response.json({ error: "message_too_long" }, { status: 413 });
+  }
+
+  const ip = clientIp(req);
+  const [minuteOk, dayOk] = await Promise.all([
+    checkRateLimit("chat", ip, 10, 60),
+    checkRateLimit("chat-day", ip, 60, 86400),
+  ]);
+  if (!minuteOk || !dayOk) {
+    return Response.json(
+      { error: "rate_limited", message: RATE_LIMIT_MESSAGE },
+      { status: 429 },
+    );
   }
 
   return createAgentUIStreamResponse({

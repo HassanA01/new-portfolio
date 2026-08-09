@@ -65,24 +65,33 @@ async function extractResumeText(): Promise<string> {
   return result.text;
 }
 
-async function desiredChunks(): Promise<ChunkInput[]> {
+async function desiredChunks(scopeSource?: "project" | "experience"): Promise<ChunkInput[]> {
   const db = getDb();
-  const projectRows = await db.select().from(projects).orderBy(asc(projects.sortOrder));
-  const experienceRows = await db.select().from(experience).orderBy(asc(experience.sortOrder));
-  const aboutMd = await readFile(path.join(process.cwd(), "content", "about.md"), "utf8");
-  const resumeText = await extractResumeText();
+  const chunks: ChunkInput[] = [];
 
-  return [
-    ...projectRows.map((p) => ({ source: "project", sourceKey: p.title, chunkIndex: 0, content: projectToText(p) })),
-    ...experienceRows.map((e) => ({
+  if (!scopeSource || scopeSource === "project") {
+    const projectRows = await db.select().from(projects).orderBy(asc(projects.sortOrder));
+    chunks.push(...projectRows.map((p) => ({ source: "project", sourceKey: p.title, chunkIndex: 0, content: projectToText(p) })));
+  }
+
+  if (!scopeSource || scopeSource === "experience") {
+    const experienceRows = await db.select().from(experience).orderBy(asc(experience.sortOrder));
+    chunks.push(...experienceRows.map((e) => ({
       source: "experience",
       sourceKey: `${e.company} — ${e.title}`,
       chunkIndex: 0,
       content: experienceToText(e),
-    })),
-    ...splitMarkdownSections(aboutMd).map((content, i) => ({ source: "about", sourceKey: "about.md", chunkIndex: i, content })),
-    ...splitResumeText(resumeText).map((content, i) => ({ source: "resume", sourceKey: "AneeqHassan.pdf", chunkIndex: i, content })),
-  ];
+    })));
+  }
+
+  if (!scopeSource) {
+    const aboutMd = await readFile(path.join(process.cwd(), "content", "about.md"), "utf8");
+    const resumeText = await extractResumeText();
+    chunks.push(...splitMarkdownSections(aboutMd).map((content, i) => ({ source: "about", sourceKey: "about.md", chunkIndex: i, content })));
+    chunks.push(...splitResumeText(resumeText).map((content, i) => ({ source: "resume", sourceKey: "AneeqHassan.pdf", chunkIndex: i, content })));
+  }
+
+  return chunks;
 }
 
 async function syncChunks(desired: ChunkInput[], opts?: { pruneScope?: { source: string; sourceKey: string } }) {
@@ -132,5 +141,5 @@ export async function reembedAll() {
 }
 
 export async function reembedSource(source: "project" | "experience", sourceKey: string): Promise<void> {
-  await syncChunks(await desiredChunks(), { pruneScope: { source, sourceKey } });
+  await syncChunks(await desiredChunks(source), { pruneScope: { source, sourceKey } });
 }
