@@ -48,6 +48,7 @@ export function AgentChatProvider({ children }: { children: React.ReactNode }) {
 
   const chat = useChat({
     transport: new DefaultChatTransport({ api: "/api/agent/chat" }),
+    experimental_throttle: 60,
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     onToolCall: ({ toolCall }) => {
       if (toolCall.toolName === "navigate_site") {
