@@ -6,9 +6,9 @@ Personal portfolio (aneeqhassan.com), phase 1 of 4 — see
 
 ## Commands
 
-- `docker compose up` — dev (hot reload)
-- `docker compose exec web npm test` / `npm run lint` / `npm run typecheck`
-- `docker compose exec web npm run build` — build for production
+- `npm run dev:local` — FAST dev (postgres in Docker, native Next/Turbopack, auto-refreshes OIDC). Preferred.
+- `docker compose up` — full-Docker parity (CI/prod-like; slower, rebuilds image)
+- `npm test` / `npm run lint` / `npm run typecheck` / `npm run build` (native, host)
 - `npx dotenv -e .env.local -- npm run db:migrate` — apply migrations (host)
 - `npx dotenv -e .env.local -- npm run db:seed` — seed (insert-if-missing)
 - `npx dotenv -e .env.local -- npm run db:embed` — embed knowledge base into pgvector

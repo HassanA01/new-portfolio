@@ -13,13 +13,18 @@ AI SDK · AI Gateway (Claude Sonnet 4.6) · pgvector · Resend
 ## Run
 
 ```bash
-docker compose up                        # dev + postgres → http://localhost:3000
-                                         # (auto-migrates and seeds on every start)
-docker compose exec web npm run lint     # lint
-npx dotenv -e .env.local -- npm run db:migrate   # apply migrations (host)
+npm run dev:local                        # FAST dev: postgres in Docker (kept warm) +
+                                         # native Next.js/Turbopack → http://localhost:3000
+                                         # (auto-refreshes the Vercel OIDC token each start)
+
+# First run only — set up the local database once (the volume persists after):
+npx dotenv -e .env.local -- npm run db:migrate   # apply migrations
 npx dotenv -e .env.local -- npm run db:seed      # seed (insert-if-missing)
-npx dotenv -e .env.local -- npm run db:embed     # re-embed knowledge base
-npx dotenv -e .env.local -- npm run db:studio    # browse the DB
+npx dotenv -e .env.local -- npm run db:embed     # embed the knowledge base
+
+npm run db:studio                        # browse the DB
+npm run db:reset                         # wipe + recreate the local DB volume
+docker compose up                        # full-Docker parity build (CI/prod-like; slower)
 ```
 
 ## Deploy

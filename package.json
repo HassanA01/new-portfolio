@@ -14,7 +14,10 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx db/seed.ts",
     "db:embed": "tsx db/embed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "dev:local": "bash scripts/dev-local.sh",
+    "db:up": "docker compose up -d db",
+    "db:reset": "docker compose down -v && docker compose up -d db"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.248",
