@@ -85,10 +85,29 @@ export function ChatView() {
   const { messages, sendMessage, status, error, clearError } = useAgentChat();
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
   }, [messages, status]);
+
+  // Focus the input when the chat opens — deferred a frame so it wins over
+  // Radix's own on-open focus. Then a printable keystroke anywhere refocuses
+  // it, so you can just start typing (ChatGPT-style) without clicking in.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => inputRef.current?.focus());
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.key.length !== 1) return;
+      const el = document.activeElement;
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return;
+      inputRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   const canSend = status === "ready" || status === "error";
 
@@ -165,6 +184,8 @@ export function ChatView() {
       >
         <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface-raised px-4 py-2.5 transition-colors focus-within:border-ink/25">
           <input
+            ref={inputRef}
+            autoFocus
             value={input}
             onChange={(e) => setInput(e.target.value)}
             // Stop cmdk (the parent Command component) from swallowing Enter/arrow

@@ -56,3 +56,34 @@ body {
   background: var(--ink);
   color: var(--surface);
 }
+
+/* Floating thumb, no track — kills the native white track that flashes on
+   click-and-hold. Firefox uses scrollbar-color; WebKit uses the pseudo-elements. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-faint) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--ink-faint);
+  border-radius: 99px;
+  /* transparent border + padding-box clip makes the thumb read as a slim pill */
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--ink-muted);
+}
