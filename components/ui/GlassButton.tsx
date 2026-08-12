@@ -13,16 +13,33 @@ type Props = {
 };
 
 const base =
-  "inline-flex items-center gap-2 rounded-full text-sm font-medium transition-colors duration-150";
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full text-sm font-medium";
 
-// Note: The brief's `[data-theme=dark]_&:shadow-[...]` is not valid Tailwind 4 arbitrary-variant
-// syntax. Instead we use a single inner highlight `shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]`
-// that reads well on both themes (barely visible on light, clearly visible on dark).
-const variants = {
-  glass:
-    "px-5 py-2.5 bg-ink/5 border border-ink/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] backdrop-blur-md hover:border-ink/30",
-  ghost: "px-1 py-2 text-ink-muted hover:text-ink",
-};
+// Even glass bevel: a soft top light + matching bottom shade reads symmetric on a
+// pill (the old single top-inset made the border look heavier up top). Premium hover:
+// a subtle lift, brighter border/fill, and a light sweep across the surface.
+const glassIdle =
+  "px-5 py-2.5 bg-ink/[0.06] border border-ink/12 backdrop-blur-md " +
+  "shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-1px_0_rgba(0,0,0,0.14)] " +
+  "transition-[transform,border-color,background-color] duration-200 ease-out " +
+  "motion-reduce:transition-none";
+
+const glassInteractive =
+  "hover:-translate-y-px hover:border-ink/25 hover:bg-ink/[0.10] " +
+  "active:translate-y-0 active:scale-[0.99] " +
+  "motion-reduce:hover:translate-y-0";
+
+const ghost =
+  "px-1 py-2 text-ink-muted transition-colors duration-150 hover:text-ink";
+
+function Sheen() {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-ink/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full motion-reduce:hidden"
+    />
+  );
+}
 
 export function GlassButton({
   variant = "glass",
@@ -34,11 +51,25 @@ export function GlassButton({
   className,
   children,
 }: Props) {
-  const classes = cn(base, variants[variant], disabled && "opacity-50 cursor-not-allowed", className);
+  const isGlass = variant === "glass";
+  const classes = cn(
+    base,
+    isGlass ? cn(glassIdle, !disabled && glassInteractive) : ghost,
+    disabled && "opacity-50 cursor-not-allowed",
+    className,
+  );
+
+  const inner = (
+    <>
+      {isGlass && !disabled && <Sheen />}
+      <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+    </>
+  );
+
   if (href && !disabled) {
     return (
       <Link href={href} className={classes} onClick={onClick}>
-        {children}
+        {inner}
       </Link>
     );
   }
@@ -50,7 +81,7 @@ export function GlassButton({
       title={disabled ? disabledHint : undefined}
       onClick={disabled ? undefined : onClick}
     >
-      {children}
+      {inner}
     </button>
   );
 }
