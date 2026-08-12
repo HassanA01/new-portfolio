@@ -1,0 +1,58 @@
+import { describe, it, expect, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { GlassButton } from "@/components/ui/GlassButton";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Reveal } from "@/components/ui/Reveal";
+
+describe("GlassButton", () => {
+  it("renders an anchor when href is given", () => {
+    render(<GlassButton href="/work">View work</GlassButton>);
+    expect(screen.getByRole("link", { name: "View work" })).toHaveAttribute("href", "/work");
+  });
+
+  it("renders a disabled button with hint", () => {
+    render(<GlassButton disabled disabledHint="Coming soon">Ask my agent</GlassButton>);
+    const btn = screen.getByRole("button", { name: "Ask my agent" });
+    expect(btn).toHaveAttribute("aria-disabled", "true");
+    expect(btn).toHaveAttribute("title", "Coming soon");
+  });
+
+  it("renders a button (not a link) when both href and disabled are set", () => {
+    render(
+      <GlassButton href="/work" disabled disabledHint="Coming soon">
+        X
+      </GlassButton>
+    );
+    const btn = screen.getByRole("button", { name: "X" });
+    expect(btn).toHaveAttribute("aria-disabled", "true");
+    expect(btn).toHaveAttribute("title", "Coming soon");
+    expect(screen.queryByRole("link")).toBeNull();
+  });
+});
+
+describe("Reveal", () => {
+  it("renders a div by default (reduced motion)", () => {
+    const { container } = render(<Reveal>content</Reveal>);
+    expect(container.firstChild?.nodeName).toBe("DIV");
+  });
+
+  it("renders an li when as='li' (reduced motion)", () => {
+    const { container } = render(<Reveal as="li">content</Reveal>);
+    expect(container.firstChild?.nodeName).toBe("LI");
+  });
+});
+
+describe("ThemeToggle", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    document.documentElement.setAttribute("data-theme", "dark");
+  });
+
+  it("toggles the theme and persists", async () => {
+    render(<ThemeToggle />);
+    await userEvent.click(screen.getByRole("button"));
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(localStorage.getItem("theme")).toBe("light");
+  });
+});

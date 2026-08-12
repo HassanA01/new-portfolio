@@ -1,0 +1,105 @@
+[
+  {
+    "title": "MailflowAI",
+    "description": "An AI-powered 24/7 customer service automation tool for e-commerce businesses which reduces monthly costs by $14K USD and reduces response times from hours to minutes.",
+    "tech": [
+      "Python",
+      "GCP",
+      "Cloud Pub/Sub",
+      "OpenAI",
+      "Shopify GraphQL Admin API",
+      "Gmail API"
+    ],
+    "image": "/mailflowai.png",
+    "github": "https://github.com/HassanA01/mailflowai",
+    "live": "",
+    "featured": true
+  },
+  {
+    "title": "B2W - UofT Hacks 12",
+    "description": "Developed a financial management platform with ML-powered spending predictions and personalized recommendations. Features include expense tracking, goal setting, and detailed analytics for informed financial decisions.",
+    "tech": [
+      "Next.js",
+      "Express.js",
+      "PostgreSQL",
+      "Flask",
+      "Databricks",
+      "AWS",
+      "Tailwind CSS",
+      "scikit-learn"
+    ],
+    "image": "/broke2woke.jpeg",
+    "github": "https://github.com/HassanA01/UofTHacks12",
+    "live": "",
+    "featured": true
+  },
+  {
+    "title": "BizReach Marketplace",
+    "description": "Led a team of 5 in designing and developing a full-stack marketplace platform connecting mobile businesses with clients using the FERN stack, implementing AI-powered gig description generator with OpenAI API.",
+    "tech": [
+      "React",
+      "Express",
+      "OAuth",
+      "Node.js",
+      "Socket.io",
+      "Firebase",
+      "OpenAI"
+    ],
+    "image": "/bizreach.png",
+    "github": "https://github.com/HassanA01/final-project-s23-cd-users-baddies",
+    "live": "",
+    "featured": true
+  },
+  {
+    "title": "Myriad CRO Landing Page",
+    "description": "Built a conversion-focused landing page for a CRO agency, featuring a step-by-step process section, expandable FAQ component, and responsive mobile layouts.",
+    "tech": [
+      "Next.js",
+      "Shadcn",
+      "Tailwind CSS",
+      "Aceternity UI",
+      "RadixUI",
+      "Motion"
+    ],
+    "image": "/myriadcro.png",
+    "github": "https://github.com/HassanA01/myriad-cro-website",
+    "live": "https://myriadcro.com",
+    "featured": true
+  },
+  {
+    "title": "Portfolio Website",
+    "description": "My personal website showcasing fun facts about me, my recent projects, past expereriences and my skillset.",
+    "tech": ["Next.js", "Tailwind CSS", "RadixUI", "Motion", "Swiper.js"],
+    "image": "/portfoliopic.png",
+    "github": "https://github.com/HassanA01/new-portfolio",
+    "live": "https://aneeqhassan.com",
+    "featured": false
+  },
+  {
+    "title": "IoT Data Monitoring System",
+    "description": "An IoT data monitoring system using TimescaleDB and TypeScript, generating and managing datasets exceeding 1 million records with optimized data retrieval using continuous aggregates.",
+    "tech": ["TypeScript", "TimescaleDB", "Grafana"],
+    "image": "/iotprojectlogo.png",
+    "github": "https://github.com/HassanA01/IoT-Data-Monitoring-System",
+    "live": "",
+    "featured": false
+  },
+  {
+    "title": "Proxy Server",
+    "description": "Implemented caching mechanisms for web content, reducing data retrieval times by 50% and enhancing server responsiveness using socket programming.",
+    "tech": ["Python"],
+    "image": "/proxyserver.png",
+    "github": "https://github.com/HassanA01/ProxyServer",
+    "live": "",
+    "featured": false
+  },
+  {
+    "title": "Delivery Service App",
+    "description": "Built a delivery tracking system with FastAPI, React, and Redis, implementing an event-driven architecture to simulate order lifecycle events: creation, activation, collection, and completion.",
+    "tech": ["React", "Bootstrap", "Python", "Redis", "FastAPI"],
+    "image": "/deliveryserviceapp.png",
+    "github": "https://github.com/HassanA01/DeliveryService",
+    "live": "",
+    "featured": false
+  }
+]
