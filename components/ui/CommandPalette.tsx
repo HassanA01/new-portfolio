@@ -49,8 +49,9 @@ export function CommandPalette({ open, mode, onOpenChange, onOpenChat, onNavMode
       open={open}
       onOpenChange={onOpenChange}
       label="Command menu"
+      overlayClassName="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
       className={cn(
-        "fixed left-1/2 top-28 z-50 w-[min(560px,90vw)] -translate-x-1/2 overflow-hidden rounded-xl border border-line bg-surface-raised/90 shadow-2xl shadow-black/20 backdrop-blur-xl",
+        "fixed left-1/2 top-1/2 z-50 w-[min(560px,90vw)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-line bg-surface-raised/90 shadow-2xl shadow-black/20 backdrop-blur-xl",
         mode === "chat" && "h-[70vh]",
       )}
     >
