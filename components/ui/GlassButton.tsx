@@ -21,13 +21,10 @@ const base =
 const glassIdle =
   "px-5 py-2.5 bg-ink/[0.06] border border-ink/12 backdrop-blur-md " +
   "shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-1px_0_rgba(0,0,0,0.14)] " +
-  "transition-[transform,border-color,background-color] duration-200 ease-out " +
+  "transition-[border-color,background-color] duration-200 ease-out " +
   "motion-reduce:transition-none";
 
-const glassInteractive =
-  "hover:-translate-y-px hover:border-ink/25 hover:bg-ink/[0.10] " +
-  "active:translate-y-0 active:scale-[0.99] " +
-  "motion-reduce:hover:translate-y-0";
+const glassInteractive = "hover:border-ink/25 hover:bg-ink/[0.10]";
 
 const ghost =
   "px-1 py-2 text-ink-muted transition-colors duration-150 hover:text-ink";
