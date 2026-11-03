@@ -213,7 +213,7 @@ const Hero = () => {
           className="flex flex-col gap-4 py-8 sm:flex-row"
         >
           <Link
-            href="/AneeqHassan.pdf"
+            href="/resume"
             target="_blank"
             rel="noopener noreferrer"
           >

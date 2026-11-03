@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Separate development output from production builds
+/.next-dev/
+/.playwright-mcp/
+
+# Generated from the installed MapLibre version by postinstall
+/public/maplibre-worker.js
+
+!.env.example

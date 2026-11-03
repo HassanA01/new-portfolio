@@ -1,0 +1,23 @@
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    volumes:
+      - .:/app
+      - portfolio_modules:/app/node_modules
+      - portfolio_next:/app/.next-dev
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/resume').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+volumes:
+  portfolio_modules:
+  portfolio_next:

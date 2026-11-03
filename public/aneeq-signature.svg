@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 280" fill="none">
+  <g stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Tall A, with a continuous looping crossbar beneath the name. -->
+    <path stroke-width="7" d="M24 250 C65 239 110 166 145 102 C166 64 178 35 184 20 C176 69 183 127 199 173 L224 231 C192 196 165 165 128 143 C96 123 65 104 43 116 C23 126 22 150 40 159 C68 177 111 163 154 151 C233 129 354 134 528 137"/>
+    <!-- Connected lowercase n, e, e. -->
+    <path stroke-width="7" d="M222 91 C226 80 232 86 231 99 L225 135 C232 112 243 87 254 89 C270 92 258 120 259 131 C262 143 280 131 289 122 C305 109 313 91 304 88 C288 82 282 111 289 123 C298 144 323 138 343 121 C359 107 370 88 359 86 C343 83 334 110 343 122 C355 140 381 138 401 123"/>
+    <!-- q loop, descending stem and rising finishing stroke. -->
+    <path stroke-width="7" d="M434 88 C418 80 404 96 400 115 C395 138 411 139 425 123 C435 111 440 93 439 88 C438 118 422 172 408 224 C419 208 446 176 468 148 C480 133 490 117 498 105"/>
+  </g>
+</svg>

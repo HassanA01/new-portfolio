@@ -1,0 +1,34 @@
+.frame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.frame :global(.project-feature) {
+  width: 100%;
+  height: auto;
+  align-items: center;
+}
+.frame :global(.project-preview) {
+  align-self: center;
+}
+.frame :global(.project-copy) {
+  display: grid;
+  align-content: center;
+}
+.frame :global(.project-copy h3),
+.frame :global(.project-copy p),
+.frame :global(.project-stack) {
+  min-height: 0;
+}
+.frame :global(.project-stack) {
+  align-content: start;
+}
+.frame :global(.project-links) {
+  align-self: end;
+}
+@media (min-width: 601px) {
+  .frame :global(.project-copy) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
