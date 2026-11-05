@@ -1,6 +1,6 @@
 # Paid résumé integration
 
-Price: **US$5**, one-time. Hosted Checkout → signed webhook → private PDF download.
+Price: **CA$5**, one-time. Hosted Checkout → signed webhook → private PDF download.
 Production URL: `https://aneeqhassan.com`.
 
 The PDF lives in `private/AneeqHassan.pdf`, outside Next's public assets. Vercel's

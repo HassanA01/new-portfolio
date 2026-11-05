@@ -11,7 +11,7 @@ export default function ResumeCheckoutForm() {
       onSubmit={() => setPending(true)}
     >
       <button className="resume-action" type="submit" disabled={pending}>
-        {pending ? "Opening checkout…" : "Get résumé · US$5"}
+        {pending ? "Opening checkout…" : "Get résumé · CA$5"}
         {!pending && <span aria-hidden="true">↗</span>}
       </button>
     </form>

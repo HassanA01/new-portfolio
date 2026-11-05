@@ -13,8 +13,8 @@ failures. Follow-ups preserve filters, while explicit replacements and resets
 change them. Unsupported filters must not be presented as applied.
 
 The examples demonstrate successful retrieval, constrained follow-ups, missing
-metadata, résumé checkout, unknown languages, limited career details, banter,
-identity, and tool failure. Their result summaries are explicitly illustrative;
+metadata, résumé checkout, an unknown gpa, quick replies on an ambiguous ask, limited
+career details, banter, identity, and tool failure. Their result summaries are explicitly illustrative;
 current tool output takes precedence. The prompt does not encode a permanent
 biography or pretend the application can perform unavailable actions.
 
@@ -30,7 +30,7 @@ biography or pretend the application can perform unavailable actions.
   concrete descriptions of when each tool applies, input meanings, output
   semantics, and limitations. Parameter descriptions live with the Zod schemas.
 
-These are general prompting principles. The configured Gateway model is unchanged;
+These are general prompting principles. Model selection is independent of this prompt;
 Claude-specific performance claims do not establish quality on another model.
 
 ## Verification and limits

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import {
@@ -33,29 +33,13 @@ export function usePortfolioChat(initialMessages: PortfolioMessage[]) {
   const waiting = status === "submitted" || status === "streaming";
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [resetCount, setResetCount] = useState(0);
-  const openedCheckouts = useRef(new Set<string>());
+  // The résumé tool renders a ticket; checkout opens only when the visitor taps it.
   const openCheckout = useCallback(() => setCheckoutOpen(true), []);
   const closeCheckout = useCallback(() => setCheckoutOpen(false), []);
 
   useEffect(() => {
-    for (const message of messages) {
-      for (const part of message.parts) {
-        if (
-          part.type === "tool-showResume" &&
-          part.state === "output-available" &&
-          !openedCheckouts.current.has(part.toolCallId)
-        ) {
-          openedCheckouts.current.add(part.toolCallId);
-          openCheckout();
-        }
-      }
-    }
-  }, [messages, openCheckout]);
-
-  useEffect(() => {
     const reset = () => {
       void stop();
-      openedCheckouts.current.clear();
       closeCheckout();
       setMessages([]);
       clearError();

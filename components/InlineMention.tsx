@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, type CSSProperties } from "react";
+import Image from "next/image";
 
 export default function InlineMention({
   name,
@@ -11,6 +12,7 @@ export default function InlineMention({
   popupWidth = 280,
   centered = false,
   fitContent = false,
+  image,
 }: {
   name: string;
   description?: string;
@@ -20,6 +22,8 @@ export default function InlineMention({
   popupWidth?: number;
   centered?: boolean;
   fitContent?: boolean;
+  /** A photo to show in the popover, sized to `popupWidth`. */
+  image?: { src: string; alt: string; width: number; height: number };
 }) {
   const id = useId();
   const popup = useRef<HTMLSpanElement>(null);
@@ -36,7 +40,11 @@ export default function InlineMention({
     card.style.width = fitContent ? "max-content" : `${width}px`;
     card.style.maxWidth = `${width}px`;
     card.style.left = `${Math.max(16, Math.min(left, window.innerWidth - width - 16))}px`;
-    const above = bounds.bottom + 130 > window.innerHeight;
+    // Photos are tall; flip above the word when they would run off the bottom.
+    const estimatedHeight = image
+      ? (width * image.height) / image.width + 24
+      : 130;
+    const above = bounds.bottom + estimatedHeight > window.innerHeight;
     card.style.top = `${above ? bounds.top - 8 : bounds.bottom + 8}px`;
     card.style.transform = above ? "translateY(-100%)" : "none";
   };
@@ -82,8 +90,21 @@ export default function InlineMention({
         popover="auto"
         role="tooltip"
         className="inline-mention-popover"
+        data-image={image ? "true" : undefined}
       >
-        <span className="inline-mention-description">{description}</span>
+        {image && (
+          <Image
+            className="inline-mention-photo"
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            sizes={`${popupWidth}px`}
+          />
+        )}
+        {description && (
+          <span className="inline-mention-description">{description}</span>
+        )}
       </span>
     </>
   );

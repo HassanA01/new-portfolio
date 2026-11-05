@@ -1,12 +1,24 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { pickErrorCopy } from "@/lib/agent/shared/error-copy";
 import type { PortfolioMessage } from "@/lib/agent/shared/messages";
 import { usePortfolioChat } from "@/hooks/use-portfolio-chat";
 import CheckoutModal from "@/components/CheckoutModal";
 import Composer from "@/components/chat/composer";
 import MessageList from "@/components/chat/message-list";
+import AnikeMark from "@/components/chat/anike-mark";
+
+/** Choices the agent attached to its latest finished reply, if any. */
+function quickReplies(last: PortfolioMessage | undefined, waiting: boolean) {
+  if (waiting || last?.role !== "assistant") return undefined;
+  let choices: readonly string[] | undefined;
+  for (const part of last.parts)
+    if (part.type === "tool-offerChoices" && part.state === "output-available")
+      choices = part.output.choices;
+  return choices;
+}
 
 export default function ChatView({
   initialMessages = [],
@@ -15,6 +27,14 @@ export default function ChatView({
 }) {
   const chat = usePortfolioChat(initialMessages);
   const active = chat.messages.length > 0;
+  const choices = quickReplies(chat.messages.at(-1), chat.waiting);
+  // One random line per error, kept stable across re-renders of the same error.
+  const [errorLine, setErrorLine] = useState<string>();
+  const [seenError, setSeenError] = useState(chat.error);
+  if (chat.error !== seenError) {
+    setSeenError(chat.error);
+    if (chat.error) setErrorLine(pickErrorCopy(chat.error.message, errorLine));
+  }
 
   useEffect(() => {
     document.documentElement.dataset.chat = active ? "true" : "false";
@@ -38,7 +58,7 @@ export default function ChatView({
       {active && (
         <>
           <div className="chat-heading">
-            <span>anike</span>
+            <AnikeMark />
             <button
               type="button"
               className="desktop-leave-chat"
@@ -61,16 +81,13 @@ export default function ChatView({
         key={chat.resetCount}
         active={active}
         waiting={chat.waiting}
+        choices={choices}
         onSubmit={chat.submit}
       />
       <div className="composer-feedback">
         {chat.error && (
           <div className="agent-error" role="alert">
-            <p>
-              {chat.error.message.includes("connected yet")
-                ? "i’m not connected yet. try again soon :)"
-                : "couldn’t finish that reply. give it another go?"}
-            </p>
+            <p>{errorLine}</p>
             <button type="button" onClick={chat.retry}>
               try again
             </button>

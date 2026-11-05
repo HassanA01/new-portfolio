@@ -16,6 +16,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import BackgroundStory from "@/components/BackgroundStory";
 import EducationJourney from "@/components/EducationJourney";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import TodoList from "@/components/TodoList";
 import CareerTree from "@/components/CareerTree";
 import InlineMention from "@/components/InlineMention";
 import { Cormorant_Garamond } from "next/font/google";
@@ -27,7 +28,8 @@ const sectionSerif = Cormorant_Garamond({
   variable: "--font-drop-cap",
 });
 
-const sections = [
+/** `hidden` keeps a section's content in the codebase without rendering it. */
+const allSections = [
   {
     id: "background",
     title: "Background",
@@ -51,12 +53,19 @@ const sections = [
     description: "Things I’ve built and projects I’m working on. More to come.",
   },
   {
+    id: "todo",
+    title: "Todo",
+    description: "Things still on my list for this site, so I don’t forget.",
+  },
+  {
     id: "exploring",
     title: "What I’m exploring",
     description:
       "A place for current interests, questions, and things I’m trying out. More to come.",
+    hidden: true,
   },
 ];
+const sections = allSections.filter((section) => !section.hidden);
 
 const careerRoles = [
   ["Stripe", "Software Engineer", "Sep 2026 – Present"],
@@ -240,7 +249,6 @@ export default function AboutSections({
       </dialog>
       <aside className="about-toc">
         <nav aria-label="Table of contents">
-          <p>On this page</p>
           {sections.map(({ id, title }) => (
             <a
               key={id}
@@ -650,6 +658,11 @@ export default function AboutSections({
                   </>
                 ) : id === "projects" ? (
                   <ProjectShowcase />
+                ) : id === "todo" ? (
+                  <>
+                    <p>{description}</p>
+                    <TodoList className="about-todo-list" />
+                  </>
                 ) : (
                   <p>{description}</p>
                 )}
@@ -657,14 +670,6 @@ export default function AboutSections({
             </AccordionContent>
           </Accordion>
         ))}
-        <a
-          className="about-resume"
-          href="/resume"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get my résumé · US$5 ↗
-        </a>
       </div>
     </div>
   );

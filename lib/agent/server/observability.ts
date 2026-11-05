@@ -9,6 +9,9 @@ export function logAgentError(
     JSON.stringify({
       event,
       error: error instanceof Error ? error.name : "unknown",
+      ...(error instanceof Error && "setting" in error
+        ? { setting: error.setting }
+        : {}),
     }),
   );
 }

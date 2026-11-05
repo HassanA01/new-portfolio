@@ -33,10 +33,84 @@
     }
   },
   {
-    "name": "resume checkout",
+    "name": "projects after a profile turn stays on projects",
+    "history": [
+      {
+        "role": "user",
+        "text": "which languages does aneeq speak?"
+      },
+      {
+        "role": "assistant",
+        "text": "his profile lists english, urdu, arabic, and french."
+      }
+    ],
+    "prompt": "what projects is aneeq working on rn",
+    "tool": "showProjects",
+    "input": {
+      "status": "active"
+    },
+    "forbiddenTools": ["showProfile", "showResume"],
+    "forbiddenText": ["languages", "profile again", "checked my profile"]
+  },
+  {
+    "name": "profile after a projects turn stays on profile",
+    "history": [
+      {
+        "role": "user",
+        "text": "show me aneeq's projects"
+      },
+      {
+        "role": "assistant",
+        "text": "project browser shown with filters {\"category\":\"All\"}; titles: MailflowAI, B2W - UofT Hacks 12, BizReach Marketplace\nhere's everything i've built."
+      }
+    ],
+    "prompt": "where does he work now?",
+    "tool": "showProfile",
+    "input": {
+      "topic": "career"
+    },
+    "forbiddenTools": ["showProjects", "showResume"]
+  },
+  {
+    "name": "plain projects request stays on projects",
+    "prompt": "show me his projects",
+    "tool": "showProjects",
+    "input": {
+      "category": "All"
+    },
+    "forbiddenTools": ["showProfile", "showResume"]
+  },
+  {
+    "name": "ambiguous ask offers quick replies",
+    "prompt": "tell me more about him",
+    "tool": null,
+    "input": {},
+    "requiredTools": ["offerChoices"],
+    "forbiddenTools": ["showResume"]
+  },
+  {
+    "name": "quick reply answer runs the offered search",
+    "history": [
+      {
+        "role": "user",
+        "text": "tell me more about him"
+      },
+      {
+        "role": "assistant",
+        "text": "happy to. where do you want to start?\nquick replies offered: his career / his projects / a bit about him"
+      }
+    ],
+    "prompt": "his projects",
+    "tool": "showProjects",
+    "input": {},
+    "forbiddenTools": ["showProfile", "showResume"]
+  },
+  {
+    "name": "resume checkout without quoting a price",
     "prompt": "can i see aneeq's resume?",
     "tool": "showResume",
-    "input": {}
+    "input": {},
+    "forbiddenText": ["us$5", "ca$5", "$5", "5 dollars", "five dollars"]
   },
   {
     "name": "career",
@@ -67,18 +141,22 @@
     }
   },
   {
-    "name": "unknown spoken languages",
-    "prompt": "which languages does aneeq speak fluently?",
+    "name": "spoken languages come from the profile",
+    "prompt": "which languages does aneeq speak?",
     "tool": "showProfile",
     "input": {
       "topic": "about"
     },
-    "forbiddenText": [
-      "i speak english",
-      "i speak urdu",
-      "i'm fluent",
-      "i am fluent"
-    ]
+    "forbiddenText": ["not listed", "don't have my spoken languages"]
+  },
+  {
+    "name": "unknown gpa is not guessed",
+    "prompt": "what was aneeq's gpa?",
+    "tool": "showProfile",
+    "input": {
+      "topic": "about"
+    },
+    "forbiddenText": ["3.", "4.0", "out of 4"]
   },
   {
     "name": "identity without unsolicited checkout",

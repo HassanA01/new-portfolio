@@ -27,8 +27,16 @@
   align-self: end;
 }
 @media (min-width: 601px) {
+  /* Copy starts at the top of the image on every card and the links sit on
+     its bottom edge, so titles line up across the three regardless of blurb length. */
   .frame :global(.project-copy) {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
     padding-top: 0;
     padding-bottom: 0;
+  }
+  .frame :global(.project-links) {
+    margin-top: auto;
   }
 }

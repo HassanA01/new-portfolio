@@ -21,7 +21,9 @@ const require = createRequire(source);
 new Function("require", "module", "exports", compiled)(
   (name) => {
     if (name === "@stripe/stripe-js") return { loadStripe: () => null };
-    if (name === "@/components/ui/accordion") return { disclosureSpring: {} };
+    if (name === "@/components/ui/accordion")
+      return { disclosureSpring: {}, hoverLift: {}, pressSpring: {} };
+    if (name === "@/components/ConfirmExit") return { default: () => null };
     if (name === "@stripe/react-stripe-js/checkout")
       return {
         useCheckoutElements: () => checkoutResult,
@@ -61,7 +63,7 @@ test("session success keeps skeleton and payment disabled until Stripe fields re
   assert.match(html, /Loading secure payment fields/);
   assert.match(html, /data-ready="false"/);
   assert.match(html, /inert=""/);
-  assert.match(html, /disabled=""[^>]*>Pay US\$5/);
+  assert.match(html, /disabled=""[^>]*>Pay CA\$5/);
   assert.equal(typeof paymentProps.onReady, "function");
   assert.equal(typeof paymentProps.onLoadError, "function");
 });

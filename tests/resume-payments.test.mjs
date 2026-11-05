@@ -22,7 +22,7 @@ const policy = load("../lib/resume-payments.ts");
 const paid = {
   id: "cs_test_abcdefghijklmnop",
   mode: "payment",
-  currency: "usd",
+  currency: "cad",
   amount_total: 500,
   payment_status: "paid",
   created: 1000,
@@ -33,7 +33,7 @@ test("download requires the correct product, currency, amount and paid status", 
   assert.equal(policy.canDownload(paid, 1001000), true);
   for (const patch of [
     { mode: "subscription" },
-    { currency: "cad" },
+    { currency: "usd" },
     { amount_total: 100 },
     { payment_status: "unpaid" },
     { metadata: { product: "other", resume_fulfilled: "true" } },
@@ -66,9 +66,10 @@ test("malformed session IDs are rejected", () => {
   ])
     assert.equal(policy.validSessionId(id), false);
 });
-test("checkout uses the configured origin and fixed US$5 pricing", async () => {
+test("checkout uses the configured origin and fixed CA$5 pricing", async () => {
   let payload;
   const checkout = load("../app/api/resume/checkout/route.ts", {
+    "@/lib/rate-limit": { rateLimitResponse: async () => null },
     "@/lib/resume-payments": {
       ...policy,
       appOrigin: () => "https://portfolio.example",
@@ -101,7 +102,7 @@ test("checkout uses the configured origin and fixed US$5 pricing", async () => {
   );
   assert.equal(response.status, 303);
   assert.equal(payload.line_items[0].price_data.unit_amount, 500);
-  assert.equal(payload.line_items[0].price_data.currency, "usd");
+  assert.equal(payload.line_items[0].price_data.currency, "cad");
   assert.equal(payload.payment_method_types, undefined);
 });
 test("webhook signature validation and paid-session fulfillment are idempotent", async () => {
@@ -212,6 +213,7 @@ test("download denies unpaid and refunded sessions and only serves fulfilled PDF
 test("custom checkout returns a client secret and uses return_url", async () => {
   let payload;
   const checkout = load("../app/api/resume/checkout/route.ts", {
+    "@/lib/rate-limit": { rateLimitResponse: async () => null },
     "@/lib/resume-payments": {
       ...policy,
       appOrigin: () => "https://portfolio.example",

@@ -1,8 +1,10 @@
-import Image from "next/image";
+import type { MouseEvent } from "react";
 import { ArrowUpRight, Github } from "lucide-react";
+import TechMarks from "@/components/TechMarks";
+import ProjectPreview from "@/components/ProjectPreview";
 import { Cormorant_Garamond } from "next/font/google";
 import projects from "@/data/projects.json";
-const projectTitle = Cormorant_Garamond({
+export const projectTitle = Cormorant_Garamond({
   subsets: ["latin"],
   weight: "500",
   display: "swap",
@@ -16,16 +18,10 @@ const summaries: Record<string, string> = {
     "A financial dashboard with spending predictions, expense tracking, and personalized recommendations.",
   "BizReach Marketplace":
     "A marketplace connecting mobile businesses with clients, with real-time chat and AI-assisted gig descriptions.",
-  "Myriad CRO Landing Page":
-    "A responsive agency website with a guided process, expandable FAQs, and a focus on conversion.",
   "Portfolio Website":
     "The place you’re in right now. A personal corner of the internet, built one detail at a time.",
-  "IoT Data Monitoring System":
-    "A TimescaleDB-backed monitoring system for exploring more than a million sensor records.",
   "Proxy Server":
     "A Python proxy server with socket-based networking and caching for frequently requested content.",
-  "Delivery Service App":
-    "An event-driven delivery tracker that follows orders from creation through to completion.",
 };
 export function ProjectCard({
   project,
@@ -38,6 +34,18 @@ export function ProjectCard({
   detail?: boolean;
   onOpen?: () => void;
 }) {
+  const row = !feature && !detail && Boolean(onOpen);
+  // The card body sits above the invisible open button so its text stays
+  // selectable; clicks on the body (not links, not an in-progress text
+  // selection) still open the details.
+  const openFromBody = row
+    ? (event: MouseEvent<HTMLElement>) => {
+        const target = event.target as Element;
+        if (target.closest("a, button, dialog")) return;
+        if (window.getSelection()?.toString()) return;
+        onOpen?.();
+      }
+    : undefined;
   return (
     <article
       className={
@@ -47,6 +55,7 @@ export function ProjectCard({
             ? "project-glass project-feature"
             : "project-glass project-slide-card"
       }
+      onClick={openFromBody}
     >
       {!feature && !detail && onOpen && (
         <button
@@ -57,18 +66,15 @@ export function ProjectCard({
           onClick={onOpen}
         />
       )}
-      <div className="project-preview">
-        <Image
-          src={project.image}
-          alt={`${project.title} project preview`}
-          fill
-          sizes={
-            feature
-              ? "(max-width: 600px) 90vw, 440px"
-              : "(max-width: 600px) 80vw, 300px"
-          }
-        />
-      </div>
+      <ProjectPreview
+        src={project.image}
+        title={project.title}
+        sizes={
+          feature
+            ? "(max-width: 600px) 90vw, 440px"
+            : "(max-width: 600px) 80vw, 300px"
+        }
+      />
       <div className="project-copy">
         <h3 className={projectTitle.className} style={projectTitle.style}>
           {project.title}
@@ -79,15 +85,18 @@ export function ProjectCard({
             : (summaries[project.title] ??
               project.description.replace(/<[^>]*>/g, ""))}
         </p>
-        {(feature || detail) && (
-          <ul
-            className="project-stack"
-            aria-label={`${project.title} technologies`}
-          >
-            {project.tech.slice(0, detail ? undefined : 4).map((tech) => (
-              <li key={tech}>{tech}</li>
-            ))}
-          </ul>
+        {feature && (
+          <TechMarks
+            tech={project.tech}
+            label={`${project.title} technologies`}
+          />
+        )}
+        {detail && (
+          <TechMarks
+            tech={project.tech}
+            max={project.tech.length}
+            label={`${project.title} technologies`}
+          />
         )}
         <div className="project-links">
           {project.github && (

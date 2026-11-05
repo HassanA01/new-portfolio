@@ -45,9 +45,14 @@ for (const [route, heading] of [
     else assert.match(html, new RegExp(`<h1>${heading}`));
     assert.match(html, /id="main-content"/);
     assert.match(html, /aria-label="(?:Dark|Light) mode"/);
-    assert.match(html, /aria-current="page"/);
-    for (const href of ["/", "/about", "/blog", "/gallery", "/todo"])
+    // Hidden pages have no nav link to mark as current.
+    if (!["/gallery", "/todo"].includes(route))
+      assert.match(html, /aria-current="page"/);
+    for (const href of ["/", "/about", "/blog"])
       assert.ok(html.includes(`href="${href}"`));
+    // Gallery, Todo and Tools exist but are hidden from the nav for now.
+    for (const href of ["/gallery", "/todo", "/tools"])
+      assert.ok(!html.includes(`href="${href}"`), `${href} should be hidden`);
     if (route === "/") {
       assert.match(html, /id="agent-question"/);
       assert.match(html, /aria-label="Send message" disabled=""/);
@@ -64,9 +69,10 @@ for (const [route, heading] of [
         ),
       );
     } else if (route === "/about") {
-      assert.match(html, /href="\/resume"/);
+      assert.doesNotMatch(html, /CA\$5/);
       assert.match(html, /id="projects"/);
-      assert.match(html, /MailflowAI/);
+      for (const title of ["flwst8", "Sawt", "Hilal"])
+        assert.ok(html.includes(title), `${title} should be featured`);
       assert.match(html, /href="\/\?explore=projects"/);
     } else if (route === "/todo") {
       assert.match(
@@ -92,7 +98,7 @@ test("paid résumé entrypoint discloses price and public PDF is gone", async ()
   const response = await fetch(origin + "/resume");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /US\$5/);
+  assert.match(html, /CA\$5/);
   assert.match(html, /action="\/api\/resume\/checkout"/);
   assert.equal((await fetch(origin + "/AneeqHassan.pdf")).status, 404);
   assert.equal((await fetch(origin + "/api/resume/download")).status, 400);

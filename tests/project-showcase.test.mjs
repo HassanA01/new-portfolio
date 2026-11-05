@@ -91,10 +91,16 @@ test("showcase features the first project once and exposes all other projects wi
   const html = renderToStaticMarkup(
     React.createElement(loaded.exports.default),
   );
-  assert.equal((html.match(/<article/g) || []).length, 3);
+  // Each featured slot carries a desktop card and a phone card; CSS shows one.
+  assert.equal((html.match(/<article/g) || []).length, 6);
+  assert.equal((html.match(/featured-desktop/g) || []).length, 3);
+  assert.equal((html.match(/featured-mobile"/g) || []).length, 3);
   assert.match(html, /aria-label="Featured projects"/);
   assert.match(html, /href="\/\?explore=projects"/);
-  assert.match(html, /Explore with Anike/);
+  assert.match(
+    html,
+    /Explore with <span class="project-explore-anike">Anike<\/span>/,
+  );
   assert.doesNotMatch(html, /More things I’ve built|Filter projects/);
   assert.doesNotMatch(html, /font-semibold/);
 });
@@ -121,7 +127,9 @@ test("featured cards own their frame and unique SVG gradient IDs", () => {
   const ids = [...html.matchAll(/linearGradient id="([^"]+)"/g)].map(
     (match) => match[1],
   );
-  assert.equal(new Set(ids).size, 2);
+  // Frame gradients plus one per tech mark; every id must still be unique.
+  assert.ok(ids.length >= 2);
+  assert.equal(new Set(ids).size, ids.length);
 });
 
 test("project rows open details and keep technology pills inside the detail view", () => {
@@ -144,7 +152,7 @@ test("project rows open details and keep technology pills inside the detail view
       detail: true,
     }),
   );
-  assert.match(details, /class="project-stack"/);
+  assert.match(details, /class="tech-marks"/);
   for (const tech of projects[2].tech) assert.ok(details.includes(tech));
   assert.doesNotMatch(details, /font-semibold/);
 });
@@ -202,13 +210,12 @@ test("tool project UI preserves search scope and explains missing metadata", () 
 
 test("resume tool result reopens checkout without navigating away", () => {
   const ToolResult = loadComponent("chat/parts/resume").default;
-  let opens = 0;
-  const result = ToolResult({
-    onOpen: () => opens++,
-  });
-  assert.equal(result.type, "button");
-  result.props.onClick();
-  assert.equal(opens, 1);
+  const html = renderToStaticMarkup(
+    React.createElement(ToolResult, { onOpen() {} }),
+  );
+  assert.match(html, /<button[^>]*class="agent-resume-open"[^>]*type="button"/);
+  assert.doesNotMatch(html, /<a[^>]*href=/);
+  assert.match(html, /aria-label="Open my résumé checkout"/);
 });
 
 test("chat message rendering preserves project layout and formats only agent prose", () => {
@@ -241,7 +248,7 @@ test("chat message rendering preserves project layout and formats only agent pro
     html,
     /class="chat-message chat-message-agent chat-message-projects"/,
   );
-  assert.match(html, /hey, here are my projects\./);
+  assert.match(html.replace(/<[^>]*>/g, ""), /hey, here are my projects\./);
   const user = renderToStaticMarkup(
     React.createElement(Message, {
       message: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import projects from "@/data/projects.json";
 import FilterPill from "@/components/FilterPill";
@@ -11,6 +11,32 @@ import {
   projectFilters,
   type ProjectFilter,
 } from "@/lib/project-browser";
+
+/**
+ * First render: the cards sit stacked like a deck on the top slot, each one
+ * scaled back a touch, then drop into their rows one after another on a
+ * spring. Later filter changes use the quieter slide.
+ */
+const deck = {
+  stacked: (index: number) => ({
+    y: `${-index * 100}%`,
+    scale: 1 - Math.min(index, 5) * 0.025,
+    opacity: index === 0 ? 1 : 0.92,
+  }),
+  settled: (index: number) => ({
+    y: 0,
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 230,
+      damping: 24,
+      mass: 0.9,
+      delay: 0.07 * index,
+    },
+  }),
+};
+const DECK_SETTLE_MS = 1400;
 
 export default function ProjectExplorer({
   initialFilter = "All",
@@ -25,6 +51,12 @@ export default function ProjectExplorer({
   const [selected, setSelected] = useState<Project | null>(null);
   const reduced = useReducedMotion();
   const visible = filterProjects(results ?? projects, filter);
+  const [dealt, setDealt] = useState(!!reduced);
+  useEffect(() => {
+    if (dealt) return;
+    const timer = window.setTimeout(() => setDealt(true), DECK_SETTLE_MS);
+    return () => window.clearTimeout(timer);
+  }, [dealt]);
   return (
     <section
       className="project-showcase project-explorer"
@@ -60,15 +92,18 @@ export default function ProjectExplorer({
         layout={reduced ? false : "position"}
         aria-label="Projects"
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {visible.map((project) => (
+        <AnimatePresence initial={!reduced} mode="popLayout">
+          {visible.map((project, index) => (
             <motion.li
               layout={reduced ? false : "position"}
               key={project.title}
-              initial={{ opacity: 0, y: reduced ? 0 : 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              custom={index}
+              variants={dealt ? undefined : deck}
+              initial={dealt ? { opacity: 0, y: reduced ? 0 : 12 } : "stacked"}
+              animate={dealt ? { opacity: 1, y: 0 } : "settled"}
               exit={{ opacity: 0, scale: reduced ? 1 : 0.98 }}
-              transition={{ duration: reduced ? 0 : 0.25 }}
+              transition={dealt ? { duration: reduced ? 0 : 0.25 } : undefined}
+              style={{ zIndex: visible.length - index }}
             >
               <ProjectCard
                 project={project}

@@ -7,9 +7,14 @@ import {
   PaymentElement,
   useCheckoutElements,
 } from "@stripe/react-stripe-js/checkout";
-import { motion, useReducedMotion } from "framer-motion";
-import { Check, X } from "lucide-react";
-import { disclosureSpring } from "@/components/ui/accordion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { X } from "lucide-react";
+import {
+  disclosureSpring,
+  hoverLift,
+  pressSpring,
+} from "@/components/ui/accordion";
+import ConfirmExit from "@/components/ConfirmExit";
 
 /**
  * Custom résumé checkout. Everything visible is ours; only the card fields
@@ -106,17 +111,10 @@ const paymentOptions = { layout: "tabs" as const };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Hover eases up and holds; only the press gets the spring.
-const hoverLift = {
-  scale: 1.03,
-  transition: { type: "tween", duration: 0.18, ease: "easeOut" },
-} as const;
-const pressSpring = { scale: 0.95, transition: disclosureSpring } as const;
-
-/** Site copy says "US$5", so whole-dollar totals drop the cents. */
+/** Site copy says "CA$5", so whole-dollar totals drop the cents. */
 function formatPrice(minorUnits: number, divisor: number) {
   const amount = minorUnits / divisor;
-  return `US$${Number.isInteger(amount) ? amount : amount.toFixed(2)}`;
+  return `CA$${Number.isInteger(amount) ? amount : amount.toFixed(2)}`;
 }
 
 export default function CheckoutModal({
@@ -134,6 +132,20 @@ export default function CheckoutModal({
   );
   const [paidSessionId, setPaidSessionId] = useState<string | null>(null);
   const [paidEmail, setPaidEmail] = useState<string | null>(null);
+  // After paying, leaving without the PDF gets a second look.
+  const [downloaded, setDownloaded] = useState(false);
+  const [confirmExit, setConfirmExit] = useState(false);
+  const exitAllowed = useRef(false);
+  const guardExit = !!paidSessionId && !downloaded;
+  const closeNow = () => {
+    exitAllowed.current = true;
+    setConfirmExit(false);
+    onClose();
+  };
+  const requestClose = () => {
+    if (guardExit) setConfirmExit(true);
+    else closeNow();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -141,10 +153,14 @@ export default function CheckoutModal({
     setDark(prefersDark());
     setPaidSessionId(null);
     setPaidEmail(null);
+    setDownloaded(false);
+    setConfirmExit(false);
+    exitAllowed.current = false;
     // One Checkout Session per open; the promise is handed straight to Stripe.
     const secret = createSession();
     secret.catch(() => {}); // Surfaced through useCheckoutElements, not as an unhandled rejection.
     setClientSecret(secret);
+    delete element?.dataset.reopened;
     element?.showModal();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -179,21 +195,45 @@ export default function CheckoutModal({
     <dialog
       ref={dialog}
       className="checkout-modal"
-      aria-labelledby="checkout-title"
-      onCancel={onClose}
-      onClose={onClose}
+      aria-labelledby={paidSessionId ? undefined : "checkout-title"}
+      aria-label={paidSessionId ? "Payment confirmed" : undefined}
+      onKeyDown={(event) => {
+        // Escape is the dialog's own close shortcut; take it over so it runs through the guard.
+        if (event.key !== "Escape" || confirmExit) return;
+        event.preventDefault();
+        requestClose();
+      }}
+      onCancel={(event) => {
+        // React also routes the nested exit prompt's events here; only handle our own.
+        if (event.target !== event.currentTarget) return;
+        event.preventDefault();
+        if (!confirmExit) requestClose();
+      }}
+      onClose={(event) => {
+        if (event.target !== event.currentTarget) return;
+        // A close the browser forced past us (e.g. repeated Escape): reopen and ask first.
+        const element = dialog.current;
+        if (element && open && guardExit && !exitAllowed.current) {
+          // Reopen in the same tick, without replaying the entrance, so nothing flashes.
+          element.dataset.reopened = "true";
+          element.showModal();
+          setConfirmExit(true);
+          return;
+        }
+        onClose();
+      }}
       onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (event.target === event.currentTarget) requestClose();
       }}
     >
       <div className="checkout-panel">
         <header className="checkout-heading">
-          <h2 id="checkout-title">My résumé</h2>
+          {!paidSessionId && <h2 id="checkout-title">My résumé</h2>}
           <motion.button
             type="button"
             className="checkout-close"
             aria-label="Close checkout"
-            onClick={onClose}
+            onClick={requestClose}
             whileTap={reduced ? undefined : { scale: 0.8 }}
             transition={disclosureSpring}
           >
@@ -202,11 +242,15 @@ export default function CheckoutModal({
         </header>
 
         {open && paidSessionId && (
-          <Receipt sessionId={paidSessionId} email={paidEmail} />
+          <Receipt
+            sessionId={paidSessionId}
+            email={paidEmail}
+            onDownload={() => setDownloaded(true)}
+          />
         )}
 
         {open && !paidSessionId && (
-          <p className="checkout-lede">Ain’t nun free in this world.</p>
+          <p className="checkout-lede">ain’t nun free in this world</p>
         )}
 
         {open && !paidSessionId && !stripe && (
@@ -227,10 +271,26 @@ export default function CheckoutModal({
           </CheckoutElementsProvider>
         )}
 
-        <footer className="checkout-footer">
-          Powered by <strong>Stripe</strong>
-        </footer>
+        {!paidSessionId && (
+          <footer className="checkout-footer">
+            Powered by <strong>Stripe</strong>
+          </footer>
+        )}
       </div>
+
+      <ConfirmExit
+        open={confirmExit}
+        className="checkout-exit"
+        message="bruv you didn’t download it yet. You sure you wanna exit?"
+        stayLabel="Stay"
+        exitLabel="Exit anyway"
+        emphasis="stay"
+        stayClassName="checkout-pay"
+        exitClassName="checkout-ghost"
+        dismissible={false}
+        onStay={() => setConfirmExit(false)}
+        onExit={closeNow}
+      />
     </dialog>
   );
 }
@@ -278,7 +338,7 @@ export function CheckoutForm({
         checkout.total.total.minorUnitsAmount,
         checkout.minorUnitsAmountDivisor,
       )
-    : "US$5";
+    : "CA$5";
   const emailValid = EMAIL_PATTERN.test(email.trim());
   const showEmailError = emailTouched && !emailValid;
 
@@ -289,6 +349,12 @@ export function CheckoutForm({
     if (!emailValid) return;
     setSubmitting(true);
     setError(null);
+    // Incomplete or invalid card details: Stripe marks the field itself, so no banner here.
+    const validation = await checkout.validateElements();
+    if (validation.type === "error") {
+      setSubmitting(false);
+      return;
+    }
     const outcome = await checkout.confirm({
       email: email.trim(),
       redirect: "if_required",
@@ -418,7 +484,6 @@ export function CheckoutForm({
         }
       >
         {submitting ? "Processing…" : `Pay ${price}`}
-        {!submitting && <span aria-hidden="true">↗</span>}
       </motion.button>
     </form>
   );
@@ -427,14 +492,27 @@ export function CheckoutForm({
 function Receipt({
   sessionId,
   email,
+  onDownload,
 }: {
   sessionId: string;
   email: string | null;
+  onDownload: () => void;
 }) {
   const reduced = useReducedMotion();
   const [state, setState] = useState<"confirming" | "ready" | "delayed">(
     "confirming",
   );
+  // "intro": the check mark draws itself in the centre of the modal, then
+  // slides (shared layoutId) up to its resting slot once "settled".
+  const [phase, setPhase] = useState<"intro" | "settled">(
+    reduced ? "settled" : "intro",
+  );
+
+  useEffect(() => {
+    if (phase === "settled") return;
+    const timeout = setTimeout(() => setPhase("settled"), INTRO_HOLD_MS);
+    return () => clearTimeout(timeout);
+  }, [phase]);
 
   useEffect(() => {
     let active = true;
@@ -465,43 +543,141 @@ function Receipt({
     };
   }, [sessionId]);
 
-  const successUrl = `/resume/success?session_id=${encodeURIComponent(sessionId)}`;
+  if (phase === "intro") {
+    return (
+      <div className="checkout-receipt" data-phase="intro" aria-live="polite">
+        <ReceiptMark size={72} iconSize={30} draw />
+        <span className="sr-only">Payment confirmed.</span>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout-receipt" aria-live="polite">
-      <span className="checkout-receipt-mark" aria-hidden="true">
-        <Check size={16} strokeWidth={2.25} />
-      </span>
-      <p className="checkout-lede">
-        Thank you. {email ? `A receipt is on its way to ${email}.` : null}
-      </p>
-
-      {state === "confirming" && (
-        <p className="checkout-status" role="status">
-          Confirming with Stripe… your download will appear here in a moment.
+      <ReceiptMark size={34} iconSize={16} />
+      <motion.div
+        className="checkout-receipt-body"
+        initial={reduced ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.36, ease: "easeOut", delay: 0.18 }}
+      >
+        <p className="checkout-lede">
+          Preciate dat cuz 🤞
+          {email && (
+            <>
+              <br />
+              <span className="checkout-receipt-sub">
+                A receipt is on its way to {email}
+              </span>
+            </>
+          )}
         </p>
-      )}
-      {state === "ready" && (
-        <motion.a
-          className="checkout-pay"
-          href={`/api/resume/download?session_id=${encodeURIComponent(sessionId)}`}
-          whileHover={reduced ? undefined : hoverLift}
-          whileTap={reduced ? undefined : pressSpring}
-        >
-          Download PDF <span aria-hidden="true">↓</span>
-        </motion.a>
-      )}
-      {state === "delayed" && (
-        <p className="checkout-status" role="status">
-          Still confirming. Your download will be ready shortly at the link
-          below. Don’t pay again.
-        </p>
-      )}
 
-      <p className="checkout-note">
-        Downloads work for 7 days. <a href={successUrl}>Keep this link</a> to
-        come back for it, and keep it private.
-      </p>
+        {state !== "delayed" && (
+          <div
+            className="checkout-download-slot"
+            role="status"
+            aria-busy={state === "confirming"}
+          >
+            {/* The skeleton fades out underneath while the button fades up in place, so nothing pops. */}
+            <AnimatePresence initial={false}>
+              {state === "confirming" && (
+                <motion.div
+                  key="skeleton"
+                  className="checkout-skeleton checkout-download-skeleton"
+                  aria-hidden="true"
+                  exit={{
+                    opacity: 0,
+                    transition: {
+                      duration: reduced ? 0 : 0.3,
+                      ease: "easeOut",
+                    },
+                  }}
+                >
+                  <span />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {state === "confirming" && (
+              <span className="sr-only">
+                Confirming with Stripe… your download will appear here in a
+                moment.
+              </span>
+            )}
+            {state === "ready" && (
+              <motion.a
+                className="checkout-pay"
+                href={`/api/resume/download?session_id=${encodeURIComponent(sessionId)}`}
+                onClick={onDownload}
+                whileHover={reduced ? undefined : hoverLift}
+                whileTap={reduced ? undefined : pressSpring}
+              >
+                Download PDF <span aria-hidden="true">↓</span>
+              </motion.a>
+            )}
+          </div>
+        )}
+        {state === "delayed" && (
+          <p className="checkout-status" role="status">
+            Still confirming. Your download will appear here shortly. Don’t pay
+            again.
+          </p>
+        )}
+      </motion.div>
     </div>
+  );
+}
+
+const INTRO_HOLD_MS = 1100;
+const markSlide = { type: "spring", stiffness: 260, damping: 28 } as const;
+
+/**
+ * Signature-ringed check. The same layoutId in both receipt phases lets
+ * framer-motion carry it from the centre of the modal to its final slot.
+ */
+function ReceiptMark({
+  size,
+  iconSize,
+  draw = false,
+}: {
+  size: number;
+  iconSize: number;
+  draw?: boolean;
+}) {
+  return (
+    <motion.span
+      className="checkout-receipt-mark"
+      style={{ width: size, height: size }}
+      layoutId="checkout-receipt-mark"
+      initial={draw ? { scale: 0.6, opacity: 0 } : undefined}
+      animate={draw ? { scale: 1, opacity: 1 } : undefined}
+      transition={{
+        layout: markSlide,
+        scale: { type: "spring", stiffness: 320, damping: 20 },
+        opacity: { duration: 0.2 },
+      }}
+      aria-hidden="true"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width={iconSize}
+        height={iconSize}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.25}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <motion.path
+          d="M5 12.5l4.5 4.5L19 7.5"
+          initial={draw ? { pathLength: 0, opacity: 0 } : false}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{
+            pathLength: { duration: 0.5, ease: "easeOut", delay: 0.2 },
+            opacity: { duration: 0.1, delay: 0.2 },
+          }}
+        />
+      </svg>
+    </motion.span>
   );
 }

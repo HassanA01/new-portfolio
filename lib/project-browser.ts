@@ -4,15 +4,21 @@ const categoryTitles: Record<Exclude<ProjectFilter, "All">, string[]> = {
   Web: [
     "B2W - UofT Hacks 12",
     "BizReach Marketplace",
-    "Myriad CRO Landing Page",
     "Portfolio Website",
-    "Delivery Service App",
+    "flwst8",
+    "Sawt",
+    "Hilal",
   ],
-  "AI/ML": ["MailflowAI", "B2W - UofT Hacks 12", "BizReach Marketplace"],
+  "AI/ML": [
+    "MailflowAI",
+    "B2W - UofT Hacks 12",
+    "BizReach Marketplace",
+    "flwst8",
+    "Sawt",
+    "Hilal",
+  ],
   Systems: [
-    "IoT Data Monitoring System",
     "Proxy Server",
-    "Delivery Service App",
   ],
 };
 export function filterProjects<T extends { title: string }>(

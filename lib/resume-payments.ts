@@ -2,6 +2,7 @@ import Stripe from "stripe";
 
 export const RESUME_PRODUCT = "aneeq-resume-v1";
 export const RESUME_AMOUNT = 500;
+export const RESUME_CURRENCY = "cad";
 export const DOWNLOAD_WINDOW = 7 * 24 * 60 * 60;
 
 export function stripeClient() {
@@ -14,7 +15,7 @@ export function isResumePayment(session: Stripe.Checkout.Session) {
   return (
     session.metadata?.product === RESUME_PRODUCT &&
     session.mode === "payment" &&
-    session.currency === "usd" &&
+    session.currency === RESUME_CURRENCY &&
     session.amount_total === RESUME_AMOUNT &&
     session.payment_status === "paid"
   );

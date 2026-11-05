@@ -113,17 +113,23 @@ test("real project tool returns curated AI results and does not invent current w
   );
   assert.deepEqual(
     ai.projects.map((p) => p.title),
-    ["MailflowAI", "B2W - UofT Hacks 12", "BizReach Marketplace"],
+    [
+      "MailflowAI",
+      "B2W - UofT Hacks 12",
+      "BizReach Marketplace",
+      "flwst8",
+      "Sawt",
+      "Hilal",
+    ],
   );
   const current = await portfolioTools.showProjects.execute(
     { category: "All", status: "active" },
     options,
   );
   assert.equal(current.projects.length, 0);
-  assert.equal(current.missingStatus, 8);
+  assert.equal(current.missingStatus, 0);
   assert.deepEqual(await portfolioTools.showResume.execute({}, options), {
     action: "open-resume-checkout",
-    price: "US$5",
   });
   const profile = await portfolioTools.showProfile.execute(
     { topic: "career" },

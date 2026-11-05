@@ -8,7 +8,9 @@ import {
   type FormEvent,
   type PointerEvent,
 } from "react";
-import { Send, ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Send } from "lucide-react";
+import { disclosureSpring } from "@/components/ui/accordion";
 import { agentLimits } from "@/lib/agent/shared/limits";
 
 const suggestions = [
@@ -21,14 +23,18 @@ const suggestions = [
 export default function Composer({
   active,
   waiting,
+  choices,
   onSubmit,
 }: {
   active: boolean;
   waiting: boolean;
+  /** Quick replies for the agent's last question; shown above the input. */
+  choices?: readonly string[];
   onSubmit: (question: string) => void;
 }) {
   const [input, setInput] = useState("");
   const [keyboardFocus, setKeyboardFocus] = useState(false);
+  const reduced = useReducedMotion();
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Tab") setKeyboardFocus(true);
@@ -42,6 +48,28 @@ export default function Composer({
     };
   }, []);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Number keys pick a quick reply, unless the visitor is typing or a dialog is open.
+  useEffect(() => {
+    if (!choices?.length || waiting) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (!/^[1-9]$/.test(event.key)) return;
+      const choice = choices[Number(event.key) - 1];
+      if (!choice || document.querySelector("dialog[open]")) return;
+      const target = event.target as HTMLElement | null;
+      const editing =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable;
+      if (editing && !(target === inputRef.current && input === "")) return;
+      event.preventDefault();
+      onSubmit(choice);
+      setInput("");
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [choices, waiting, input, onSubmit]);
 
   useLayoutEffect(() => {
     const resize = () => {
@@ -100,18 +128,39 @@ export default function Composer({
         hidden={active}
       >
         {suggestions.map((suggestion) => (
-          <button
+          <motion.button
             key={suggestion}
             type="button"
             onPointerMove={moveGloss}
             onPointerLeave={leaveGloss}
             onClick={() => submit(suggestion)}
+            whileTap={reduced ? undefined : { scale: 0.94 }}
+            transition={disclosureSpring}
           >
             {suggestion}
-            <ArrowUpRight size={13} aria-hidden="true" />
-          </button>
+          </motion.button>
         ))}
       </div>
+      {!!choices?.length && !waiting && (
+        <div
+          className="quick-replies"
+          role="group"
+          aria-label="Quick replies, or press the number key"
+        >
+          {choices.map((choice, index) => (
+            <motion.button
+              key={choice}
+              type="button"
+              onClick={() => submit(choice)}
+              whileTap={reduced ? undefined : { scale: 0.92 }}
+              transition={disclosureSpring}
+            >
+              <kbd aria-hidden="true">{index + 1}</kbd>
+              {choice}
+            </motion.button>
+          ))}
+        </div>
+      )}
       <form
         ref={formRef}
         className="prompt-bar"

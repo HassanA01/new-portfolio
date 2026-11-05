@@ -3,9 +3,16 @@ import { NextResponse } from "next/server";
 import {
   appOrigin,
   RESUME_AMOUNT,
+  RESUME_CURRENCY,
   RESUME_PRODUCT,
   stripeClient,
 } from "@/lib/resume-payments";
+import { rateLimitResponse } from "@/lib/rate-limit";
+
+const checkoutRateLimits = [
+  { name: "minute", limit: 5, windowMs: 60_000 },
+  { name: "hour", limit: 20, windowMs: 3_600_000 },
+] as const;
 
 export const runtime = "nodejs";
 export async function POST(request: Request) {
@@ -17,6 +24,14 @@ export async function POST(request: Request) {
         { status: 403 },
       );
     }
+    // Each call creates a Stripe session, so cap how fast one client can ask.
+    const limited = await rateLimitResponse(
+      request,
+      "checkout",
+      checkoutRateLimits,
+      "Too many checkout attempts. Please wait a minute and try again.",
+    );
+    if (limited) return limited;
     // "elements" powers the custom in-page checkout modal (Stripe Elements +
     // Checkout Sessions). Any other request falls back to Stripe-hosted Checkout.
     const custom = request.headers
@@ -27,12 +42,20 @@ export async function POST(request: Request) {
     const session = await stripeClient().checkout.sessions.create(
       {
         mode: "payment",
+        // Card only. The dashboard's automatic methods add Klarna and friends
+        // for CAD, and the Payment Element would then show a method picker.
+        allowed_payment_method_types: ["card"],
+        // Managed Payments (Stripe as merchant of record) is on by default for
+        // this account and refuses allowed_payment_method_types, and it would
+        // also add tax to amount_total, which the download check compares to
+        // the list price. Both the modal and the hosted fallback opt out.
+        managed_payments: { enabled: false },
         integration_identifier: "portfolio_resume_qmrxpvtn",
         line_items: [
           {
             quantity: 1,
             price_data: {
-              currency: "usd",
+              currency: RESUME_CURRENCY,
               unit_amount: RESUME_AMOUNT,
               product_data: {
                 name: "Aneeq Hassan’s résumé",
@@ -48,9 +71,6 @@ export async function POST(request: Request) {
           ? {
               ui_mode: "elements" as const,
               return_url: `${origin}/resume/success?session_id={CHECKOUT_SESSION_ID}`,
-              // Managed Payments (Stripe as merchant of record) only supports Stripe's own
-              // hosted/embedded UIs, so the custom modal opts out for this session.
-              managed_payments: { enabled: false },
               // The modal collects email itself; hide Link's sign-up block inside the card fields.
               wallet_options: { link: { display: "never" } },
             }

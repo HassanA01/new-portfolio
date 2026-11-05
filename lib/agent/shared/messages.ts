@@ -7,6 +7,27 @@ export type PortfolioMessage = InferAgentUIMessage<
   ReturnType<typeof createAnikeAgent>
 >;
 
+/**
+ * Parts to show for a message. When the model wrote a line, called
+ * offerChoices, then wrote the reply again, only the text after that call is
+ * the reply; anything before it was a draft the visitor shouldn't see twice.
+ */
+export function visibleParts(message: PortfolioMessage) {
+  const parts = message.parts;
+  let lastOffer = -1;
+  parts.forEach((part, index) => {
+    if (part.type === "tool-offerChoices") lastOffer = index;
+  });
+  if (lastOffer < 0) return parts;
+  const replied = parts
+    .slice(lastOffer + 1)
+    .some((part) => part.type === "text" && part.text.trim());
+  if (!replied) return parts;
+  return parts.filter(
+    (part, index) => part.type !== "text" || index > lastOffer,
+  );
+}
+
 /** Retain conversational context; the server re-fetches facts through its tools. */
 export function prepareChatMessages(messages: PortfolioMessage[]) {
   return messages.slice(-agentLimits.historyMessages).map((message) => ({
@@ -16,7 +37,7 @@ export function prepareChatMessages(messages: PortfolioMessage[]) {
       {
         type: "text" as const,
         text:
-          message.parts
+          visibleParts(message)
             .map((part) => {
               if (part.type === "text") return part.text;
               if (
@@ -27,6 +48,11 @@ export function prepareChatMessages(messages: PortfolioMessage[]) {
               }
               if (part.type === "tool-showResume")
                 return "resume checkout requested";
+              if (
+                part.type === "tool-offerChoices" &&
+                part.state === "output-available"
+              )
+                return `quick replies offered: ${part.output.choices.join(" / ")}`;
               return "";
             })
             .filter(Boolean)

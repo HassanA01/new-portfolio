@@ -26,8 +26,15 @@ test("filters preserve order and return the curated project categories", () => {
   assert.equal(filterProjects(projects, "All").length, 8);
   assert.deepEqual(
     filterProjects(projects, "AI/ML").map((p) => p.title),
-    ["MailflowAI", "B2W - UofT Hacks 12", "BizReach Marketplace"],
+    [
+      "MailflowAI",
+      "B2W - UofT Hacks 12",
+      "BizReach Marketplace",
+      "flwst8",
+      "Sawt",
+      "Hilal",
+    ],
   );
-  assert.equal(filterProjects(projects, "Systems").length, 3);
-  assert.equal(filterProjects(projects, "Web").length, 5);
+  assert.equal(filterProjects(projects, "Systems").length, 1);
+  assert.equal(filterProjects(projects, "Web").length, 6);
 });

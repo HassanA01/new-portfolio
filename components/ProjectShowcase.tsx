@@ -5,11 +5,14 @@ import { motion, useReducedMotion } from "framer-motion";
 import projects from "@/data/projects.json";
 import { useCarouselPull } from "@/components/ui/use-carousel-pull";
 import FeaturedProjectCard from "@/components/FeaturedProjectCard";
+import FeaturedProjectMobile from "@/components/FeaturedProjectMobile";
 import Link from "next/link";
 import { disclosureSpring } from "@/components/ui/accordion";
 import { ArrowUpRight, Bot } from "lucide-react";
 export { ProjectCard } from "@/components/ProjectCard";
-const featured = [projects[0], projects[3], projects[1]];
+const byTitle = (title: string) =>
+  projects.find((project) => project.title === title) ?? projects[0];
+const featured = [byTitle("flwst8"), byTitle("Sawt"), byTitle("Hilal")];
 
 export default function ProjectShowcase() {
   const features = useRef<HTMLUListElement>(null);
@@ -35,7 +38,7 @@ export default function ProjectShowcase() {
       >
         <ul
           {...featurePull.events}
-          style={{ touchAction: "pan-y", userSelect: "none" }}
+          style={{ touchAction: "pan-y" }}
           ref={features}
           className="project-feature-track"
           aria-label="Featured projects"
@@ -47,7 +50,13 @@ export default function ProjectShowcase() {
         >
           {featured.map((project) => (
             <li key={project.title}>
-              <FeaturedProjectCard project={project} />
+              {/* Desktop keeps the original card; phones get the stacked template. */}
+              <div className="featured-desktop">
+                <FeaturedProjectCard project={project} />
+              </div>
+              <div className="featured-mobile">
+                <FeaturedProjectMobile project={project} />
+              </div>
             </li>
           ))}
         </ul>
@@ -79,8 +88,10 @@ export default function ProjectShowcase() {
             <Bot size={22} aria-hidden="true" />
           </span>
           <span>
-            <strong>Want to see more of my projects?</strong>
-            <span>Explore with Anike</span>
+            <strong>Want to see more of my projects?</strong>{" "}
+            <span>
+              Explore with <span className="project-explore-anike">Anike</span>
+            </span>
           </span>
           <ArrowUpRight size={20} aria-hidden="true" />
         </Link>

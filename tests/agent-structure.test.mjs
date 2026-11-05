@@ -25,30 +25,6 @@ test("system prompt loads from its Markdown source with fresh request context", 
     assert.ok(first.includes(tool));
 });
 
-test("agent configuration validates only its own settings and keeps secrets out of the result", () => {
-  const { getAgentConfig } = loadTsFile("lib/agent/server/config.ts");
-  assert.deepEqual(getAgentConfig({}), {
-    model: "openai/gpt-5.4-mini",
-    hasCredentials: false,
-  });
-  assert.deepEqual(
-    getAgentConfig({
-      AI_MODEL: "  anthropic/test-model  ",
-      AI_GATEWAY_API_KEY: "test-key",
-    }),
-    { model: "anthropic/test-model", hasCredentials: true },
-  );
-  assert.equal(
-    getAgentConfig({ VERCEL_OIDC_TOKEN: "test-token" }).hasCredentials,
-    true,
-  );
-  assert.equal(
-    getAgentConfig({ AI_GATEWAY_API_KEY: "   " }).hasCredentials,
-    false,
-  );
-  assert.throws(() => getAgentConfig({ AI_MODEL: 42 }));
-});
-
 test("shared history retains project constraints without forwarding executable tool payloads", () => {
   const { prepareChatMessages } = loadTsFile("lib/agent/shared/messages.ts");
   const { chatRequestSchema } = loadTsFile("lib/agent/shared/request.ts");

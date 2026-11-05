@@ -22,6 +22,15 @@ export const disclosureSpring = {
   stiffness: 400,
   damping: 14,
 } as const;
+/** Hover eases up and holds; only the press gets the spring. Shared by every pressable card. */
+export const hoverLift = {
+  scale: 1.03,
+  transition: { type: "tween", duration: 0.18, ease: "easeOut" },
+} as const;
+export const pressSpring = {
+  scale: 0.95,
+  transition: disclosureSpring,
+} as const;
 import { ChevronDown } from "lucide-react";
 
 type AccordionState = {

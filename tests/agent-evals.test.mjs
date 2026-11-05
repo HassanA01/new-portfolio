@@ -33,6 +33,19 @@ async function runEval(changeEvent = (event) => event) {
             { type: "tool-output-available", toolCallId: "test", output: {} },
           ]
         : []),
+      ...(scenario.requiredTools ?? []).flatMap((toolName, index) => [
+        {
+          type: "tool-input-available",
+          toolName,
+          toolCallId: `required-${index}`,
+          input: {},
+        },
+        {
+          type: "tool-output-available",
+          toolCallId: `required-${index}`,
+          output: {},
+        },
+      ]),
       { type: "text-delta", id: "text", delta: "here you go :)" },
     ])
       response.write(
@@ -71,7 +84,8 @@ test("live evaluation runner accepts completed tool calls and the expected voice
   assert.equal(result.code, 0, result.output);
   assert.equal(result.output.match(/PASS /g)?.length, scenarios.length);
   const followup = result.requests.find(
-    (request) => request.messages.length === 3,
+    (request) =>
+      request.messages.at(-1).parts[0].text === "only the python ones",
   );
   assert.ok(followup);
   assert.match(followup.messages[0].parts[0].text, /2025/);
@@ -111,10 +125,10 @@ test("live evaluation runner rejects unsolicited checkout calls", async () => {
   assert.match(result.output, /unexpected tool showResume/);
 });
 
-test("live evaluation runner rejects unsupported language claims", async () => {
+test("live evaluation runner rejects unsupported gpa claims", async () => {
   const result = await runEval((event) =>
     event.type === "text-delta"
-      ? { ...event, delta: "i'm fluent in english" }
+      ? { ...event, delta: "my gpa was 3.9 out of 4" }
       : event,
   );
   assert.equal(result.code, 1);

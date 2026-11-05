@@ -122,14 +122,12 @@ export default function BackgroundStory() {
           <strong>October 19, 2001</strong> in Karachi, Pakistan where I spawned
           on this planet. Tbh I don&apos;t remember anything at the time but my
           shoutout to my parents for capturing the{" "}
-          <button
-            className="memory-link"
-            type="button"
-            onClick={showMemory}
-            aria-haspopup="dialog"
-          >
-            memories
-          </button>
+          <InlineMention
+            name="memories"
+            colors={["#8a6a3c", "#5e4a2b"]}
+            description="more to come soon."
+            fitContent
+          />
           .
         </p>
         <p className="story-paragraph">
@@ -148,7 +146,20 @@ export default function BackgroundStory() {
             description="If a computer can quickly check that an answer is correct, can it also quickly find that answer?"
           />{" "}
           problem. I worked on both for about two years - the time I spent in
-          Pakistan (in reality I was snoozing and vibing with the goats).
+          Pakistan (in reality I was snoozing and{" "}
+          <InlineMention
+            name="vibing with the goats"
+            colors={["#9a6a2a", "#6f4a1c"]}
+            popupWidth={220}
+            centered
+            image={{
+              src: "/goats.webp",
+              alt: "Toddler me standing next to a resting white goat in Karachi",
+              width: 640,
+              height: 1040,
+            }}
+          />
+          ).
         </p>
       </motion.div>
 

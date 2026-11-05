@@ -14,31 +14,29 @@ export default function ToolResult({
   onResume: () => void;
 }) {
   if (!("state" in part)) return null;
+  // Quick replies render beside the composer, not inside the message.
+  if (part.type === "tool-offerChoices") return null;
   if (part.state === "output-error")
     return (
-      <p className="agent-tool-note" role="alert">
+      <p className="agent-tool-note agent-tool-part" role="alert">
         couldn’t load that. try asking again.
       </p>
     );
-  if (part.state !== "output-available")
-    return (
-      <div className="agent-tool-loading" role="status">
-        <span />
-        {part.type === "tool-showProjects"
-          ? "finding my projects..."
-          : part.type === "tool-showResume"
-            ? "opening my résumé..."
-            : "pulling that up..."}
-      </div>
-    );
-  switch (part.type) {
-    case "tool-showProjects":
-      return <ProjectsPart output={part.output} />;
-    case "tool-showProfile":
-      return <ProfilePart output={part.output} />;
-    case "tool-showResume":
-      return <ResumePart onOpen={onResume} />;
-    default:
-      return null;
-  }
+  // Progress shows in the message's activity rail; output renders once ready.
+  if (part.state !== "output-available") return null;
+  const content = (() => {
+    switch (part.type) {
+      case "tool-showProjects":
+        return <ProjectsPart output={part.output} />;
+      case "tool-showProfile":
+        return <ProfilePart output={part.output} />;
+      case "tool-showResume":
+        return <ResumePart onOpen={onResume} />;
+      default:
+        return null;
+    }
+  })();
+  if (!content) return null;
+  // Mounted only once output exists, so the entrance plays as the card lands.
+  return <div className="agent-tool-part">{content}</div>;
 }

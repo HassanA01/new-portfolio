@@ -1,21 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState, type ComponentType } from "react";
 import CheckoutModal from "@/components/CheckoutModal";
 import { motion, useReducedMotion } from "framer-motion";
 import { FileUser } from "lucide-react";
-import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
+import { brandMarks, type BrandMarkName } from "@/components/ui/brand-marks";
 import { disclosureSpring } from "@/components/ui/accordion";
 
-const profiles = [
+/** Same gradient pairs as the contact marks in the chat; shown only on hover. */
+const tints: Record<BrandMarkName, readonly [string, string]> = {
+  linkedin: ["#29c6cb", "#6484ed"],
+  github: ["#7cafff", "#c28bea"],
+  x: ["#e48caa", "#a17be8"],
+};
+
+/** A brand mark that rests in muted ink and crossfades to its gradient on hover. */
+function BrandMark({
+  mark,
+  size = 20,
+}: {
+  mark: BrandMarkName;
+  size?: number;
+}) {
+  const id = useId();
+  const [from, to] = tints[mark];
+  const path = brandMarks[mark];
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="social-mark"
+    >
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={from} />
+          <stop offset="100%" stopColor={to} />
+        </linearGradient>
+      </defs>
+      <path className="social-mark-base" d={path} fill="currentColor" />
+      <path className="social-mark-tint" d={path} fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+type Profile = {
+  name: string;
+  href: string;
+  mark?: BrandMarkName;
+  Icon?: ComponentType<{ size?: number; "aria-hidden"?: boolean | "true" }>;
+};
+const profiles: Profile[] = [
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/hassana01",
-    Icon: SiLinkedin,
+    mark: "linkedin",
   },
-  { name: "GitHub", href: "https://github.com/hassana01", Icon: SiGithub },
-  { name: "X (Twitter)", href: "https://x.com/HassanAneeq01", Icon: SiX },
-  { name: "Résumé · US$5", href: "/resume", Icon: FileUser },
+  { name: "GitHub", href: "https://github.com/hassana01", mark: "github" },
+  { name: "X (Twitter)", href: "https://x.com/HassanAneeq01", mark: "x" },
+  { name: "Résumé · CA$5", href: "/resume", Icon: FileUser },
 ];
 
 export default function SocialLinks() {
@@ -24,7 +68,7 @@ export default function SocialLinks() {
   return (
     <>
       <div className="social-links" aria-label="Social profiles">
-        {profiles.map(({ name, href, Icon }) => (
+        {profiles.map(({ name, href, mark, Icon }) => (
           <motion.a
             key={name}
             href={href}
@@ -53,7 +97,16 @@ export default function SocialLinks() {
               <span
                 className={href === "/resume" ? "resume-icon-nudge" : undefined}
               >
-                <Icon size={href === "/resume" ? 23 : 20} aria-hidden="true" />
+                {mark ? (
+                  <BrandMark mark={mark} />
+                ) : (
+                  Icon && (
+                    <Icon
+                      size={href === "/resume" ? 23 : 20}
+                      aria-hidden="true"
+                    />
+                  )
+                )}
               </span>
             </motion.span>
           </motion.a>

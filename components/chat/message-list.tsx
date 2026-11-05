@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { PortfolioMessage } from "@/lib/agent/shared/messages";
 import Message from "@/components/chat/message";
+import Thinking from "@/components/chat/thinking";
 
 export default function MessageList({
   messages,
@@ -14,6 +15,12 @@ export default function MessageList({
   onResume: () => void;
 }) {
   const transcriptRef = useRef<HTMLDivElement>(null);
+  // Keep the waiting figure up through reasoning and tool calls; it only
+  // steps aside once the reply's own words start streaming.
+  const last = messages.at(-1);
+  const replying =
+    last?.role === "assistant" &&
+    last.parts.some((part) => part.type === "text" && part.text.trim());
   useEffect(() => {
     const transcript = transcriptRef.current;
     if (!transcript) return;
@@ -47,20 +54,15 @@ export default function MessageList({
       aria-relevant="additions"
     >
       <div className="chat-messages">
-        {messages.map((message) => (
-          <Message key={message.id} message={message} onResume={onResume} />
+        {messages.map((message, index) => (
+          <Message
+            key={message.id}
+            message={message}
+            live={waiting && index === messages.length - 1}
+            onResume={onResume}
+          />
         ))}
-        {waiting && (
-          <div
-            className="agent-thinking"
-            role="status"
-            aria-label="Agent is thinking"
-          >
-            <span />
-            <span />
-            <span />
-          </div>
-        )}
+        {waiting && !replying && <Thinking />}
       </div>
     </div>
   );

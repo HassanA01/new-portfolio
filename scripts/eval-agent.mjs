@@ -9,11 +9,16 @@ const scenarios = JSON.parse(
 );
 const baseURL = process.env.EVAL_BASE_URL || "http://127.0.0.1:3000";
 let failed = 0;
-for (const scenario of scenarios) {
+for (const [index, scenario] of scenarios.entries()) {
   try {
     const response = await fetch(new URL("/api/chat", baseURL), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // Each scenario gets its own rate-limit bucket on a local server. A
+        // real proxy overwrites this header, so it grants nothing in production.
+        "x-forwarded-for": `eval-${index}`,
+      },
       body: JSON.stringify({
         messages: [
           ...(scenario.history ?? []).map((turn) => ({
@@ -30,10 +35,10 @@ for (const scenario of scenarios) {
       }),
       signal: AbortSignal.timeout(60_000),
     });
-    // Fail fast if the local app or Gateway authentication is unavailable.
+    // Fail fast if the local app or provider authentication is unavailable.
     if (!response.ok)
       throw new Error(
-        `chat returned HTTP ${response.status}; check the running app and AI Gateway configuration`,
+        `chat returned HTTP ${response.status}; check the running app and selected provider configuration`,
       );
     const events = (await response.text())
       .split("\n")
@@ -52,6 +57,21 @@ for (const scenario of scenarios) {
         ),
         false,
         `unexpected tool ${name}`,
+      );
+    }
+    for (const name of scenario.requiredTools ?? []) {
+      const call = events.find(
+        (event) =>
+          event.type === "tool-input-available" && event.toolName === name,
+      );
+      assert.ok(call, `expected ${name}`);
+      assert.ok(
+        events.some(
+          (event) =>
+            event.type === "tool-output-available" &&
+            event.toolCallId === call.toolCallId,
+        ),
+        `${name} did not complete`,
       );
     }
     if (scenario.tool) {

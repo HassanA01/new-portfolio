@@ -8,9 +8,9 @@ app/api/chat/route.ts                  HTTP export and platform duration
 lib/agent/
   server/                             server-only runtime
     agent.ts                          ToolLoopAgent factory and execution limits
-    config.ts                         validated Gateway/model settings
+    config.ts                         validated provider/model settings
     context.ts                        fresh context for each request
-    handle-chat.ts                    origin/size/schema checks and SSE response
+    handle-chat.ts                    origin/rate-limit/size/schema checks and SSE response
     observability.ts                  structured errors without prompt/secret data
     prompts/
       system.MD                       authoritative system prompt
@@ -20,23 +20,36 @@ lib/agent/
       show-projects.ts                schema, description and execution
       show-profile.ts                 schema, description and execution
       show-resume.ts                  schema, description and checkout action
+      offer-choices.ts                quick replies rendered beside the composer
+    llm/
+      resolve-model.ts                construct a direct model from validated config
+      types.ts                        common provider adapter contract
+      providers/
+        index.ts                      provider registry
+        anthropic.ts                  Anthropic Messages adapter
+        openai.ts                     OpenAI Responses adapter
     data/profile.ts                   curated public facts
   shared/                             browser-safe modules
     messages.ts                       inferred message/result types and history conversion
     request.ts                        accepted HTTP conversation schema
-    limits.ts                         non-secret execution and input limits
+    limits.ts                         non-secret execution, input and per-client rate limits
     voice.ts                          lowercase/no-em-dash prose formatting
 hooks/use-portfolio-chat.ts            streaming, retries, reset, one-time checkout opening
+lib/rate-limit.ts                      sliding-window limiter shared with the checkout route
 components/chat/
   chat-view.tsx                       compose the chat and checkout
-  composer.tsx                        input, suggestions, keyboard/glass interactions
+  composer.tsx                        input, suggestions, quick replies (click or 1-9), keyboard/glass interactions
   message-list.tsx                    transcript, scrolling and waiting state
-  message.tsx                         prose and tool parts for one message
+  message.tsx                         prose, activity rail and tool parts for one message
   parts/
+    activity.tsx                      collapsible tool-call rail per reply (reasoning stays server-side)
     tool-result.tsx                   tool-name and state dispatch
     projects.tsx                      project tool rendering
-    profile.tsx                       profile/career tool rendering
-    resume.tsx                        reopen the existing checkout
+    profile.tsx                       profile tool dispatch by topic
+    career.tsx                        linked role rows mirroring About's career journey
+    about.tsx                         portrait, lede and facts
+    contact.tsx                       public links as pills
+    resume.tsx                        ticket that opens the existing checkout
 data/projects.json                   project catalogue shared with the portfolio
 evals/agent/scenarios.json            opt-in behavioral evaluation cases
 ```
@@ -58,8 +71,8 @@ file with its source so a missing or stale prompt fails the build.
 Each tool owns its description, Zod input schema, and execution function. The
 registry owns which tools the agent can call. The profile tool reads public facts
 from `data/profile.ts`; the project tool queries the existing shared catalogue.
-The resume tool opens checkout and never executes a payment. The hook opens each
-completed resume call once and lets the visitor reopen checkout from the message.
+The resume tool renders a ticket and never executes a payment or opens anything
+by itself; checkout opens only when the visitor taps the ticket's open button.
 
 Conversation state remains in browser memory for the current page session.
 History conversion preserves existing project constraints as text and strips
@@ -79,7 +92,7 @@ remain server-only and are not returned by the config reader.
 Normal tests exercise real tool execution and the real agent factory with a mock
 model, plus HTTP boundaries and UI rendering. Live evals check model tool selection,
 filter extraction, successful tool output, lowercase text, and absence of em dashes.
-They are opt-in because they need credentials and incur model usage. They do not
+They are opt-in because they need provider credentials and incur model usage. They do not
 open or pay through Stripe: the resume tool returns only the UI action.
 
 The current runtime needs no separate database memory, handoff framework, approval
@@ -102,3 +115,6 @@ how companies organize their private products. This layout adapts concrete patte
 
 The prompt's behavior design, Anthropic references, and evaluation limits are
 explained in [agent-prompt.md](agent-prompt.md).
+
+Direct provider setup, extension steps and routing guarantees are documented in
+[model-providers.md](model-providers.md).
