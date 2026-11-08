@@ -49,6 +49,7 @@ components/chat/
     career.tsx                        linked role rows mirroring About's career journey
     about.tsx                         portrait, lede and facts
     contact.tsx                       public links as pills
+    skills.tsx                        languages, frameworks and tooling as tech marks
     resume.tsx                        ticket that opens the existing checkout
 data/projects.json                   project catalogue shared with the portfolio
 evals/agent/scenarios.json            opt-in behavioral evaluation cases

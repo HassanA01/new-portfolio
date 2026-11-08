@@ -182,5 +182,14 @@
       "here’s your free download",
       "/private/"
     ]
+  },
+  {
+    "name": "skills question routes to the profile tool",
+    "prompt": "what programming languages / tools is aneeq good with",
+    "tool": "showProfile",
+    "input": {
+      "topic": "skills"
+    },
+    "forbiddenTools": ["showProjects"]
   }
 ]

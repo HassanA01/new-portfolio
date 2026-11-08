@@ -110,10 +110,71 @@ const roles: Role[] = [
 ];
 
 /**
+ * What Aneeq builds with, grounded in the project catalogue and the career
+ * highlights above. Names match the marks in components/TechMarks.tsx where
+ * an icon exists; anything else renders as a text pill.
+ */
+const skillGroups = [
+  { label: "Languages", items: ["Python", "TypeScript", "Go"] },
+  {
+    label: "Frameworks",
+    items: [
+      "Next.js",
+      "React",
+      "FastAPI",
+      "Flask",
+      "Express.js",
+      "Node.js",
+      "Tailwind CSS",
+    ],
+  },
+  {
+    label: "Data & infra",
+    items: [
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "GCP",
+      "AWS",
+      "Firebase",
+      "Temporal",
+    ],
+  },
+  {
+    label: "AI",
+    items: [
+      "OpenAI",
+      "Claude",
+      "PyTorch",
+      "scikit-learn",
+      "LangGraph",
+      "Langfuse",
+      "Qdrant",
+      "MCP",
+    ],
+  },
+];
+
+export type ProfileTopic = "career" | "about" | "contact" | "skills";
+
+/**
  * Public portfolio facts for the agent. `label`/`detail` are the lowercase
  * summary the model reads; the structured fields drive the chat cards.
  */
-export function getPublicProfile(topic: "career" | "about" | "contact") {
+export function getPublicProfile(topic: ProfileTopic) {
+  if (topic === "skills")
+    return {
+      topic: "skills" as const,
+      title: "what i build with",
+      items: skillGroups.map((group) => ({
+        label: group.label.toLowerCase(),
+        detail: group.items.join(", ").toLowerCase(),
+      })),
+      groups: skillGroups,
+      unknown:
+        "proficiency levels and years of experience per tool have not been provided here",
+      href: "/?explore=projects",
+    };
   if (topic === "career")
     return {
       topic: "career" as const,
