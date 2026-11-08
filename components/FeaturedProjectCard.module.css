@@ -16,13 +16,10 @@
   align-content: center;
 }
 .frame :global(.project-copy h3),
-.frame :global(.project-copy p),
-.frame :global(.project-stack) {
+.frame :global(.project-copy p) {
   min-height: 0;
 }
-.frame :global(.project-stack) {
-  align-content: start;
-}
+
 .frame :global(.project-links) {
   align-self: end;
 }

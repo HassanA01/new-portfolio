@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800">
-<defs><linearGradient id="paper" x2=".6" y2="1"><stop stop-color="#e5dcc9"/><stop offset="1" stop-color="#c4b69d"/></linearGradient><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b0b8b0"/><stop offset="1" stop-color="#e5d7bc"/></linearGradient></defs>
-<path fill="url(#paper)" d="M0 0h640v800H0z"/><path fill="url(#sky)" d="M40 40h560v650H40z"/>
-<circle cx="451" cy="226" r="59" fill="#f0e4cc" opacity=".75"/>
-<path fill="#8b9284" d="m40 490 180-130 170 138 80-64 130 97v159H40z"/><path fill="#646f64" d="m40 600 190-95 170 71 200-93v207H40z"/>
-<path stroke="#f0e7d7" fill="none" opacity=".3" d="M52 52h536v626H52z"/>
-<text x="320" y="752" fill="#645c50" font-family="serif" font-size="19" text-anchor="middle" letter-spacing="3">A MEMORY GOES HERE</text>
-</svg>

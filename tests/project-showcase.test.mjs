@@ -61,7 +61,7 @@ function mockRequire(name) {
         style: { fontFamily: "Cormorant Garamond" },
       }),
     };
-  if (name === "@/lib/project-stack" || name === "@/lib/project-browser") {
+  if (name === "@/lib/project-browser") {
     const code = ts.transpileModule(
       fs.readFileSync(
         new URL(`../lib/${name.split("/").at(-1)}.ts`, import.meta.url),
