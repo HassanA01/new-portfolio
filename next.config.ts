@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
   outputFileTracingIncludes: {
+    // The root layout inlines this script from disk, so every route's
+    // function bundle must carry it; Vercel only ships traced files.
+    "/*": ["./public/theme.js"],
     "/api/chat": ["./lib/agent/server/prompts/system.MD"],
     "/api/resume/download": ["./private/AneeqHassan.pdf"],
   },
