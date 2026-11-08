@@ -39,10 +39,16 @@ export default function ProjectPreview({
   src,
   title,
   sizes,
+  eager = false,
+  className = "project-preview",
 }: {
   src: string;
   title: string;
   sizes: string;
+  /** Featured cards load up front so a swipe never lands on a blank slide. */
+  eager?: boolean;
+  /** Frame class; defaults to the card preview frame. */
+  className?: string;
 }) {
   const [open, setOpen] = useState(false);
   // Only the thumbnail that is opening or closing carries a transition name;
@@ -84,7 +90,7 @@ export default function ProjectPreview({
       <button
         ref={trigger}
         type="button"
-        className="project-preview project-preview-open"
+        className={`${className} project-preview-open`}
         aria-label={`Expand ${title} preview`}
         aria-haspopup="dialog"
         onClick={show}
@@ -95,7 +101,13 @@ export default function ProjectPreview({
           } as CSSProperties
         }
       >
-        <Image src={src} alt={alt} fill sizes={sizes} />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          loading={eager ? "eager" : undefined}
+        />
       </button>
       {open && (
         <dialog

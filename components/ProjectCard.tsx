@@ -69,6 +69,7 @@ export function ProjectCard({
       <ProjectPreview
         src={project.image}
         title={project.title}
+        eager={feature}
         sizes={
           feature
             ? "(max-width: 600px) 90vw, 440px"

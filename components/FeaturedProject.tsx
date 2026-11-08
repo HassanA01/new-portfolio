@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { ArrowUpRight, Github } from "lucide-react";
 import { projectTitle, type Project } from "@/components/ProjectCard";
 import TechMarks from "@/components/TechMarks";
+import ProjectPreview from "@/components/ProjectPreview";
 
 /**
  * The featured-project template. Every card gets the same five slots in the
@@ -30,14 +30,13 @@ export default function FeaturedProject({
 }) {
   return (
     <article className={["featured", className].filter(Boolean).join(" ")}>
-      <div className="featured-media">
-        <Image
-          src={project.image}
-          alt=""
-          fill
-          sizes="(max-width: 600px) 90vw, 440px"
-        />
-      </div>
+      <ProjectPreview
+        src={project.image}
+        title={project.title}
+        sizes="(max-width: 600px) 90vw, 440px"
+        className="featured-media"
+        eager
+      />
       <div className="featured-body">
         <h3
           className={`featured-title ${projectTitle.className}`}
