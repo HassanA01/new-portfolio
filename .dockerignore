@@ -6,3 +6,5 @@ node_modules
 !.env.example
 *.tsbuildinfo
 .playwright-mcp
+# v1 is the archived original site; the image only ships the current app.
+v1
