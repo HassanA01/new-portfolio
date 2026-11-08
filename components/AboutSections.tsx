@@ -16,7 +16,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import BackgroundStory from "@/components/BackgroundStory";
 import EducationJourney from "@/components/EducationJourney";
 import ProjectShowcase from "@/components/ProjectShowcase";
-import TodoList from "@/components/TodoList";
 import CareerTree from "@/components/CareerTree";
 import InlineMention from "@/components/InlineMention";
 import { Cormorant_Garamond } from "next/font/google";
@@ -51,11 +50,6 @@ const allSections = [
     id: "projects",
     title: "Projects",
     description: "Things I’ve built and projects I’m working on. More to come.",
-  },
-  {
-    id: "todo",
-    title: "Todo",
-    description: "Things still on my list for this site, so I don’t forget.",
   },
   {
     id: "exploring",
@@ -658,11 +652,6 @@ export default function AboutSections({
                   </>
                 ) : id === "projects" ? (
                   <ProjectShowcase />
-                ) : id === "todo" ? (
-                  <>
-                    <p>{description}</p>
-                    <TodoList className="about-todo-list" />
-                  </>
                 ) : (
                   <p>{description}</p>
                 )}
