@@ -234,6 +234,14 @@ export function getPublicProfile(topic: ProfileTopic) {
       { label: "currently", detail: "software engineer at stripe" },
       { label: "education", detail: "hbsc at the university of toronto" },
       { label: "interests", detail: "futbol, food, filosophy" },
+      {
+        label: "sports",
+        detail: "soccer, basketball and hockey",
+      },
+      {
+        label: "teams",
+        detail: "real madrid, the toronto raptors and the toronto maple leafs",
+      },
       { label: "languages", detail: "english, urdu, arabic, french" },
     ],
     greeting: "Aneeq",
@@ -256,12 +264,20 @@ export function getPublicProfile(topic: ProfileTopic) {
         value: "Futbol, Food, Filosophy",
       },
       {
+        label: "Sports",
+        value: "Soccer, Basketball, Hockey",
+      },
+      {
+        label: "Teams",
+        value: "Real Madrid, Raptors, Maple Leafs",
+      },
+      {
         label: "Languages",
         value: "English, Urdu, Arabic, French",
       },
     ],
     unknown:
-      "language proficiency levels, gpa, and further personal details have not been provided here",
+      "language proficiency levels, gpa, whether he plays or only watches these sports, and further personal details have not been provided here",
     href: "/about",
   };
 }

@@ -191,5 +191,14 @@
       "topic": "skills"
     },
     "forbiddenTools": ["showProjects"]
+  },
+  {
+    "name": "sports and teams come from the about profile",
+    "prompt": "what sports does he like",
+    "tool": "showProfile",
+    "input": {
+      "topic": "about"
+    },
+    "forbiddenTools": ["showProjects"]
   }
 ]
