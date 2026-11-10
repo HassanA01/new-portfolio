@@ -1759,10 +1759,6 @@ h1 {
     right: auto;
   }
 }
-.about-sections {
-  padding-bottom: max(120px, calc(100svh - 240px));
-}
-
 @media (max-width: 600px) {
   .story-memory {
     display: none;
