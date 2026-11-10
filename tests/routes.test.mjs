@@ -1,6 +1,7 @@
 import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { readFile } from "node:fs/promises";
 
 let server;
 let output = "";
@@ -90,6 +91,24 @@ for (const [route, heading] of [
     );
   });
 }
+
+test("the browser tab icon uses the header signature", async () => {
+  const homepage = await fetch(origin);
+  const html = await homepage.text();
+  const icon = html.match(/<link rel="icon" href="([^"]+)"/)?.[1];
+  assert.ok(icon, "homepage declares a tab icon");
+  const response = await fetch(new URL(icon, origin));
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /image\/svg\+xml/);
+
+  const signature = await readFile(
+    new URL("../public/aneeq-signature.svg", import.meta.url),
+    "utf8",
+  );
+  const paths = (svg) =>
+    Array.from(svg.matchAll(/<path\b[^>]*\sd="([^"]+)"/g), ([, path]) => path);
+  assert.deepEqual(paths(await response.text()), paths(signature));
+});
 
 test("MapLibre worker is served with the production site", async () => {
   const response = await fetch(origin + "/maplibre-worker.js");
