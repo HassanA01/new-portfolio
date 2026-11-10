@@ -4422,16 +4422,17 @@ a.inline-mention {
     "Kaiti SC", "STKaiti", "Hiragino Mincho ProN", "Geeza Pro", cursive;
   animation: greeting-native-reveal 2.6s ease both;
 }
-/* Arabic glyphs can extend past the text clip box in the mobile font. */
-.glass-native-writing:where([lang="ar"]) {
-  animation-name: greeting-arabic-reveal;
+.glass-outline-reveal {
+  transform-box: fill-box;
+  transform-origin: right center;
+  animation: greeting-arabic-reveal 2.6s cubic-bezier(0.3, 0.05, 0.25, 1) both;
 }
 @keyframes greeting-arabic-reveal {
   from {
-    opacity: 0.3;
+    transform: scaleX(0);
   }
   to {
-    opacity: 1;
+    transform: scaleX(1);
   }
 }
 @keyframes greeting-write {
@@ -4475,6 +4476,7 @@ a.inline-mention {
 @media (prefers-reduced-motion: reduce) {
   .glass-greeting-art,
   .glass-handwriting,
+  .glass-outline-reveal,
   .glass-native-writing {
     animation: none;
   }
