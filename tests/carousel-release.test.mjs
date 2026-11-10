@@ -62,6 +62,7 @@ test("pointer release starts spring immediately and lost capture does not restar
   const h = setup();
   h.events.onPointerDown({
     button: 0,
+    pointerType: "mouse",
     target: { closest: () => null },
     pointerId: 1,
     clientX: 0,
@@ -84,5 +85,32 @@ test("pointer release starts spring immediately and lost capture does not restar
 test("trackpad scrolling is left native so momentum cannot repeatedly restart the spring", () => {
   const h = setup();
   assert.equal(h.events.onWheel, undefined);
+  assert.equal(h.animations.length, 0);
+});
+
+test("touch swipes leave scrolling and snapping to the browser", () => {
+  const h = setup();
+  const touch = {
+    pointerType: "touch",
+    button: 0,
+    pointerId: 1,
+    clientX: 240,
+    clientY: 100,
+    currentTarget: h.track,
+    preventDefault() {
+      assert.fail("native touch scrolling must not be canceled");
+    },
+  };
+  h.events.onPointerDown(touch);
+  h.events.onPointerMove({ ...touch, clientX: 70 });
+  h.events.onPointerUp();
+  h.events.onMouseDown({
+    detail: 1,
+    preventDefault() {
+      assert.fail("touch activation should be allowed to focus its target");
+    },
+  });
+  assert.equal(h.track.scrollLeft, 0);
+  assert.equal(h.track.style.scrollSnapType, undefined);
   assert.equal(h.animations.length, 0);
 });

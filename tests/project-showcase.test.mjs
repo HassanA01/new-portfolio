@@ -261,3 +261,21 @@ test("chat message rendering preserves project layout and formats only agent pro
   );
   assert.match(user, /Hi Aneeq — AI projects please/);
 });
+
+test("project technologies have tap details and a separate outbound link", () => {
+  const TechMarks = loadComponent("TechMarks").default;
+  const tech = [...new Set(projects.flatMap((project) => project.tech))];
+  const html = renderToStaticMarkup(
+    React.createElement(TechMarks, { tech, max: tech.length, label: "Stack" }),
+  );
+  assert.equal((html.match(/popovertarget=/gi) || []).length, tech.length);
+  assert.equal((html.match(/popover="auto"/g) || []).length, tech.length);
+  assert.equal(
+    (html.match(/class="tech-mark-description">[^<]+</g) || []).length,
+    tech.length,
+  );
+  assert.match(
+    html,
+    /href="https:\/\/react.dev"[^>]+aria-label="Visit React \(opens in a new tab\)"/,
+  );
+});

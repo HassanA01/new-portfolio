@@ -63,11 +63,32 @@ function harness() {
       button,
       flipper,
       sound: root.props.children[1],
+      image: flipper.props.children[0].props.children,
       video: flipper.props.children[1].props.children,
     };
   };
   return { render, media, counts: () => ({ plays, pauses }) };
 }
+
+test("homepage prioritizes a small portrait animation that plays once", () => {
+  const { image, video } = harness().render();
+  const asset = new URL(`../public${image.props.src}`, import.meta.url);
+  const animation = fs.readFileSync(asset);
+  assert.ok(animation.length < 500_000);
+  const animationChunk = animation.indexOf("ANIM", 12);
+  assert.ok(animationChunk >= 12, "portrait contains WebP animation metadata");
+  assert.equal(animation.readUInt16LE(animationChunk + 12), 1);
+  assert.equal(image.props.priority, true);
+  assert.equal(video.props.poster, image.props.src);
+});
+
+test("the portrait video is small and waits for a tap before downloading", () => {
+  const { video } = harness().render();
+  const asset = new URL(`../public${video.props.src}`, import.meta.url);
+  assert.ok(fs.statSync(asset).size < 500_000);
+  assert.equal(video.props.preload, "none");
+});
+
 test("portrait starts audible playback from the tap, returns on end, and can replay", () => {
   const h = harness();
   let ui = h.render();

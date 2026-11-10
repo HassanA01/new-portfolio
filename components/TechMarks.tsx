@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import {
   siAstro,
   siBootstrap,
@@ -110,49 +111,103 @@ const marks: Record<string, SimpleIcon> = {
   Vite: siVite,
 };
 
-/** Where each mark goes: the tool's own home page, in a new tab. */
-const links: Record<string, string> = {
-  Astro: "https://astro.build",
-  AWS: "https://aws.amazon.com",
-  Bootstrap: "https://getbootstrap.com",
-  Claude: "https://www.anthropic.com/claude",
-  "Cloud Pub/Sub": "https://cloud.google.com/pubsub",
-  Databricks: "https://www.databricks.com",
-  Docker: "https://www.docker.com",
-  Express: "https://expressjs.com",
-  "Express.js": "https://expressjs.com",
-  FastAPI: "https://fastapi.tiangolo.com",
-  FFmpeg: "https://ffmpeg.org",
-  Firebase: "https://firebase.google.com",
-  Flask: "https://flask.palletsprojects.com",
-  GCP: "https://cloud.google.com",
-  "Gmail API": "https://developers.google.com/gmail/api",
-  Go: "https://go.dev",
-  Grafana: "https://grafana.com",
-  LangChain: "https://www.langchain.com",
-  LangGraph: "https://www.langchain.com/langgraph",
-  Motion: "https://motion.dev",
-  "Next.js": "https://nextjs.org",
-  "Node.js": "https://nodejs.org",
-  OpenAI: "https://openai.com",
-  PostgreSQL: "https://www.postgresql.org",
-  Python: "https://www.python.org",
-  PyTorch: "https://pytorch.org",
-  RadixUI: "https://www.radix-ui.com",
-  React: "https://react.dev",
-  Redis: "https://redis.io",
-  "scikit-learn": "https://scikit-learn.org",
-  Shadcn: "https://ui.shadcn.com",
-  "Shopify GraphQL Admin API": "https://shopify.dev/docs/api/admin-graphql",
-  "Socket.io": "https://socket.io",
-  "Swiper.js": "https://swiperjs.com",
-  "Tailwind CSS": "https://tailwindcss.com",
-  Temporal: "https://temporal.io",
-  "Three.js": "https://threejs.org",
-  TimescaleDB: "https://www.timescale.com",
-  TypeScript: "https://www.typescriptlang.org",
-  Vercel: "https://vercel.com",
-  Vite: "https://vite.dev",
+/** Official destinations and short explanations for project technologies. */
+const technologies: Record<string, [href: string, description: string]> = {
+  Astro: ["https://astro.build", "Web framework for content-driven sites."],
+  AWS: ["https://aws.amazon.com", "Cloud computing platform."],
+  Bootstrap: [
+    "https://getbootstrap.com",
+    "CSS framework for responsive interfaces.",
+  ],
+  Claude: [
+    "https://www.anthropic.com/claude",
+    "AI assistant and model family.",
+  ],
+  "Cloud Pub/Sub": [
+    "https://cloud.google.com/pubsub",
+    "Managed messaging between services.",
+  ],
+  Databricks: [
+    "https://www.databricks.com",
+    "Platform for data analytics and AI.",
+  ],
+  Docker: ["https://www.docker.com", "Packages and runs apps in containers."],
+  Express: ["https://expressjs.com", "Web framework for Node.js."],
+  "Express.js": ["https://expressjs.com", "Web framework for Node.js."],
+  FastAPI: [
+    "https://fastapi.tiangolo.com",
+    "Python framework for building APIs.",
+  ],
+  FFmpeg: ["https://ffmpeg.org", "Tools for processing audio and video."],
+  Firebase: ["https://firebase.google.com", "Managed backend tools for apps."],
+  Flask: [
+    "https://flask.palletsprojects.com",
+    "Lightweight Python web framework.",
+  ],
+  GCP: ["https://cloud.google.com", "Google’s cloud computing platform."],
+  "Gmail API": [
+    "https://developers.google.com/gmail/api",
+    "Programmatic access to Gmail.",
+  ],
+  Go: ["https://go.dev", "Compiled language for building services."],
+  Grafana: [
+    "https://grafana.com",
+    "Dashboards for monitoring and observability.",
+  ],
+  LangChain: [
+    "https://www.langchain.com",
+    "Library for building with language models.",
+  ],
+  LangGraph: [
+    "https://www.langchain.com/langgraph",
+    "Framework for stateful agent workflows.",
+  ],
+  Motion: ["https://motion.dev", "Animation library for web interfaces."],
+  "Next.js": ["https://nextjs.org", "React framework for web applications."],
+  "Node.js": [
+    "https://nodejs.org",
+    "JavaScript runtime for servers and tools.",
+  ],
+  OpenAI: ["https://openai.com", "Platform for building with AI models."],
+  PostgreSQL: [
+    "https://www.postgresql.org",
+    "Open-source relational database.",
+  ],
+  Python: ["https://www.python.org", "General-purpose programming language."],
+  PyTorch: ["https://pytorch.org", "Framework for deep learning."],
+  RadixUI: [
+    "https://www.radix-ui.com",
+    "Accessible React component primitives.",
+  ],
+  React: ["https://react.dev", "Library for building user interfaces."],
+  Redis: ["https://redis.io", "In-memory data store and cache."],
+  "scikit-learn": [
+    "https://scikit-learn.org",
+    "Machine learning library for Python.",
+  ],
+  Shadcn: ["https://ui.shadcn.com", "Customizable components for web apps."],
+  "Shopify GraphQL Admin API": [
+    "https://shopify.dev/docs/api/admin-graphql",
+    "Programmatic access to Shopify store data.",
+  ],
+  "Socket.io": ["https://socket.io", "Library for real-time communication."],
+  "Swiper.js": ["https://swiperjs.com", "Touch slider library for the web."],
+  "Tailwind CSS": [
+    "https://tailwindcss.com",
+    "Utility classes for styling interfaces.",
+  ],
+  Temporal: ["https://temporal.io", "Platform for durable workflows."],
+  "Three.js": ["https://threejs.org", "JavaScript library for 3D graphics."],
+  TimescaleDB: [
+    "https://www.timescale.com",
+    "PostgreSQL extension for time-series data.",
+  ],
+  TypeScript: [
+    "https://www.typescriptlang.org",
+    "JavaScript with static types.",
+  ],
+  Vercel: ["https://vercel.com", "Platform for deploying web applications."],
+  Vite: ["https://vite.dev", "Development server and build tool."],
 };
 
 function channel(hex: string, offset: number) {
@@ -167,11 +222,12 @@ function tints(hex: string) {
   return [`#${hex}`, `rgb(${lift(r)} ${lift(g)} ${lift(b)})`] as const;
 }
 
-function TechMark({ name, icon }: { name: string; icon: SimpleIcon }) {
+function TechMark({ name, icon }: { name: string; icon?: SimpleIcon }) {
   const id = useId();
   const tip = useRef<HTMLSpanElement>(null);
-  const gradient = tints(icon.hex);
-  const href = links[name];
+  const gradient = icon ? tints(icon.hex) : null;
+  const [href, description] = technologies[name] ?? [];
+  const label = icon?.title ?? name;
   const show = (target: HTMLElement) => {
     const el = tip.current;
     if (!el || typeof el.showPopover !== "function") return;
@@ -182,63 +238,95 @@ function TechMark({ name, icon }: { name: string; icon: SimpleIcon }) {
     el.showPopover();
   };
   const hide = () => tip.current?.hidePopover?.();
-  const mark = (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      {gradient && (
-        <defs>
-          <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor={gradient[0]} />
-            <stop offset="100%" stopColor={gradient[1]} />
-          </linearGradient>
-        </defs>
-      )}
-      <path d={icon.path} fill={gradient ? `url(#${id}-g)` : "currentColor"} />
-    </svg>
-  );
-  const shared = {
-    className: "tech-mark",
-    "aria-describedby": id,
-    onMouseEnter: (event: { currentTarget: HTMLElement }) =>
-      show(event.currentTarget),
-    onMouseLeave: hide,
-    onFocus: (event: { currentTarget: HTMLElement }) =>
-      show(event.currentTarget),
-    onBlur: hide,
-  };
+
+  function mark(gradientId: string) {
+    if (!icon) return name;
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        {gradient && (
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor={gradient[0]} />
+              <stop offset="100%" stopColor={gradient[1]} />
+            </linearGradient>
+          </defs>
+        )}
+        <path
+          d={icon.path}
+          fill={gradient ? `url(#${gradientId})` : "currentColor"}
+        />
+      </svg>
+    );
+  }
+
+  const className = icon ? "tech-mark" : "tech-mark-pill";
+  if (!href)
+    return (
+      <li>
+        <span className={className}>{mark(`${id}-g`)}</span>
+      </li>
+    );
+
   return (
     <li>
-      {href ? (
-        <a
-          {...shared}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${icon.title} (opens in a new tab)`}
-        >
-          {mark}
-        </a>
-      ) : (
-        <button {...shared} type="button" aria-label={icon.title}>
-          {mark}
-        </button>
-      )}
+      <a
+        className={`${className} tech-mark-desktop`}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${label} (opens in a new tab)`}
+        aria-describedby={`${id}-tip`}
+        onPointerEnter={(event) => {
+          if (event.pointerType === "mouse") show(event.currentTarget);
+        }}
+        onPointerLeave={hide}
+        onFocus={(event) => show(event.currentTarget)}
+        onBlur={hide}
+      >
+        {mark(`${id}-g`)}
+      </a>
       <span
         ref={tip}
-        id={id}
+        id={`${id}-tip`}
         popover="manual"
         role="tooltip"
         className="inline-mention-popover tech-mark-tip"
       >
         {name}
       </span>
+      <button
+        type="button"
+        className={`${className} tech-mark-touch`}
+        popoverTarget={id}
+        aria-haspopup="dialog"
+        aria-label={`About ${name}`}
+      >
+        {mark(`${id}-touch-g`)}
+      </button>
+      <div
+        id={id}
+        popover="auto"
+        role="dialog"
+        aria-label={name}
+        className="inline-mention-popover tech-mark-popover"
+      >
+        <strong>{name}</strong>
+        <span className="tech-mark-description">{description}</span>
+        <a
+          className="tech-mark-visit"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Visit ${name} (opens in a new tab)`}
+        >
+          <ArrowUpRight size={18} aria-hidden="true" />
+        </a>
+      </div>
     </li>
   );
 }
 
-/**
- * The technologies behind a project as brand marks, with the name on hover
- * or focus. Same gradient treatment as the social marks in the chat.
- */
+/** Project technologies with desktop tooltips and touch-friendly details. */
 export default function TechMarks({
   tech,
   max = 6,
@@ -250,26 +338,9 @@ export default function TechMarks({
 }) {
   return (
     <ul className="tech-marks" aria-label={label}>
-      {tech.slice(0, max).map((name) =>
-        marks[name] ? (
-          <TechMark key={name} name={name} icon={marks[name]} />
-        ) : (
-          <li key={name}>
-            {links[name] ? (
-              <a
-                className="tech-mark-pill"
-                href={links[name]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {name}
-              </a>
-            ) : (
-              <span className="tech-mark-pill">{name}</span>
-            )}
-          </li>
-        ),
-      )}
+      {tech.slice(0, max).map((name) => (
+        <TechMark key={name} name={name} icon={marks[name]} />
+      ))}
     </ul>
   );
 }

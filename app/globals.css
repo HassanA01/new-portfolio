@@ -1945,12 +1945,12 @@ h1 {
     justify-content: space-between;
     position: fixed;
     top: 16px;
-    left: 24px;
+    left: 16px;
     right: 16px;
     z-index: 20;
-    transition:
-      opacity 250ms ease,
-      translate 350ms ease;
+    padding: 5px 12px;
+    border: 1px solid transparent;
+    border-radius: 12px;
   }
   .mobile-name {
     color: var(--foreground);
@@ -3949,13 +3949,16 @@ html {
   -webkit-text-fill-color: transparent;
   transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.inline-mention:is(:hover, :focus-visible) {
-  transform: rotate(-4deg) translateY(-1px);
-}
 .inline-mention:focus-visible {
+  transform: rotate(-4deg) translateY(-1px);
   outline: 2px solid var(--tool-to);
   outline-offset: 3px;
   border-radius: 2px;
+}
+@media (hover: hover) {
+  .inline-mention:hover {
+    transform: rotate(-4deg) translateY(-1px);
+  }
 }
 [data-theme="dark"] .inline-mention {
   filter: brightness(1.5);
@@ -4075,15 +4078,14 @@ html {
       box-shadow 300ms ease;
   }
   .mobile-topbar[data-floating="true"] {
-    padding: 5px 12px;
-    left: 16px;
-    right: 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--background) 97%, transparent);
+    border-color: var(--line);
+    background: var(--background);
     box-shadow: 0 10px 30px rgb(0 0 0 / 16%);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  }
+}
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .mobile-topbar {
+    transition: none;
   }
 }
 
@@ -4150,6 +4152,11 @@ a.inline-mention {
     outline-offset: -2px;
     forced-color-adjust: auto;
   }
+}
+:root[data-touch-input]
+  .site-shell
+  :is(a, button, summary, dialog):focus-visible {
+  outline: none;
 }
 
 .career-link {
@@ -4418,6 +4425,18 @@ a.inline-mention {
   font-family:
     "Kaiti SC", "STKaiti", "Hiragino Mincho ProN", "Geeza Pro", cursive;
   animation: greeting-native-reveal 2.6s ease both;
+}
+/* Arabic glyphs can extend past the text clip box in the mobile font. */
+.glass-native-writing:where([lang="ar"]) {
+  animation-name: greeting-arabic-reveal;
+}
+@keyframes greeting-arabic-reveal {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes greeting-write {
   to {
@@ -5532,9 +5551,13 @@ a.inline-mention {
   /* Same playful tilt as the company logos in the career rows. */
   transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.tech-mark:hover svg,
 .tech-mark:focus-visible svg {
   transform: translateY(-1px) rotate(-10deg) scale(1.08);
+}
+@media (hover: hover) {
+  .tech-mark:hover svg {
+    transform: translateY(-1px) rotate(-10deg) scale(1.08);
+  }
 }
 .tech-mark:focus-visible {
   outline: 2px solid rgb(var(--signature-1));
@@ -5557,6 +5580,50 @@ a.inline-mention {
   font-size: 10px;
   color: var(--muted);
   background: rgb(var(--signature-1) / 3%);
+}
+.tech-mark-touch {
+  display: none;
+}
+@media (max-width: 600px), (hover: none) and (pointer: coarse) {
+  .tech-mark-desktop {
+    display: none;
+  }
+  .tech-mark-touch {
+    display: grid;
+    place-items: center;
+    min-height: 44px;
+  }
+}
+.tech-mark-popover {
+  inset: 0;
+  margin: auto;
+  width: min(260px, calc(100% - 32px));
+  height: fit-content;
+  border-radius: 12px;
+}
+.tech-mark-popover:popover-open {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 10px;
+  align-items: center;
+}
+.tech-mark-description {
+  grid-column: 1;
+  color: var(--muted);
+}
+.tech-mark-visit {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--foreground);
+}
+.tech-mark-visit:is(:hover, :focus-visible) {
+  background: var(--hover);
 }
 @media (prefers-reduced-motion: reduce) {
   .tech-mark svg {
@@ -5873,6 +5940,11 @@ a.inline-mention {
   flex: 0 0 100%;
   min-width: 0;
   scroll-snap-align: start;
+}
+@media (max-width: 600px) {
+  .project-feature-track > li {
+    scroll-snap-stop: always;
+  }
 }
 .project-feature-track .project-pointed-shell {
   margin: 6px 0 0;

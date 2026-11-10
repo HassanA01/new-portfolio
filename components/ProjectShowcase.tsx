@@ -38,7 +38,6 @@ export default function ProjectShowcase() {
       >
         <ul
           {...featurePull.events}
-          style={{ touchAction: "pan-y" }}
           ref={features}
           className="project-feature-track"
           aria-label="Featured projects"

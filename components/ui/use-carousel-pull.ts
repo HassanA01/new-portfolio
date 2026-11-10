@@ -97,8 +97,9 @@ export function useCarouselPull(ref: RefObject<HTMLUListElement | null>) {
     events: {
       onPointerDown(event: PointerEvent<HTMLUListElement>) {
         if (event.button !== 0) return;
-        spring.current?.stop();
         suppressClick.current = false;
+        if (event.pointerType !== "mouse") return;
+        spring.current?.stop();
         const track = event.currentTarget;
         // Catching the track mid-glide: freeze it where it is and keep
         // snapping off until this press settles it again.
@@ -151,6 +152,7 @@ export function useCarouselPull(ref: RefObject<HTMLUListElement | null>) {
         x.set(reduced ? 0 : next.pull);
       },
       onMouseDown(event: React.MouseEvent<HTMLUListElement>) {
+        if (!gesture.current) return;
         // Double and triple clicks still select a word or paragraph; a single
         // press must not start a selection, or the browser auto-scrolls the
         // track to follow it and fights the pull. Links and buttons still get

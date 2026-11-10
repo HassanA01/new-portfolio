@@ -6,6 +6,8 @@ import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { GlowCard } from "@/components/ui/spotlight-card";
 
+const portraitAnimation = "/aneeq-pixel-to-4k.webp";
+
 export default function PortraitVideo() {
   const video = useRef<HTMLVideoElement>(null);
   const [flipped, setFlipped] = useState(false);
@@ -56,11 +58,12 @@ export default function PortraitVideo() {
           <span className="portrait-video-face portrait-video-front">
             <Image
               className="greeting-portrait-image"
-              src="/aneeq-pixel-to-4k.gif"
+              src={portraitAnimation}
               alt="Animated portrait of Aneeq resolving from pixels into detail"
               width={144}
               height={144}
               unoptimized
+              priority
             />
           </span>
           <span
@@ -70,8 +73,8 @@ export default function PortraitVideo() {
             <video
               ref={video}
               src="/videos/aneeq-portrait.mp4"
-              poster="/aneeq-pixel-to-4k.gif"
-              preload="metadata"
+              poster={portraitAnimation}
+              preload="none"
               muted={muted}
               playsInline
               tabIndex={-1}

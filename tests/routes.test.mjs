@@ -69,6 +69,10 @@ for (const [route, heading] of [
         ),
       );
     } else if (route === "/about") {
+      assert.match(
+        html.replaceAll("<!-- -->", ""),
+        /Last updated at <time dateTime="2026-11-08">November 8, 2026<\/time>/,
+      );
       assert.doesNotMatch(html, /CA\$5/);
       assert.match(html, /id="projects"/);
       for (const title of ["flwst8", "Sawt", "Hilal"])

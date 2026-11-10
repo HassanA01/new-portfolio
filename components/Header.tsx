@@ -73,13 +73,19 @@ export default function Header() {
 
   const [navHidden, setNavHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const mobileNavHidden = pathname !== "/" && navHidden;
 
   useEffect(() => {
-    let anchor = Math.max(0, window.scrollY);
+    const scrollPosition = () => {
+      const root = document.documentElement;
+      const limit = Math.max(0, root.scrollHeight - root.clientHeight);
+      return Math.max(0, Math.min(window.scrollY, limit));
+    };
+    let anchor = scrollPosition();
     setScrolled(anchor > 64);
     setNavHidden(anchor > 8);
     const onScroll = () => {
-      const current = Math.max(0, window.scrollY);
+      const current = scrollPosition();
       setScrolled(current > 64);
       if (current <= 8) {
         setNavHidden(false);
@@ -92,6 +98,20 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const markPointer = (event: PointerEvent) =>
+      root.toggleAttribute("data-touch-input", event.pointerType === "touch");
+    const markKeyboard = () => root.removeAttribute("data-touch-input");
+    window.addEventListener("pointerdown", markPointer, true);
+    window.addEventListener("keydown", markKeyboard, true);
+    return () => {
+      window.removeEventListener("pointerdown", markPointer, true);
+      window.removeEventListener("keydown", markKeyboard, true);
+      root.removeAttribute("data-touch-input");
+    };
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -147,8 +167,8 @@ export default function Header() {
       <div
         className="mobile-topbar"
         data-floating={scrolled}
-        data-scroll-hidden={navHidden}
-        inert={navHidden}
+        data-scroll-hidden={mobileNavHidden}
+        inert={mobileNavHidden}
       >
         <Link
           href="/"

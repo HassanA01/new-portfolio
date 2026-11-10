@@ -73,11 +73,14 @@ export default function InlineMention({
         popoverTarget={id}
         aria-describedby={id}
         onClick={(event) => position(event.currentTarget)}
-        onMouseEnter={(event) => {
+        onPointerEnter={(event) => {
+          if (event.pointerType !== "mouse") return;
           position(event.currentTarget);
           popup.current?.showPopover();
         }}
-        onMouseLeave={() => popup.current?.hidePopover()}
+        onPointerLeave={(event) => {
+          if (event.pointerType === "mouse") popup.current?.hidePopover();
+        }}
         onFocus={(event) => {
           position(event.currentTarget);
         }}
