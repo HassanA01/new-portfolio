@@ -2473,6 +2473,10 @@ h1 {
     display: block;
     backface-visibility: hidden;
   }
+  .sidebar-label-flip > span:first-child {
+    /* Firefox needs a local transform to hide each face in this 3D context. */
+    transform: rotateX(0deg);
+  }
   .sidebar-label-back {
     position: absolute;
     inset: 0;
